@@ -4,7 +4,7 @@
 
 Trevor Woolley<sup>†</sup> (UC Berkeley) · Sankalpa Ghose (NUS, Alethic Research) · Alina Khindanova (UT San Antonio) · Kasra Rasaee (Bloomberg, Alethic Research) · Bob Fischer<sup>†</sup> (Texas State)
 
-[Paper](#) · [Research Page](https://alethic.ai/wtp) · [Cite](#citation)
+[Paper](#) · [Research Page](https://alethicresearch.github.io/synthetic-cv/) · [Cite](#citation)
 
 ---
 
