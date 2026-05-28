@@ -2,7 +2,9 @@
 
 **Evidence from Two Contingent Valuation Replications**
 
-Trevor Woolley · Sankalpa Ghose · Alina Khindanova · Kasra Rasaee · Bob Fischer
+Trevor Woolley<sup>†</sup> (UC Berkeley) · Sankalpa Ghose (NUS, Alethic Research) · Alina Khindanova (UT San Antonio) · Kasra Rasaee (Bloomberg, Alethic Research) · Bob Fischer<sup>†</sup> (Texas State)
+
+<sup>†</sup>Corresponding authors: trevor_woolley@berkeley.edu · fischer@txstate.edu
 
 [Paper](#) · [Interactive Explorer](https://alethic.ai/wtp) · [Cite](#citation)
 
@@ -45,11 +47,18 @@ with versioned, immutable states. Developed by Rasaee & Ghose (2025).
 ## Repository Structure
 
 ```
-paper/          LaTeX source (from Overleaf)
+paper/          LaTeX source, synced from Overleaf via git subtree
+                  JAERE_Draft*.tex, LandEcon_Draft*.tex, figures/, tables/
 data/           Synthetic response panels; original human data not redistributed
 code/           Simulation workflows, estimation scripts, figure code
 results/        Tables and figures
 web/            Landing page source (deployed at alethic.ai/wtp)
+```
+
+To pull the latest paper draft from Overleaf:
+```bash
+git subtree pull --prefix=paper overleaf master --squash
+git push origin main
 ```
 
 ## Data Access
@@ -90,7 +99,7 @@ Full replication instructions: `code/README.md`
           and Rasaee, Kasra and Fischer, Bob},
   journal={[Journal TBD]},
   year={2026},
-  note={Preprint available at [DOI TBD]}
+  note={Preprint: [DOI TBD]. Data and code: https://github.com/alethicresearch/synthetic-cv}
 }
 ```
 
@@ -102,5 +111,5 @@ Paper: © Authors (all rights reserved until published; preprint freely availabl
 
 ## Contact
 
-Corresponding author: Bob Fischer — fischer@txstate.edu  
+Corresponding authors: Trevor Woolley — trevor_woolley@berkeley.edu · Bob Fischer — fischer@txstate.edu  
 Platform questions: Kasra Rasaee / Sankalpa Ghose — research@alethic.ai
