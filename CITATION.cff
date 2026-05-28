@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this data or code, please cite as below."
+type: software
+title: "Synthetic CV: LLM Replication of Contingent Valuation Studies"
+authors:
+  - family-names: Woolley
+    given-names: Trevor
+    affiliation: "University of California, Berkeley"
+  - family-names: Ghose
+    given-names: Sankalpa
+    affiliation: "National University of Singapore"
+  - family-names: Khindanova
+    given-names: Alina
+    affiliation: "University of Texas at San Antonio"
+  - family-names: Rasaee
+    given-names: Kasra
+    affiliation: Bloomberg
+  - family-names: Fischer
+    given-names: Bob
+    affiliation: "Texas State University"
+repository-code: "https://github.com/alethicresearch/synthetic-cv"
+url: "https://alethic.ai/wtp"
+year: 2026

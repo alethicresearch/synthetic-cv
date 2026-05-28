@@ -1,0 +1,17 @@
+{
+  "benchmark": 162,
+  "benchmark_ci": [128, 260],
+  "models": ["Aggregated", "DeepSeek Chat v3.1", "DeepSeek R1", "Gemini 2.5 Flash", "Gemini 2.5 Flash-Lite", "Mistral Medium 3.1", "Mistral Small 3.2", "Kimi-K2", "GPT-5-mini"],
+  "conditions": {
+    "no_beliefs": {
+      "wtp":      [-9,   -843,  -13,  -102,  -104,  -288,  -535,  268, 185],
+      "ci_lower": [-17, -1887,  -25,  -134,  -129,  -473, -1328,  232, 172],
+      "ci_upper": [ -2,  -509,   -1,   -77,   -83,  -192,  -303,  320, 202]
+    },
+    "with_beliefs": {
+      "wtp":      [289,  37,  91, 335, 491, 183, 258,  618, 522],
+      "ci_lower": [268,  27,  85, 276, 366, 163, 184,  440, 405],
+      "ci_upper": [314,  46,  98, 440, 798, 211, 564, 1120, 764]
+    }
+  }
+}

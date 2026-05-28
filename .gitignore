@@ -1,0 +1,8 @@
+.DS_Store
+*.aux *.log *.synctex.gz *.fls *.fdb_latexmk
+__pycache__/
+*.pyc
+.Rhistory
+.RData
+*.Rproj.user/
+node_modules/

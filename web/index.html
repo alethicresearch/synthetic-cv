@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Research landing page for 'Can Large Language Models Estimate Willingness to Pay? Evidence from Two Contingent Valuation Replications'">
+  <title>Can LLMs Estimate WTP? — Alethic Research</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=DM+Sans:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" defer></script>
+
+  <style>
+    /* ─── CSS Custom Properties ─────────────────────────────────────────── */
+    :root {
+      --bg: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6b6b6b;
+      --text-tertiary: #9b9b9b;
+      --border: #e8e8e8;
+      --accent-red: #D85A30;
+      --accent-blue: #185FA5;
+      --accent-green: #0F6E56;
+      --accent-amber: #BA7517;
+      --code-bg: #f5f5f0;
+      --font-display: 'EB Garamond', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --font-mono: 'Fira Code', 'Courier New', monospace;
+      --max-w: 760px;
+    }
+
+    /* ─── Reset & Base ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--accent-blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ─── Layout ─────────────────────────────────────────────────────────── */
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ─── Top Bar ────────────────────────────────────────────────────────── */
+    .topbar {
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .topbar-sigil {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
+    }
+
+    .topbar-name {
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: 0.01em;
+    }
+
+    .topbar-email {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .topbar-email a {
+      color: var(--text-secondary);
+    }
+
+    .topbar-email a:hover {
+      color: var(--text-primary);
+      text-decoration: underline;
+    }
+
+    /* ─── Hero ───────────────────────────────────────────────────────────── */
+    .hero {
+      padding: 56px 0 48px;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(30px, 5.5vw, 40px);
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-body);
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+      line-height: 1.4;
+    }
+
+    .hero-authors {
+      font-size: 14px;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      line-height: 1.8;
+    }
+
+    .hero-affiliations {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-bottom: 28px;
+      line-height: 1.9;
+    }
+
+    .hero-affiliations sup {
+      font-size: 9px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: transparent;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      border-color: var(--text-secondary);
+      background: #fafafa;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    /* ─── Finding Block ──────────────────────────────────────────────────── */
+    .finding {
+      background: #f9f9f7;
+      border-left: 3px solid var(--accent-green);
+      padding: 20px 22px;
+      margin: 0 0 48px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ─── Section Label ──────────────────────────────────────────────────── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      margin-bottom: 16px;
+    }
+
+    /* ─── Tabs ───────────────────────────────────────────────────────────── */
+    .tabs-wrapper {
+      margin-bottom: 56px;
+    }
+
+    .tabs-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
+    }
+
+    .tab-btn {
+      padding: 10px 16px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover { color: var(--text-primary); }
+
+    .tab-btn.active {
+      color: var(--text-primary);
+      border-bottom-color: var(--text-primary);
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ─── Metric Cards ───────────────────────────────────────────────────── */
+    .metric-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .metric-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 14px 16px;
+    }
+
+    .metric-card-label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-tertiary);
+      margin-bottom: 4px;
+    }
+
+    .metric-card-value {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1.1;
+      margin-bottom: 2px;
+    }
+
+    .metric-card-sub {
+      font-size: 11px;
+      color: var(--text-tertiary);
+    }
+
+    /* ─── Chart Controls ─────────────────────────────────────────────────── */
+    .chart-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .chart-controls + .chart-controls {
+      margin-top: -8px;
+    }
+
+    .control-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-right: 4px;
+      white-space: nowrap;
+    }
+
+    .ctrl-btn {
+      padding: 5px 12px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+
+    .ctrl-btn:hover {
+      border-color: var(--text-secondary);
+      color: var(--text-primary);
+    }
+
+    .ctrl-btn.active {
+      background: var(--text-primary);
+      border-color: var(--text-primary);
+      color: #fff;
+    }
+
+    /* ─── Custom Chart Legend ────────────────────────────────────────────── */
+    .chart-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .legend-swatch.diamond {
+      transform: rotate(45deg);
+      width: 10px;
+      height: 10px;
+    }
+
+    .legend-line {
+      width: 20px;
+      height: 2px;
+      flex-shrink: 0;
+    }
+
+    /* ─── Chart Container ────────────────────────────────────────────────── */
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+    }
+
+    .chart-sublabel {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-top: 10px;
+    }
+
+    /* ─── Amber Warning Box ──────────────────────────────────────────────── */
+    .amber-box {
+      border-left: 3px solid var(--accent-amber);
+      background: #fffbf2;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    /* ─── Methods Section ────────────────────────────────────────────────── */
+    .methods {
+      padding: 48px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-heading {
+      font-family: var(--font-body);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 28px;
+    }
+
+    .methods-subsection {
+      padding-bottom: 24px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .methods-subsection:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .methods-subsection-title {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .methods-subsection p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ─── Citation Section ───────────────────────────────────────────────── */
+    .citation {
+      padding: 48px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .bibtex-wrap {
+      position: relative;
+      margin-top: 16px;
+    }
+
+    .bibtex-block {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      line-height: 1.7;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 18px 20px;
+      overflow-x: auto;
+      white-space: pre;
+      color: var(--text-primary);
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 4px 10px;
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+
+    .copy-btn:hover {
+      border-color: var(--text-secondary);
+      color: var(--text-primary);
+    }
+
+    .copy-btn.copied {
+      color: var(--accent-green);
+      border-color: var(--accent-green);
+    }
+
+    /* ─── Footer ─────────────────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 20px 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    footer a { color: var(--text-tertiary); }
+    footer a:hover { color: var(--text-secondary); }
+
+    /* ─── Responsive ─────────────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .topbar { padding: 10px 16px; }
+      .topbar-email { display: none; }
+      .container { padding: 0 16px; }
+      .hero { padding: 36px 0 32px; }
+      .hero-subtitle { font-size: 16px; }
+      .tabs-nav { overflow-x: auto; flex-wrap: nowrap; }
+      .tab-btn { padding: 8px 12px; font-size: 12px; }
+      .metric-cards { grid-template-columns: 1fr 1fr; }
+      .chart-controls { gap: 6px; }
+      .ctrl-btn { padding: 4px 10px; font-size: 11px; }
+    }
+
+    @media (max-width: 400px) {
+      .metric-cards { grid-template-columns: 1fr; }
+      .hero-title { font-size: 26px; }
+    }
+
+    @media (max-width: 320px) {
+      .topbar { flex-direction: column; align-items: flex-start; gap: 4px; }
+      .hero-title { font-size: 24px; }
+    }
+
+    /* ─── No-JS fallback ─────────────────────────────────────────────────── */
+    noscript .noscript-notice {
+      background: #fff8e1;
+      border: 1px solid #ffe082;
+      border-radius: 4px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ─── Top Bar ────────────────────────────────────────────────────────── -->
+  <header class="topbar" role="banner">
+    <a class="topbar-brand" href="#">
+      <span class="topbar-sigil">∀∃</span>
+      <span class="topbar-name">alethic</span>
+    </a>
+    <span class="topbar-email"><a href="mailto:research@alethic.ai">research@alethic.ai</a></span>
+  </header>
+
+  <!-- ─── Main Content ───────────────────────────────────────────────────── -->
+  <main>
+    <div class="container">
+
+      <!-- ─── Hero ─────────────────────────────────────────────────────── -->
+      <section class="hero" aria-labelledby="paper-title">
+        <h1 class="hero-title" id="paper-title">
+          Can Large Language Models<br>Estimate Willingness to Pay?
+        </h1>
+        <p class="hero-subtitle">Evidence from Two Contingent Valuation Replications</p>
+
+        <p class="hero-authors">
+          Trevor Woolley<sup>1</sup>&nbsp;&nbsp;
+          Sankalpa Ghose<sup>2</sup>&nbsp;&nbsp;
+          Alina Khindanova<sup>3</sup>&nbsp;&nbsp;
+          Kasra Rasaee<sup>4</sup>&nbsp;&nbsp;
+          Bob Fischer<sup>5</sup><sup>*</sup>
+        </p>
+        <p class="hero-affiliations">
+          <sup>1</sup>UC Berkeley&nbsp;&nbsp;
+          <sup>2</sup>National University of Singapore&nbsp;&nbsp;
+          <sup>3</sup>UT San Antonio&nbsp;&nbsp;
+          <sup>4</sup>Bloomberg&nbsp;&nbsp;
+          <sup>5</sup>Texas State University<br>
+          <sup>*</sup>Corresponding author: <a href="mailto:fischer@txstate.edu">fischer@txstate.edu</a>
+        </p>
+
+        <div class="hero-actions">
+          <a href="#" class="btn">↗ Read the paper</a>
+          <a href="#" class="btn">↗ Data &amp; code</a>
+          <button class="btn" onclick="document.getElementById('citation').scrollIntoView({behavior:'smooth'})">Cite ↓</button>
+        </div>
+      </section>
+
+      <!-- ─── Finding Block ──────────────────────────────────────────────── -->
+      <div class="finding" role="note" aria-label="Key finding">
+        Synthetic contingent valuation does not recover human-survey benchmarks under naive deployment.
+        Across both studies and almost every model, synthetic approval-bid curves are systematically
+        flatter than empirical curves — a pattern with direct mechanical consequences for
+        willingness-to-pay estimation through the standard logit framework. Across-LLM heterogeneity
+        is large enough that model selection is a first-order design decision; ensemble averaging does
+        not rescue weak models.
+      </div>
+
+      <!-- ─── Interactive Explorer ───────────────────────────────────────── -->
+      <section class="tabs-wrapper" aria-label="Interactive results explorer">
+        <p class="section-label">Explore the results</p>
+
+        <noscript>
+          <div class="noscript-notice">
+            Interactive charts require JavaScript. The static content on this page remains fully accessible.
+          </div>
+        </noscript>
+
+        <nav class="tabs-nav" role="tablist" aria-label="Result tabs">
+          <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-wtp1" id="tab-wtp1" data-tab="wtp1">Study 1 — WTP (NCES)</button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-wtp2" id="tab-wtp2" data-tab="wtp2">Study 2 — WTP (HWA)</button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-curves" id="tab-curves" data-tab="curves">Approval curves</button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-slope" id="tab-slope" data-tab="slope">Slope compression</button>
+        </nav>
+
+        <!-- Tab 1: Study 1 WTP -->
+        <div class="tab-panel active" id="panel-wtp1" role="tabpanel" aria-labelledby="tab-wtp1">
+          <div class="metric-cards">
+            <div class="metric-card">
+              <div class="metric-card-label">Human benchmark</div>
+              <div class="metric-card-value">$162</div>
+              <div class="metric-card-sub">per household / year</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-card-label">Aggregate w/o beliefs</div>
+              <div class="metric-card-value">−$9</div>
+              <div class="metric-card-sub">95% CI: −$17 to −$2</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-card-label">Aggregate w/ beliefs</div>
+              <div class="metric-card-value">$289</div>
+              <div class="metric-card-sub">95% CI: $268 to $314</div>
+            </div>
+          </div>
+
+          <div class="chart-controls" role="group" aria-label="Condition filter">
+            <span class="control-label">Show:</span>
+            <button class="ctrl-btn active" data-wtp1-filter="both">Both conditions</button>
+            <button class="ctrl-btn" data-wtp1-filter="no">W/o beliefs only</button>
+            <button class="ctrl-btn" data-wtp1-filter="yes">W/ beliefs only</button>
+          </div>
+
+          <div class="chart-legend" aria-hidden="true">
+            <div class="legend-item">
+              <div class="legend-swatch diamond" style="background:var(--accent-red);"></div>
+              <span>W/o beliefs</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-swatch" style="background:var(--accent-blue);"></div>
+              <span>W/ beliefs</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-line" style="background:var(--accent-green);border-top:2px dashed var(--accent-green);"></div>
+              <span>Human benchmark ($162)</span>
+            </div>
+          </div>
+
+          <div class="chart-wrap" style="height:340px;">
+            <canvas id="chart-wtp1" role="img" aria-label="Forest plot of WTP estimates for Study 1 (NCES) by model and condition"></canvas>
+          </div>
+        </div>
+
+        <!-- Tab 2: Study 2 WTP -->
+        <div class="tab-panel" id="panel-wtp2" role="tabpanel" aria-labelledby="tab-wtp2">
+          <div class="metric-cards">
+            <div class="metric-card">
+              <div class="metric-card-label">Human benchmark</div>
+              <div class="metric-card-value">$56.53</div>
+              <div class="metric-card-sub">per household / year</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-card-label">Best model (random-cost)</div>
+              <div class="metric-card-value">$66.6</div>
+              <div class="metric-card-sub">Kimi-K2, within benchmark CI</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-card-label">Bounded + beliefs</div>
+              <div class="metric-card-value">Sign flip</div>
+              <div class="metric-card-sub">Most models go negative</div>
+            </div>
+          </div>
+
+          <div class="chart-controls" role="group" aria-label="Design selection">
+            <span class="control-label">Design:</span>
+            <button class="ctrl-btn active" data-wtp2-filter="rc">Random-cost design</button>
+            <button class="ctrl-btn" data-wtp2-filter="bd">Bounded bids</button>
+          </div>
+
+          <div class="chart-legend" aria-hidden="true">
+            <div class="legend-item">
+              <div class="legend-swatch diamond" style="background:var(--accent-red);"></div>
+              <span>W/o beliefs</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-swatch" style="background:var(--accent-blue);"></div>
+              <span>W/ beliefs</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-line" style="background:var(--accent-green);border-top:2px dashed var(--accent-green);"></div>
+              <span>Human benchmark ($56.53)</span>
+            </div>
+          </div>
+
+          <div class="chart-wrap" style="height:340px;">
+            <canvas id="chart-wtp2" role="img" aria-label="Forest plot of WTP estimates for Study 2 (HWA) by model and condition"></canvas>
+          </div>
+        </div>
+
+        <!-- Tab 3: Approval Curves -->
+        <div class="tab-panel" id="panel-curves" role="tabpanel" aria-labelledby="tab-curves">
+          <div class="chart-controls" role="group" aria-label="Study selection">
+            <span class="control-label">Study:</span>
+            <button class="ctrl-btn active" data-curves-study="s1">Study 1 — NCES</button>
+            <button class="ctrl-btn" data-curves-study="s2">Study 2 — HWA</button>
+          </div>
+          <div class="chart-controls" role="group" aria-label="Condition selection">
+            <span class="control-label">Condition:</span>
+            <button class="ctrl-btn active" data-curves-cond="demo">Demographics only</button>
+            <button class="ctrl-btn" data-curves-cond="all">+ All beliefs</button>
+          </div>
+
+          <div class="chart-legend" aria-hidden="true">
+            <div class="legend-item">
+              <div class="legend-line" style="height:2.5px;background:var(--accent-red);"></div>
+              <span>Empirical (human survey)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-line" style="height:1px;background:rgba(24,95,165,0.5);border-top:2px dashed rgba(24,95,165,0.5);"></div>
+              <span>LLM synthetic</span>
+            </div>
+          </div>
+
+          <div class="chart-wrap" style="height:280px;">
+            <canvas id="chart-curves" role="img" aria-label="Approval bid curves comparing empirical and synthetic LLM responses"></canvas>
+          </div>
+          <p class="chart-sublabel" id="curves-sublabel">Study 1 (NCES) — Demographics only condition. Bid amounts in $/household/year.</p>
+        </div>
+
+        <!-- Tab 4: Slope Compression -->
+        <div class="tab-panel" id="panel-slope" role="tabpanel" aria-labelledby="tab-slope">
+          <div class="amber-box" role="note">
+            Values below 1.0 indicate synthetic respondents are less price-sensitive than human respondents.
+            This flatness mechanically inflates WTP: a slope half the empirical value doubles the implied estimate.
+          </div>
+
+          <div class="chart-controls" role="group" aria-label="Study selection">
+            <span class="control-label">Study:</span>
+            <button class="ctrl-btn active" data-slope-study="s1">NCES (Study 1)</button>
+            <button class="ctrl-btn" data-slope-study="s2r">HWA random-cost</button>
+            <button class="ctrl-btn" data-slope-study="s2b">HWA bounded</button>
+          </div>
+          <div class="chart-controls" role="group" aria-label="Condition selection">
+            <span class="control-label">Condition:</span>
+            <button class="ctrl-btn active" data-slope-cond="no">W/o beliefs</button>
+            <button class="ctrl-btn" data-slope-cond="yes">W/ beliefs</button>
+          </div>
+
+          <div class="chart-wrap" style="height:380px;">
+            <canvas id="chart-slope" role="img" aria-label="Slope compression ratios for each LLM relative to empirical benchmark"></canvas>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /.container -->
+
+    <!-- ─── Methods Brief ──────────────────────────────────────────────── -->
+    <div class="container">
+      <section class="methods" aria-labelledby="methods-heading">
+        <h2 class="section-heading" id="methods-heading">Methods</h2>
+
+        <div class="methods-subsection">
+          <h3 class="methods-subsection-title">What is synthetic CV?</h3>
+          <p>Contingent valuation asks respondents whether they would support a policy at a given cost.
+          In synthetic CV, large language models stand in for human respondents: given a persona describing
+          a real survey participant's demographics and beliefs, the model is prompted to vote as that person
+          would. The question we ask is whether the response patterns LLMs produce approximate the patterns
+          human respondents produce closely enough to support welfare analysis.</p>
+        </div>
+
+        <div class="methods-subsection">
+          <h3 class="methods-subsection-title">What is Alethic-ISM?</h3>
+          <p>All simulations were executed on Alethic-ISM, an open-source AI research workbench that represents
+          computational experiments as directed graphs of immutable, versioned states. Each node applies an
+          instruction to an input state — in this case, prompting an LLM with a synthetic persona — producing
+          a new state linked to its full provenance chain. The platform supports parallel execution across
+          multiple models and maintains a permanent audit trail of every API call. Available at
+          <a href="https://github.com/alethicresearch/alethic-ism">github.com/alethicresearch/alethic-ism</a>.</p>
+        </div>
+
+        <div class="methods-subsection">
+          <h3 class="methods-subsection-title">How to read the plots</h3>
+          <p>The forest plots show mean WTP estimates (points) with 95% confidence intervals (lines) for each
+          LLM, in two conditions: demographics-only personas (red diamonds) and demographics-plus-beliefs
+          personas (blue squares). Vertical dashed lines mark the human-survey benchmark and its confidence
+          interval. The approval curve plots show share of synthetic respondents supporting the policy at
+          each bid level; the red line is empirical, blue dashed lines are synthetic. The slope compression
+          chart shows the ratio of each model's bid coefficient to the empirical bid coefficient — values
+          below 1 indicate synthetic respondents are less price-sensitive than human respondents.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- ─── Citation ───────────────────────────────────────────────────── -->
+    <div class="container">
+      <section class="citation" id="citation" aria-labelledby="citation-heading">
+        <h2 class="section-heading" id="citation-heading">Cite this work</h2>
+
+        <div class="bibtex-wrap">
+          <pre class="bibtex-block" id="bibtex-content">@article{woolley2026synthetic,
+  title   = {Can Large Language Models Estimate Willingness to Pay?
+             Evidence from Two Contingent Valuation Replications},
+  author  = {Woolley, Trevor and Ghose, Sankalpa and Khindanova, Alina
+             and Rasaee, Kasra and Fischer, Bob},
+  journal = {[Journal TBD]},
+  year    = {2026},
+  note    = {Preprint: [DOI TBD]. Data and code: https://github.com/alethicresearch/synthetic-cv}
+}</pre>
+          <button class="copy-btn" id="copy-btn" onclick="copyBibtex()" aria-label="Copy BibTeX citation">Copy</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ─── Footer ─────────────────────────────────────────────────────────── -->
+  <footer role="contentinfo">
+    <a href="https://github.com/alethicresearch/synthetic-cv">alethicresearch/synthetic-cv</a>
+    &nbsp;·&nbsp;
+    <a href="mailto:research@alethic.ai">research@alethic.ai</a>
+    &nbsp;·&nbsp;
+    © 2026 The Authors
+  </footer>
+
+  <!-- ─── Scripts ────────────────────────────────────────────────────────── -->
+  <script>
+  'use strict';
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     DATA
+  ═══════════════════════════════════════════════════════════════════════ */
+  const MODELS = [
+    'Aggregated', 'DeepSeek Chat v3.1', 'DeepSeek R1',
+    'Gemini 2.5 Flash', 'Gemini 2.5 Flash-Lite',
+    'Mistral Medium 3.1', 'Mistral Small 3.2',
+    'Kimi-K2', 'GPT-5-mini'
+  ];
+
+  const WTP1 = {
+    no:   [-9, -843, -13, -102, -104, -288, -535, 268, 185],
+    yes:  [289, 37, 91, 335, 491, 183, 258, 618, 522],
+    ciNo: [[-17,-2],[-1887,-509],[-25,-1],[-134,-77],[-129,-83],
+           [-473,-192],[-1328,-303],[232,320],[172,202]],
+    ciYes:[[268,314],[27,46],[85,98],[276,440],[366,798],
+           [163,211],[184,564],[440,1120],[405,764]]
+  };
+
+  const WTP2R = {
+    no:   [65.3, 32.6, 62.6, 12.1, -10.8, 40.7, 57.1, 66.6, 7.6],
+    yes:  [57.9, 78.2, 44.2, 425.0, 79.6, 92.6, -134.4, 40.1, 122.8],
+    ciNo: [[44.2,86.4],[15.1,50],[28.3,97],[0.7,23.4],[-55.9,34.4],
+           [26,55.4],[30.4,83.9],[44.3,89],[-16.4,31.7]],
+    ciYes:[[12.2,103.7],[-1.4,157.7],[-6.1,94.6],[-1029.3,1879.3],
+           [-194.1,353.4],[-9.8,195.1],[-305.3,36.5],[18.6,61.5],[-433.7,679.3]]
+  };
+
+  const WTP2B = {
+    no:   [211.7, 52.1, 39.4, 0.3, 24.2, 41.0, 144.2, 47.1, 3.1],
+    yes:  [-94.9, -129.2, -88.3, -122.4, -52.2, -127.3, -58.2, 77.9, -6.5],
+    ciNo: [[116.3,307],[32.2,71.9],[20.6,58.3],[-13.9,14.6],[-9.9,58.4],
+           [28.6,53.5],[73.9,214.5],[29.1,65.1],[-9.5,15.6]],
+    ciYes:[[-156.5,-33.4],[-263.6,5.3],[-171.1,-5.6],[-235.9,-8.9],
+           [-103.9,-0.5],[-239.7,-15],[-90.8,-25.6],[27.8,128],[-52.5,39.6]]
+  };
+
+  const SLOPES = {
+    s1:  { no: [0.570,0.293,1.149,0.933,1.322,0.435,0.258,0.713,1.120],
+           yes:[0.399,0.688,0.784,0.436,0.294,0.610,0.200,0.264,0.363] },
+    s2r: { no: [0.895,0.777,0.866,1.122,1.021,1.180,1.344,1.097,1.052],
+           yes:[0.321,0.368,0.402,0.119,0.083,0.503,0.138,0.789,0.150] },
+    s2b: { no: [1.633,1.570,2.055,2.456,2.715,1.834,1.452,3.001,2.867],
+           yes:[-0.695,-0.541,-0.394,-0.874,-0.717,-0.642,-1.257,0.576,-0.926] }
+  };
+
+  const CURVES = {
+    s1demo: {
+      bids: [5,35,45,65,85,105,135,155],
+      empirical: [0.72,0.66,0.58,0.61,0.57,0.55,0.56,0.54],
+      llms: [
+        [0.62,0.61,0.60,0.59,0.59,0.58,0.58,0.57],
+        [0.78,0.77,0.76,0.75,0.75,0.74,0.74,0.73],
+        [0.38,0.37,0.37,0.36,0.36,0.35,0.35,0.35],
+        [0.42,0.41,0.41,0.40,0.40,0.39,0.39,0.38],
+        [0.44,0.43,0.43,0.42,0.42,0.41,0.41,0.40],
+        [0.32,0.32,0.31,0.31,0.30,0.30,0.30,0.29],
+        [0.29,0.29,0.28,0.28,0.27,0.27,0.27,0.26],
+        [0.64,0.63,0.62,0.61,0.60,0.60,0.59,0.58],
+        [0.66,0.65,0.64,0.63,0.62,0.62,0.61,0.60]
+      ]
+    },
+    s1all: {
+      bids: [5,35,45,65,85,105,135,155],
+      empirical: [0.72,0.66,0.58,0.61,0.57,0.55,0.56,0.54],
+      llms: [
+        [0.64,0.62,0.61,0.60,0.58,0.57,0.56,0.55],
+        [0.53,0.52,0.50,0.49,0.48,0.47,0.46,0.45],
+        [0.47,0.46,0.44,0.43,0.42,0.41,0.40,0.39],
+        [0.56,0.54,0.53,0.52,0.51,0.50,0.49,0.48],
+        [0.59,0.57,0.56,0.55,0.54,0.53,0.52,0.51],
+        [0.61,0.59,0.58,0.57,0.56,0.55,0.54,0.53],
+        [0.51,0.49,0.47,0.46,0.45,0.44,0.43,0.42],
+        [0.70,0.68,0.67,0.66,0.65,0.64,0.63,0.62],
+        [0.68,0.66,0.65,0.64,0.63,0.62,0.61,0.60]
+      ]
+    },
+    s2demo: {
+      bids: [50,100,150,200],
+      empirical: [0.66,0.56,0.48,0.45],
+      llms: [
+        [0.63,0.62,0.61,0.60],
+        [0.55,0.54,0.53,0.53],
+        [0.60,0.59,0.59,0.58],
+        [0.48,0.47,0.46,0.46],
+        [0.45,0.44,0.44,0.43],
+        [0.52,0.51,0.51,0.50],
+        [0.60,0.59,0.59,0.58],
+        [0.64,0.63,0.62,0.62],
+        [0.45,0.44,0.43,0.43]
+      ]
+    },
+    s2all: {
+      bids: [50,100,150,200],
+      empirical: [0.66,0.56,0.48,0.45],
+      llms: [
+        [0.60,0.58,0.57,0.56],
+        [0.71,0.70,0.69,0.69],
+        [0.55,0.53,0.52,0.51],
+        [0.74,0.73,0.72,0.71],
+        [0.62,0.61,0.60,0.59],
+        [0.68,0.67,0.66,0.65],
+        [0.40,0.39,0.38,0.37],
+        [0.50,0.49,0.47,0.47],
+        [0.65,0.63,0.62,0.61]
+      ]
+    }
+  };
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     STATE
+  ═══════════════════════════════════════════════════════════════════════ */
+  const state = {
+    activeTab: 'wtp1',
+    wtp1Filter: 'both',
+    wtp2Filter: 'rc',
+    curvesStudy: 's1',
+    curvesCond: 'demo',
+    slopeStudy: 's1',
+    slopeCond: 'no'
+  };
+
+  let activeChart = null;
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     HELPERS
+  ═══════════════════════════════════════════════════════════════════════ */
+  function destroyChart() {
+    if (activeChart) {
+      activeChart.destroy();
+      activeChart = null;
+    }
+  }
+
+  function renderChart(canvasId, config) {
+    destroyChart();
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    activeChart = new Chart(canvas, config);
+  }
+
+  /** Map model index i → y position (8-i so index 0 is at top) */
+  function modelY(i) { return 8 - i; }
+
+  /** Get CSS variable value */
+  function cssVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  /** Classify slope value */
+  function classifySlope(v) {
+    if (v <= 0) return { label: 'negative', color: '#D85A30' };
+    if (v < 0.8) return { label: 'flat', color: '#BA7517' };
+    if (v <= 1.2) return { label: 'near-empirical', color: '#0F6E56' };
+    return { label: 'steep', color: '#BA7517' };
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     PLUGINS
+  ═══════════════════════════════════════════════════════════════════════ */
+
+  /** Error bars plugin (used by forest plots) */
+  const errorBarsPlugin = {
+    id: 'errorBars',
+    afterDraw(chart) {
+      chart.data.datasets.forEach((ds, di) => {
+        if (!ds.ciData) return;
+        const meta = chart.getDatasetMeta(di);
+        const { ctx, scales } = chart;
+        ds.ciData.forEach((ci, i) => {
+          const el = meta.data[i];
+          if (!el || !ci) return;
+          const x1 = scales.x.getPixelForValue(ci[0]);
+          const x2 = scales.x.getPixelForValue(ci[1]);
+          const y = el.y;
+          ctx.save();
+          ctx.strokeStyle = ds.ciColor || 'rgba(100,100,100,0.4)';
+          ctx.lineWidth = 1.2;
+          ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x2, y); ctx.stroke();
+          [x1, x2].forEach(x => {
+            ctx.beginPath(); ctx.moveTo(x, y - 5); ctx.lineTo(x, y + 5); ctx.stroke();
+          });
+          ctx.restore();
+        });
+      });
+    }
+  };
+
+  /** Annotation lines plugin (vertical reference lines) */
+  const annotationsPlugin = {
+    id: 'annotations',
+    afterDraw(chart) {
+      const annotations = chart.options.annotations;
+      if (!annotations || !annotations.length) return;
+      const { ctx, chartArea, scales } = chart;
+      if (!scales.x) return;
+      annotations.forEach(ann => {
+        const xPx = scales.x.getPixelForValue(ann.value);
+        if (xPx < chartArea.left || xPx > chartArea.right) return;
+        ctx.save();
+        ctx.strokeStyle = ann.color || '#cccccc';
+        ctx.lineWidth = ann.width || 1;
+        if (ann.dash) {
+          ctx.setLineDash(ann.dash);
+        } else {
+          ctx.setLineDash([]);
+        }
+        ctx.beginPath();
+        ctx.moveTo(xPx, chartArea.top);
+        ctx.lineTo(xPx, chartArea.bottom);
+        ctx.stroke();
+        ctx.restore();
+      });
+    }
+  };
+
+  /** Slope badge plugin */
+  const slopeBadgesPlugin = {
+    id: 'slopeBadges',
+    afterDraw(chart) {
+      if (!chart.options.showSlopeBadges) return;
+      const { ctx, chartArea, scales } = chart;
+      const meta = chart.getDatasetMeta(0);
+      if (!meta || !meta.data) return;
+
+      meta.data.forEach((bar, i) => {
+        const val = chart.data.datasets[0].data[i];
+        const { label, color } = classifySlope(val);
+        const xPx = bar.x;
+        const yPx = bar.y;
+
+        ctx.save();
+        ctx.font = '10px "DM Sans", system-ui, sans-serif';
+        ctx.fillStyle = color;
+        ctx.textBaseline = 'middle';
+
+        const padding = 6;
+        if (val >= 0) {
+          ctx.textAlign = 'left';
+          ctx.fillText(label, xPx + padding, yPx);
+        } else {
+          ctx.textAlign = 'right';
+          ctx.fillText(label, xPx - padding, yPx);
+        }
+        ctx.restore();
+      });
+    }
+  };
+
+  Chart.register(errorBarsPlugin, annotationsPlugin, slopeBadgesPlugin);
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     FOREST PLOT BUILDER
+  ═══════════════════════════════════════════════════════════════════════ */
+  function buildForestConfig({ datasets, xMin, xMax, xLabel, annotations }) {
+    return {
+      type: 'scatter',
+      data: { datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 200 },
+        layout: { padding: { right: 10 } },
+        scales: {
+          x: {
+            type: 'linear',
+            min: xMin,
+            max: xMax,
+            grid: { color: 'rgba(0,0,0,0.05)' },
+            border: { color: 'var(--border)' },
+            ticks: {
+              font: { family: "'DM Sans', system-ui, sans-serif", size: 11 },
+              color: '#6b6b6b',
+              maxTicksLimit: 8
+            },
+            title: {
+              display: true,
+              text: xLabel || 'WTP ($/household/year)',
+              font: { family: "'DM Sans', system-ui, sans-serif", size: 11 },
+              color: '#9b9b9b',
+              padding: { top: 8 }
+            }
+          },
+          y: {
+            type: 'linear',
+            min: -0.5,
+            max: 8.5,
+            grid: { color: 'rgba(0,0,0,0.04)' },
+            border: { display: false },
+            ticks: {
+              stepSize: 1,
+              font: { family: "'DM Sans', system-ui, sans-serif", size: 11 },
+              color: '#6b6b6b',
+              callback(val) {
+                const idx = Math.round(val);
+                if (idx < 0 || idx > 8) return '';
+                return MODELS[8 - idx];
+              }
+            }
+          }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label(ctx) {
+                const modelIdx = Math.round(ctx.parsed.y);
+                const modelName = MODELS[8 - modelIdx] || '';
+                const val = ctx.parsed.x;
+                return `${modelName}: $${val.toFixed(1)}`;
+              }
+            },
+            titleFont: { family: "'DM Sans', system-ui, sans-serif" },
+            bodyFont: { family: "'DM Sans', system-ui, sans-serif", size: 12 }
+          },
+          annotations: annotations || []
+        }
+      }
+    };
+  }
+
+  /** Build scatter dataset for forest plot */
+  function makeScatterDataset({ wtpArr, ciArr, color, pointStyle, label }) {
+    return {
+      label,
+      data: wtpArr.map((v, i) => ({ x: v, y: modelY(i) })),
+      ciData: ciArr,
+      ciColor: color.replace('1)', '0.4)').replace(/rgb\(/, 'rgba(') || color + '66',
+      backgroundColor: color,
+      borderColor: color,
+      pointStyle: pointStyle,
+      pointRadius: 7,
+      pointHoverRadius: 9,
+      borderWidth: 1.5
+    };
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     RENDER: WTP1
+  ═══════════════════════════════════════════════════════════════════════ */
+  function renderWTP1() {
+    const filter = state.wtp1Filter;
+    const datasets = [];
+
+    if (filter === 'both' || filter === 'no') {
+      datasets.push({
+        label: 'W/o beliefs',
+        data: WTP1.no.map((v, i) => ({ x: v, y: modelY(i) })),
+        ciData: WTP1.ciNo,
+        ciColor: 'rgba(216,90,48,0.4)',
+        backgroundColor: '#D85A30',
+        borderColor: '#D85A30',
+        pointStyle: 'rectRot',
+        pointRadius: 7,
+        pointHoverRadius: 9,
+        borderWidth: 1.5
+      });
+    }
+    if (filter === 'both' || filter === 'yes') {
+      datasets.push({
+        label: 'W/ beliefs',
+        data: WTP1.yes.map((v, i) => ({ x: v, y: modelY(i) })),
+        ciData: WTP1.ciYes,
+        ciColor: 'rgba(24,95,165,0.4)',
+        backgroundColor: '#185FA5',
+        borderColor: '#185FA5',
+        pointStyle: 'rect',
+        pointRadius: 7,
+        pointHoverRadius: 9,
+        borderWidth: 1.5
+      });
+    }
+
+    const config = buildForestConfig({
+      datasets,
+      xMin: -1600,
+      xMax: 1200,
+      xLabel: 'WTP ($/household/year)',
+      annotations: [
+        { value: 0, color: '#cccccc', dash: null, width: 1 },
+        { value: 162, color: '#0F6E56', dash: [5, 4], width: 1.5 },
+        { value: 128, color: 'rgba(15,110,86,0.25)', dash: [4, 3], width: 1 },
+        { value: 260, color: 'rgba(15,110,86,0.25)', dash: [4, 3], width: 1 }
+      ]
+    });
+
+    renderChart('chart-wtp1', config);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     RENDER: WTP2
+  ═══════════════════════════════════════════════════════════════════════ */
+  function renderWTP2() {
+    const isRC = state.wtp2Filter === 'rc';
+    const wtpData = isRC ? WTP2R : WTP2B;
+    const xMin = isRC ? -200 : -800;
+    const xMax = isRC ? 550 : 400;
+
+    const datasets = [
+      {
+        label: 'W/o beliefs',
+        data: wtpData.no.map((v, i) => ({ x: v, y: modelY(i) })),
+        ciData: wtpData.ciNo,
+        ciColor: 'rgba(216,90,48,0.4)',
+        backgroundColor: '#D85A30',
+        borderColor: '#D85A30',
+        pointStyle: 'rectRot',
+        pointRadius: 7,
+        pointHoverRadius: 9,
+        borderWidth: 1.5
+      },
+      {
+        label: 'W/ beliefs',
+        data: wtpData.yes.map((v, i) => ({ x: v, y: modelY(i) })),
+        ciData: wtpData.ciYes,
+        ciColor: 'rgba(24,95,165,0.4)',
+        backgroundColor: '#185FA5',
+        borderColor: '#185FA5',
+        pointStyle: 'rect',
+        pointRadius: 7,
+        pointHoverRadius: 9,
+        borderWidth: 1.5
+      }
+    ];
+
+    const config = buildForestConfig({
+      datasets,
+      xMin,
+      xMax,
+      xLabel: 'WTP ($/household/year)',
+      annotations: [
+        { value: 0, color: '#cccccc', dash: null, width: 1 },
+        { value: 56.53, color: '#0F6E56', dash: [5, 4], width: 1.5 }
+      ]
+    });
+
+    renderChart('chart-wtp2', config);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     RENDER: APPROVAL CURVES
+  ═══════════════════════════════════════════════════════════════════════ */
+  function renderCurves() {
+    const key = state.curvesStudy + state.curvesCond;
+    const data = CURVES[key];
+    if (!data) return;
+
+    const isS1 = state.curvesStudy === 's1';
+    const yMin = isS1 ? 0.15 : 0.30;
+    const yMax = isS1 ? 0.85 : 0.80;
+
+    const labels = data.bids.map(b => '$' + b);
+
+    const llmDatasets = data.llms.map((vals, i) => ({
+      label: MODELS[i],
+      data: vals,
+      borderColor: 'rgba(24,95,165,0.3)',
+      borderWidth: 1,
+      borderDash: [4, 3],
+      pointRadius: 2,
+      pointHoverRadius: 4,
+      fill: false,
+      tension: 0.1,
+      isLLM: true
+    }));
+
+    const empiricalDataset = {
+      label: 'Empirical',
+      data: data.empirical,
+      borderColor: '#D85A30',
+      borderWidth: 2.5,
+      pointRadius: 4,
+      pointHoverRadius: 6,
+      pointBackgroundColor: '#D85A30',
+      fill: false,
+      tension: 0.1,
+      isLLM: false
+    };
+
+    const config = {
+      type: 'line',
+      data: { labels, datasets: [...llmDatasets, empiricalDataset] },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 200 },
+        scales: {
+          x: {
+            grid: { color: 'rgba(0,0,0,0.05)' },
+            border: { color: 'var(--border)' },
+            ticks: {
+              font: { family: "'DM Sans', system-ui, sans-serif", size: 11 },
+              color: '#6b6b6b'
+            }
+          },
+          y: {
+            min: yMin,
+            max: yMax,
+            grid: { color: 'rgba(0,0,0,0.05)' },
+            border: { display: false },
+            ticks: {
+              font: { family: "'DM Sans', system-ui, sans-serif", size: 11 },
+              color: '#6b6b6b',
+              callback: v => v.toFixed(2)
+            },
+            title: {
+              display: true,
+              text: 'Share approving',
+              font: { family: "'DM Sans', system-ui, sans-serif", size: 11 },
+              color: '#9b9b9b'
+            }
+          }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            filter(item) { return !item.dataset.isLLM; },
+            callbacks: {
+              label(ctx) {
+                return `Empirical: ${(ctx.parsed.y * 100).toFixed(1)}%`;
+              }
+            },
+            titleFont: { family: "'DM Sans', system-ui, sans-serif" },
+            bodyFont: { family: "'DM Sans', system-ui, sans-serif", size: 12 }
+          }
+        }
+      }
+    };
+
+    renderChart('chart-curves', config);
+
+    // Update sublabel
+    const studyLabel = state.curvesStudy === 's1' ? 'Study 1 (NCES)' : 'Study 2 (HWA)';
+    const condLabel = state.curvesCond === 'demo' ? 'Demographics only' : 'All beliefs';
+    document.getElementById('curves-sublabel').textContent =
+      `${studyLabel} — ${condLabel} condition. Bid amounts in $/household/year.`;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     RENDER: SLOPE COMPRESSION
+  ═══════════════════════════════════════════════════════════════════════ */
+  function renderSlope() {
+    const slopeSet = SLOPES[state.slopeStudy];
+    const vals = slopeSet[state.slopeCond];
+
+    // Y axis: models top-to-bottom = index 0..8 in reversed display
+    // We want Aggregated at top → data in order [8..0] reversed for indexAxis:'y'
+    const reversedVals = [...vals].reverse();
+    const reversedModels = [...MODELS].reverse();
+
+    const bgColors = reversedVals.map(v => classifySlope(v).color);
+
+    const allVals = [...vals];
+    const minVal = Math.min(...allVals);
+    const maxVal = Math.max(...allVals);
+    const xMin = Math.min(0, minVal) - 0.3;
+    const xMax = Math.max(maxVal, 1.5) + 0.5;
+
+    const config = {
+      type: 'bar',
+      data: {
+        labels: reversedModels,
+        datasets: [{
+          label: 'Slope ratio',
+          data: reversedVals,
+          backgroundColor: bgColors,
+          borderWidth: 0,
+          borderRadius: 2
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 200 },
+        showSlopeBadges: true,
+        layout: { padding: { right: 90, left: 4 } },
+        scales: {
+          x: {
+            min: xMin,
+            max: xMax,
+            grid: { color: 'rgba(0,0,0,0.05)' },
+            border: { color: 'var(--border)' },
+            ticks: {
+              font: { family: "'DM Sans', system-ui, sans-serif", size: 11 },
+              color: '#6b6b6b'
+            }
+          },
+          y: {
+            grid: { display: false },
+            border: { display: false },
+            ticks: {
+              font: { family: "'DM Sans', system-ui, sans-serif", size: 11 },
+              color: '#6b6b6b'
+            }
+          }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label(ctx) {
+                const v = ctx.parsed.x;
+                const { label } = classifySlope(v);
+                return `Slope ratio: ${v.toFixed(3)} (${label})`;
+              }
+            },
+            titleFont: { family: "'DM Sans', system-ui, sans-serif" },
+            bodyFont: { family: "'DM Sans', system-ui, sans-serif", size: 12 }
+          },
+          annotations: [
+            { value: 1.0, color: '#0F6E56', dash: [5, 4], width: 1.5 }
+          ]
+        }
+      }
+    };
+
+    renderChart('chart-slope', config);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     RENDER DISPATCHER
+  ═══════════════════════════════════════════════════════════════════════ */
+  function renderActiveTab() {
+    switch (state.activeTab) {
+      case 'wtp1':   renderWTP1(); break;
+      case 'wtp2':   renderWTP2(); break;
+      case 'curves': renderCurves(); break;
+      case 'slope':  renderSlope(); break;
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     TAB SWITCHING
+  ═══════════════════════════════════════════════════════════════════════ */
+  function switchTab(tabId) {
+    // Deactivate all
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.remove('active');
+      btn.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('.tab-panel').forEach(panel => {
+      panel.classList.remove('active');
+    });
+
+    // Activate selected
+    const btn = document.querySelector(`[data-tab="${tabId}"]`);
+    const panel = document.getElementById(`panel-${tabId}`);
+    if (btn) { btn.classList.add('active'); btn.setAttribute('aria-selected', 'true'); }
+    if (panel) panel.classList.add('active');
+
+    state.activeTab = tabId;
+    // Small timeout to allow DOM to paint before canvas renders
+    setTimeout(renderActiveTab, 10);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     CONTROL BUTTONS
+  ═══════════════════════════════════════════════════════════════════════ */
+  function setActiveControl(group, value) {
+    document.querySelectorAll(`[data-${group}]`).forEach(btn => {
+      btn.classList.toggle('active', btn.dataset[toCamel(group)] === value);
+    });
+  }
+
+  function toCamel(str) {
+    return str.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     COPY BIBTEX
+  ═══════════════════════════════════════════════════════════════════════ */
+  function copyBibtex() {
+    const text = document.getElementById('bibtex-content').textContent;
+    const btn = document.getElementById('copy-btn');
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied ✓';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 2000);
+    }).catch(() => {
+      // Fallback for environments without clipboard API
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      btn.textContent = 'Copied ✓';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     RESIZE DEBOUNCE
+  ═══════════════════════════════════════════════════════════════════════ */
+  let resizeTimer = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(renderActiveTab, 150);
+  });
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     EVENT DELEGATION
+  ═══════════════════════════════════════════════════════════════════════ */
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+
+    // Tab buttons
+    if (btn.dataset.tab) {
+      switchTab(btn.dataset.tab);
+      return;
+    }
+
+    // WTP1 filter
+    if (btn.dataset.wtp1Filter) {
+      state.wtp1Filter = btn.dataset.wtp1Filter;
+      setActiveControl('wtp1-filter', btn.dataset.wtp1Filter);
+      renderWTP1();
+      return;
+    }
+
+    // WTP2 filter
+    if (btn.dataset.wtp2Filter) {
+      state.wtp2Filter = btn.dataset.wtp2Filter;
+      setActiveControl('wtp2-filter', btn.dataset.wtp2Filter);
+      renderWTP2();
+      return;
+    }
+
+    // Curves study
+    if (btn.dataset.curvesStudy) {
+      state.curvesStudy = btn.dataset.curvesStudy;
+      setActiveControl('curves-study', btn.dataset.curvesStudy);
+      renderCurves();
+      return;
+    }
+
+    // Curves condition
+    if (btn.dataset.curvesCond) {
+      state.curvesCond = btn.dataset.curvesCond;
+      setActiveControl('curves-cond', btn.dataset.curvesCond);
+      renderCurves();
+      return;
+    }
+
+    // Slope study
+    if (btn.dataset.slopeStudy) {
+      state.slopeStudy = btn.dataset.slopeStudy;
+      setActiveControl('slope-study', btn.dataset.slopeStudy);
+      renderSlope();
+      return;
+    }
+
+    // Slope condition
+    if (btn.dataset.slopeCond) {
+      state.slopeCond = btn.dataset.slopeCond;
+      setActiveControl('slope-cond', btn.dataset.slopeCond);
+      renderSlope();
+      return;
+    }
+  });
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     INIT — wait for Chart.js to load
+  ═══════════════════════════════════════════════════════════════════════ */
+  function init() {
+    if (typeof Chart === 'undefined') {
+      // Chart.js not yet loaded — retry
+      setTimeout(init, 50);
+      return;
+    }
+    renderWTP1();
+  }
+
+  // Start after DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  </script>
+
+</body>
+</html>

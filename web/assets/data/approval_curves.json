@@ -1,0 +1,71 @@
+{
+  "_note": "PLACEHOLDER — model arrays are empty. Team to fill from actual simulation output data. The web page falls back to showing only the empirical line when model arrays are empty.",
+  "study1_demo": {
+    "label": "Study 1 (NCES) — Demographics only",
+    "bids": [5, 35, 45, 65, 85, 105, 135, 155],
+    "bid_unit": "$/household/year",
+    "empirical": [0.72, 0.66, 0.58, 0.61, 0.57, 0.55, 0.56, 0.54],
+    "models": {
+      "Aggregated": [],
+      "DeepSeek Chat v3.1": [],
+      "DeepSeek R1": [],
+      "Gemini 2.5 Flash": [],
+      "Gemini 2.5 Flash-Lite": [],
+      "Mistral Medium 3.1": [],
+      "Mistral Small 3.2": [],
+      "Kimi-K2": [],
+      "GPT-5-mini": []
+    }
+  },
+  "study1_all": {
+    "label": "Study 1 (NCES) — Demographics + all beliefs",
+    "bids": [5, 35, 45, 65, 85, 105, 135, 155],
+    "bid_unit": "$/household/year",
+    "empirical": [0.72, 0.66, 0.58, 0.61, 0.57, 0.55, 0.56, 0.54],
+    "models": {
+      "Aggregated": [],
+      "DeepSeek Chat v3.1": [],
+      "DeepSeek R1": [],
+      "Gemini 2.5 Flash": [],
+      "Gemini 2.5 Flash-Lite": [],
+      "Mistral Medium 3.1": [],
+      "Mistral Small 3.2": [],
+      "Kimi-K2": [],
+      "GPT-5-mini": []
+    }
+  },
+  "study2_demo": {
+    "label": "Study 2 (HWA) — Demographics only",
+    "bids": [50, 100, 150, 200],
+    "bid_unit": "$/household/year",
+    "empirical": [0.66, 0.56, 0.48, 0.45],
+    "models": {
+      "Aggregated": [],
+      "DeepSeek Chat v3.1": [],
+      "DeepSeek R1": [],
+      "Gemini 2.5 Flash": [],
+      "Gemini 2.5 Flash-Lite": [],
+      "Mistral Medium 3.1": [],
+      "Mistral Small 3.2": [],
+      "Kimi-K2": [],
+      "GPT-5-mini": []
+    }
+  },
+  "study2_all": {
+    "label": "Study 2 (HWA) — Demographics + all beliefs",
+    "bids": [50, 100, 150, 200],
+    "bid_unit": "$/household/year",
+    "empirical": [0.66, 0.56, 0.48, 0.45],
+    "models": {
+      "Aggregated": [],
+      "DeepSeek Chat v3.1": [],
+      "DeepSeek R1": [],
+      "Gemini 2.5 Flash": [],
+      "Gemini 2.5 Flash-Lite": [],
+      "Mistral Medium 3.1": [],
+      "Mistral Small 3.2": [],
+      "Kimi-K2": [],
+      "GPT-5-mini": []
+    }
+  }
+}
