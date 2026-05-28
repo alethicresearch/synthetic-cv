@@ -1,0 +1,32 @@
+% Extracted from LandEcon_Draft0.tex, lines 1824--1851.
+% Insert in main document with: \input{tables/tab_order_bias.tex}
+% The tabular body is wrapped in \resizebox{\textwidth}{!}{...} to prevent margin overflow.
+% Requires graphicx, which LandEcon_Draft0.tex already loads.
+
+\begin{table}[h]
+    \centering
+    \caption{Ordering robustness, Study 1 demographics-plus-beliefs condition.}
+    \begin{threeparttable}
+    \begin{tabular}{lccc}
+        \toprule
+        Model & Support-first share & Oppose-first share & Difference (pp) \\
+        \midrule
+        GPT-5                  & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        GPT-5-mini             & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        Gemini 2.5 Flash       & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        Gemini 2.5 Flash-Lite  & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        DeepSeek-V3            & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        DeepSeek-R1            & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        Mistral Medium 3.1     & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        Mistral Small 3.2      & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        Kimi-K2                & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        Llama-4 Scout          & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        \midrule
+        Mean across models     & [0.XXX] & [0.XXX] & [X.X]      \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+        \item \textit{Notes:} Pooled across all bid levels. Differences reported in percentage points. None of the per-model differences are statistically distinguishable from zero at the 5\% level under cluster-robust standard errors at the respondent level.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}

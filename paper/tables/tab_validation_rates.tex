@@ -1,0 +1,32 @@
+% Extracted from LandEcon_Draft0.tex, lines 1790--1815.
+% Insert in main document with: \input{tables/tab_validation_rates.tex}
+% The tabular body is wrapped in \resizebox{\textwidth}{!}{...} to prevent margin overflow.
+% Requires graphicx, which LandEcon_Draft0.tex already loads.
+
+\begin{table}[h]
+    \centering
+    \caption{Schema-validation failure rates by model.}
+    \resizebox{\textwidth}{!}{%
+    \begin{threeparttable}
+    \begin{tabular}{lcccc}
+        \toprule
+        Model & First-attempt failure (\%) & Resolved on retry (\%) & Coded missing (\%) & Final $N$ retained (\%) \\
+        \midrule
+        GPT-5                  & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        GPT-5-mini             & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        Gemini 2.5 Flash       & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        Gemini 2.5 Flash-Lite  & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        DeepSeek-V3            & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        DeepSeek-R1            & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        Mistral Medium 3.1     & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        Mistral Small 3.2      & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        Kimi-K2                & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        Llama-4 Scout          & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+        \item \textit{Notes:} Pooled across both studies and all information conditions. ``Final $N$ retained'' is the share of intended (respondent, condition, model, repetition) cells that produced a schema-valid, non-missing response after up to four total attempts.
+    \end{tablenotes}
+    \end{threeparttable}
+    }
+\end{table}

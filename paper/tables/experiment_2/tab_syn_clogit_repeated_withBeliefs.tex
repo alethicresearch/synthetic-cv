@@ -1,0 +1,47 @@
+\begin{table}[h]
+\centering
+\caption{Synthetic conditional logit estimates: Random-cost design, Demographics + beliefs (Study 2).}
+\label{tab:syn-clogit-repeated-withBeliefs}
+\resizebox{\textwidth}{!}{%
+\begin{threeparttable}
+\footnotesize
+\begin{tabular}{lcccccccr}
+\toprule
+Model & COST & ECOL & SOCIAL & BIOL & CHEM & N & $\hat\beta_{COST}/\hat\beta_{COST}^{emp}$ \\
+\midrule
+deepseek-chat-v3.1 &   -0.0020 &     -0.02 &     -0.07 &    3.2629 &    3.0381 &    13,446 &  0.186 \\
+ & (0.0012) & (0.06) & (0.06) & (0.2105) & (0.2148) & & \\
+deepseek-r1 &   -0.0036 &     -0.05 &     -0.05 &    4.2118 &    3.6793 &    18,216 &  0.333 \\
+ & (0.0012) & (0.06) & (0.06) & (0.2161) & (0.2209) & & \\
+gemini-2.5-flash &   -0.0003 &     -0.03 &      0.00 &    3.2025 &    2.9919 &    17,066 &  0.027 \\
+ & (0.0012) & (0.06) & (0.06) & (0.2070) & (0.2143) & & \\
+gemini-2.5-flash-lite &   -0.0006 &     -0.15 &     -0.04 &    4.3804 &    4.0562 &    19,766 &  0.051 \\
+ & (0.0013) & (0.07) & (0.07) & (0.2423) & (0.2492) & & \\
+gpt-5-mini &   -0.0012 &     -0.05 &     -0.02 &    4.8049 &    4.4856 &    25,190 &  0.111 \\
+ & (0.0014) & (0.07) & (0.07) & (0.2585) & (0.2576) & & \\
+kimi-k2 &   -0.0105 &     -0.09 &     -0.02 &    3.8642 &    3.5021 &    14,068 &  0.958 \\
+ & (0.0013) & (0.06) & (0.07) & (0.2307) & (0.2361) & & \\
+llama-4-scout &   -0.0042 &     -0.06 &     -0.12 &    3.3368 &    2.8843 &    14,030 &  0.384 \\
+ & (0.0012) & (0.06) & (0.06) & (0.2179) & (0.2235) & & \\
+mistral-medium-3.1 &   -0.0037 &      0.00 &     -0.08 &    3.7336 &    3.2484 &    16,434 &  0.341 \\
+ & (0.0012) & (0.06) & (0.06) & (0.2118) & (0.2140) & & \\
+mistral-small-3.2-24b &   -0.0008 &     -0.13 &     -0.10 &    4.2010 &    4.0186 &    18,168 &  0.070 \\
+ & (0.0013) & (0.06) & (0.06) & (0.2291) & (0.2349) & & \\
+\midrule
+Aggregated &   -0.0036 &     -0.06 &     -0.04 &    3.9966 &    3.6471 &   156,004 &  0.330 \\
+ & (0.0004) & (0.02) & (0.02) & (0.0734) & (0.0745) & & \\
+\midrule
+Empirical (Giguere et al.) &   -0.0110 &     -0.09 &      0.07 &    7.5935 &    6.4846 &   166,354 & 1.000 \\
+ & (0.0013) & (0.06) & (0.06) & (0.2497) & (0.2362) & & \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} Conditional logit estimates from Random-cost design choice data, persona condition: Demographics + beliefs. 
+Standard errors in parentheses. 
+Final column reports the synthetic bid coefficient divided by the empirical bid coefficient; values below 1 indicate slope compression. 
+Aggregated row pools synthetic responses across all nine LLMs; each (provider, respondent, attempt) cell forms its own choice set. 
+Empirical benchmark is the same unadjusted specification estimated on \textcite{Giguere2020} human-respondent data.
+\end{tablenotes}
+\end{threeparttable}
+}
+\end{table}

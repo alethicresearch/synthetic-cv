@@ -1,0 +1,27 @@
+% Extracted from LandEcon_Draft0.tex, lines 1922--1942.
+% Insert in main document with: \input{tables/tab_persona_version.tex}
+% The tabular body is wrapped in \resizebox{\textwidth}{!}{...} to prevent margin overflow.
+% Requires graphicx, which LandEcon_Draft0.tex already loads.
+
+\begin{table}[h]
+    \centering
+    \caption{Cross-version persona comparison.}
+    \resizebox{\textwidth}{!}{%
+    \begin{threeparttable}
+    \begin{tabular}{lccc}
+        \toprule
+        Template version & Date & Substantive change from prior version & Mean approval shift (pp) \\
+        \midrule
+        v5.X            & [\textbf{date}] & Initial production template                                    & --- \\
+        v6.0            & [\textbf{date}] & Added explicit temporal anchoring                              & [+/$-$X.X] \\
+        v6.1            & [\textbf{date}] & Restructured belief block as Q\&A pairs                        & [+/$-$X.X] \\
+        v6.2            & [\textbf{date}] & Added uncertainty framing                                      & [+/$-$X.X] \\
+        v6.3 (production) & [\textbf{date}] & Conditioned share-category on output rather than input        & [+/$-$X.X] \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+        \item \textit{Notes:} ``Mean approval shift'' is measured relative to the immediately prior version, pooled across models and bid levels in Study 1. The production template (\texttt{v6.3}) is used for all main-text results.
+    \end{tablenotes}
+    \end{threeparttable}
+    }
+\end{table}

@@ -1,0 +1,31 @@
+% Extracted from LandEcon_Draft0.tex, lines 1962--1988.
+% Insert in main document with: \input{tables/tab_leakage.tex}
+% The tabular body is wrapped in \resizebox{\textwidth}{!}{...} to prevent margin overflow.
+% Requires graphicx, which LandEcon_Draft0.tex already loads.
+
+\begin{table}[h]
+    \centering
+    \caption{Direct recall probe for training-data leakage.}
+    \begin{threeparttable}
+    \footnotesize
+    \begin{tabular}{lccc}
+        \toprule
+        Model & Recalls Aldy WTP & Recalls Giguere WTP & Recalls bid range \\
+        \midrule
+        GPT-5                  & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        GPT-5-mini             & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        Gemini 2.5 Flash       & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        Gemini 2.5 Flash-Lite  & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        DeepSeek-V3            & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        DeepSeek-R1            & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        Mistral Medium 3.1     & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        Mistral Small 3.2      & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        Kimi-K2                & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        Llama-4 Scout          & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+        \item \textit{Notes:} ``Yes'' means the model produced a numeric figure within 5\% of the published estimate. ``Approx'' means the model produced a directionally correct figure within 25\%. ``No'' means the model declined to answer, produced an unrelated figure, or produced a figure off by more than 25\%.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
