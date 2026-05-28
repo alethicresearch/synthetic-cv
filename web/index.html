@@ -1054,8 +1054,7 @@
       });
     }
   };
-
-  Chart.register(errorBarsPlugin, annotationsPlugin, slopeBadgesPlugin);
+    
 
   /* ═══════════════════════════════════════════════════════════════════════
      FOREST PLOT BUILDER
@@ -1587,6 +1586,7 @@
       setTimeout(init, 50);
       return;
     }
+    Chart.register(errorBarsPlugin, annotationsPlugin, slopeBadgesPlugin);
     renderWTP1();
   }
 
