@@ -2,7 +2,7 @@
 
 **Evidence from Two Contingent Valuation Replications**
 
-Trevor Woolley<sup>†</sup> (UC Berkeley) · Sankalpa Ghose (NUS / Alethic Research) · Alina Khindanova (UT San Antonio) · Kasra Rasaee (Bloomberg / Alethic Research) · Bob Fischer<sup>†</sup> (Texas State)
+Trevor Woolley<sup>†</sup> (UC Berkeley) · Sankalpa Ghose (NUS, Alethic Research) · Alina Khindanova (UT San Antonio) · Kasra Rasaee (Bloomberg, Alethic Research) · Bob Fischer<sup>†</sup> (Texas State)
 
 <sup>†</sup>Corresponding authors: trevor_woolley@berkeley.edu · fischer@txstate.edu
 
