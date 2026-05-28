@@ -1,0 +1,56 @@
+% Extracted from LandEcon_Draft0.tex, lines 415--463.
+% Insert in main document with: \input{tables/tab_data_summary.tex}
+% The tabular body is wrapped in \resizebox{\textwidth}{!}{...} to prevent margin overflow.
+% Requires graphicx, which LandEcon_Draft0.tex already loads.
+
+\begin{table}[h]
+    \centering
+    \caption{Summary of replicated studies.}
+    \label{tab:data-summary}
+    \resizebox{\textwidth}{!}{%
+    \begin{threeparttable}
+    \footnotesize
+    \begin{tabular}{lll}
+        \toprule
+         & Study 1: NCES & Study 2: HWA \\
+         & \textcite{Aldy2012} & \textcite{Giguere2020} \\
+        \midrule
+        \multicolumn{3}{l}{\textit{Sample}} \\
+        Field period                       & April--May 2011                & September 2017 \\
+        Mode                               & Online survey                  & Online survey \\
+        Sampling frame                     & Nationally representative      & North Carolina opt-in panel \\
+        Final $N$                          & 1{,}010                        & 907 \\
+        Panel provider                     & Ipsos KnowledgePanel        & SurveyMonkey \\
+        \midrule
+        \multicolumn{3}{l}{\textit{Policy and elicitation}} \\
+        Policy                             & 80\% clean electricity by 2035 & HWA control on public forest \\
+        Elicitation format                 & Single-bounded referendum      & Bounded + random-cost choice \\
+        Cost framing                       & Annual electricity bill        & Annual household tax (3 yrs) \\
+        Bid levels (\$)                    & 5, 25, 45, 65, 85, 105, 135, 155 & 25, 50, 100, 150, 200, 250\textsuperscript{a} \\
+        \midrule
+        \multicolumn{3}{l}{\textit{Treatment arms}} \\
+        Bid randomization                  & Yes (unequal probabilities\textsuperscript{b}) & Yes \\
+        Other randomized attributes        & Clean-energy technology mix\textsuperscript{c}    & Eco. acres, social acres, treatment\textsuperscript{d} \\
+        \midrule
+        \multicolumn{3}{l}{\textit{Survey content}} \\
+        Demographic items                  & 24                  & 8 \\
+        Belief / attitudinal items used    & 13                              & 16 \\
+        \midrule
+        \multicolumn{3}{l}{\textit{Headline WTP estimate}} \\
+        WTP (\$/household/year)            & 162\textsuperscript{e}         & 56.53\textsuperscript{f} \\
+        Original 95\% CI                   & [128, 260]                     & [24, 75] \\
+        Original specification             & Pooled binary logit            & Conditional logit (ANA-adjusted)\textsuperscript{g} \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+        \item \textsuperscript{a} The random-cost design uses bids of \$50, \$100, \$150, and \$200; the bounded design adds \$25 and \$250 levels.
+        \item \textsuperscript{b} The four middle bids (\$45--\$105) were assigned with twice the probability of the two lowest and two highest bids.
+        \item \textsuperscript{c} Three arms: renewables only; renewables + natural gas; renewables + nuclear.
+        \item \textsuperscript{d} Acreage attributes vary across $\{2{,}500; 5{,}000; 7{,}500; 10{,}000\}$ acres for both ecologically and socially important categories; treatment method varies between chemical insecticide and biological control.
+        \item \textsuperscript{e} Mean WTP from the pooled logit specification.
+        \item \textsuperscript{f} Marginal WTP for an additional acre of ``socially important'' forest treated, at the ANA-adjusted conditional logit's preferred specification.
+        \item \textsuperscript{g} ANA = attribute nonattendance, the focus of the original paper.
+    \end{tablenotes}
+    \end{threeparttable}
+    }
+\end{table}

@@ -1,0 +1,35 @@
+% Extracted from LandEcon_Draft0.tex, lines 1248--1276.
+% Insert in main document with: \input{tables/tab_cross_study.tex}
+% The tabular body is wrapped in \resizebox{\textwidth}{!}{...} to prevent margin overflow.
+% Requires graphicx, which LandEcon_Draft0.tex already loads.
+
+\begin{table}[h]
+    \centering
+    \caption{Cross-study summary of synthetic CV performance.}
+    \resizebox{\textwidth}{!}{%
+    \begin{threeparttable}
+    \begin{tabular}{lcccc}
+        \toprule
+         & \multicolumn{2}{c}{Study 1 (NCES)} & \multicolumn{2}{c}{Study 2 (HWA)} \\
+        \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+        Metric & Demo only & + Beliefs & Demo only & + Beliefs \\
+        \midrule
+        Best-LLM mean abs.\ deviation (pp)              & [X.XX] & [X.XX] & [X.XX] & [X.XX] \\
+        Aggregate WTP error (\$)                        & [XXX]  & [XXX]  & [XXX]  & [XXX]  \\
+        Best-LLM WTP error (\$)                         & [XXX]  & [XXX]  & [XXX]  & [XXX]  \\
+        Synthetic-to-empirical bid coefficient ratio   & [0.XX] & [0.XX] & [0.XX] & [0.XX] \\
+        Share of LLMs with WTP in original 95\% CI      & [X/10] & [X/10] & [X/10] & [X/10] \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+    \item \textit{Notes:} Mean absolute deviation computed across bid
+    levels and averaged across LLMs. Aggregate WTP refers to the
+    equally-weighted ensemble across all ten models. The
+    synthetic-to-empirical bid coefficient ratio is the cross-LLM mean of
+    each model's bid coefficient divided by the corresponding empirical
+    bid coefficient; values below one indicate flatter synthetic curves
+    than empirical curves.
+    \end{tablenotes}
+    \end{threeparttable}
+    }
+\end{table}

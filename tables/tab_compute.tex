@@ -1,0 +1,33 @@
+% Extracted from LandEcon_Draft0.tex, lines 774--802.
+% Insert in main document with: \input{tables/tab_compute.tex}
+% The tabular body is wrapped in \resizebox{\textwidth}{!}{...} to prevent margin overflow.
+% Requires graphicx, which LandEcon_Draft0.tex already loads.
+
+\begin{table}[h]
+    \centering
+    \caption{Computational scope of the synthetic CV experiment.}
+    \begin{threeparttable}
+    \begin{tabular}{lcc}
+        \toprule
+                                                       & Study 1 (NCES) & Study 2 (HWA) \\
+        \midrule
+        Respondents in original study                  & 1{,}010        & 907 \\
+        Information conditions                         & 11             & [\textbf{XX}] \\
+        \quad Demographics only                        & 1              & 1 \\
+        \quad Demographics + all beliefs               & 1              & 1 \\
+        \quad Demographics + one belief at a time      & 9              & [\textbf{XX}] \\
+        LLMs evaluated                                 & 10             & 10 \\
+        Repetitions per cell                           & [\textbf{N$_1$}] & [\textbf{N$_2$}] \\
+        Question-framing orderings                     & 2              & 1 \\
+        Total LLM API calls                            & [\textbf{XXX,XXX}] & [\textbf{XXX,XXX}] \\
+        Total synthetic responses generated            & [\textbf{XXX,XXX}] & [\textbf{XXX,XXX}] \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+    \item \textit{Notes:} Total API calls aggregate across all
+    (respondent, condition, model, repetition, ordering) cells, including
+    failed-validation retries. Total synthetic responses count only
+    schema-validated, non-missing observations entering the analytic sample.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}

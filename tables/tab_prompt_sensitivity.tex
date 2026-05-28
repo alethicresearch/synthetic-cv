@@ -1,0 +1,27 @@
+% Extracted from LandEcon_Draft0.tex, lines 1895--1914.
+% Insert in main document with: \input{tables/tab_prompt_sensitivity.tex}
+% The tabular body is wrapped in \resizebox{\textwidth}{!}{...} to prevent margin overflow.
+% Requires graphicx, which LandEcon_Draft0.tex already loads.
+
+\begin{table}[h]
+    \centering
+    \caption{Surface-form prompt sensitivity, Study 1.}
+    \resizebox{\textwidth}{!}{%
+    \begin{threeparttable}
+    \begin{tabular}{lcccc}
+        \toprule
+        Template variation & Mean abs.\ shift & Max shift & Mean abs.\ & Max shift \\
+        & in approval (pp) & across models (pp) & shift in WTP (\$) & in WTP (\$) \\
+        \midrule
+        Reorder blocks                  & [X.X] & [X.X] & [XX] & [XX] \\
+        Rephrase framing                & [X.X] & [X.X] & [XX] & [XX] \\
+        Bullet vs.\ prose formatting    & [X.X] & [X.X] & [XX] & [XX] \\
+        Drop temporal injunction        & [X.X] & [X.X] & [XX] & [XX] \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+        \item \textit{Notes:} All shifts are computed relative to the production template (\texttt{v6.3}) and pooled across models. Per-model results in supplementary materials.
+    \end{tablenotes}
+    \end{threeparttable}
+    }
+\end{table}

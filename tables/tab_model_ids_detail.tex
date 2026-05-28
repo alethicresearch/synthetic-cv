@@ -1,0 +1,33 @@
+% Extracted from LandEcon_Draft0.tex, lines 1760--1786.
+% Insert in main document with: \input{tables/tab_model_ids_detail.tex}
+% The tabular body is wrapped in \resizebox{\textwidth}{!}{...} to prevent margin overflow.
+% Requires graphicx, which LandEcon_Draft0.tex already loads.
+
+\begin{table}[h]
+    \centering
+    \caption{Model identifiers and API configuration.}
+    \resizebox{\textwidth}{!}{%
+    \begin{threeparttable}
+    \footnotesize
+    \begin{tabular}{lllll}
+        \toprule
+        Provider & Model & API identifier & Endpoint & Cutoff \\
+        \midrule
+        OpenAI    & GPT-5                & \texttt{[\textbf{gpt-5-XXXX-XX-XX}]}                & \url{api.openai.com}     & [\textbf{XXXX}] \\
+        OpenAI    & GPT-5-mini           & \texttt{[\textbf{gpt-5-mini-XXXX-XX-XX}]}           & \url{api.openai.com}     & [\textbf{XXXX}] \\
+        Google    & Gemini 2.5 Flash     & \texttt{[\textbf{gemini-2.5-flash-XXX}]}            & \url{generativelanguage.googleapis.com} & [\textbf{XXXX}] \\
+        Google    & Gemini 2.5 Flash-Lite & \texttt{[\textbf{gemini-2.5-flash-lite-XXX}]}      & \url{generativelanguage.googleapis.com} & [\textbf{XXXX}] \\
+        DeepSeek  & DeepSeek-V3 (Chat)   & \texttt{[\textbf{deepseek-chat-v3.1}]}              & \url{api.deepseek.com}   & [\textbf{XXXX}] \\
+        DeepSeek  & DeepSeek-R1          & \texttt{[\textbf{deepseek-r1}]}                     & \url{api.deepseek.com}   & [\textbf{XXXX}] \\
+        Mistral   & Mistral Medium 3.1   & \texttt{[\textbf{mistral-medium-3.1}]}              & \url{api.mistral.ai}     & [\textbf{XXXX}] \\
+        Mistral   & Mistral Small 3.2    & \texttt{[\textbf{mistral-small-3.2-24b-instruct}]}  & \url{api.mistral.ai}     & [\textbf{XXXX}] \\
+        Moonshot  & Kimi-K2              & \texttt{[\textbf{kimi-k2-XXX}]}                     & [\textbf{endpoint}]      & [\textbf{XXXX}] \\
+        Meta      & Llama-4 Scout        & \texttt{[\textbf{llama-4-scout-XXX}]}               & [\textbf{endpoint}]      & [\textbf{XXXX}] \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+        \item \textit{Notes:} ``Cutoff'' refers to each model's training data cutoff as published by the provider. All API calls were made between [\textbf{start date}] and [\textbf{end date}]. For all models we used: temperature $= [\textbf{T}]$, top-$p = [\textbf{p}]$, max tokens $= [\textbf{XXX}]$. For models exposing a separate reasoning configuration, default reasoning settings were used; reasoning traces were not passed into the analytic dataset.
+    \end{tablenotes}
+    \end{threeparttable}
+    }
+\end{table}

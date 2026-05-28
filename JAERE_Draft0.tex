@@ -1,0 +1,1161 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{color,soul}
+\usepackage[toc,page]{appendix}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\usepackage{setspace}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{threeparttable}
+\usepackage{siunitx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}   % or algorithmicx
+\usepackage{listings}        % if including prompt excerpts inline
+\usepackage{longtable}
+\usepackage{rotating}        % for sideways tables if needed
+\usepackage{enumitem}
+\usepackage[
+backend=biber,
+style=authoryear,
+]{biblatex}
+\addbibresource{jaere.bib}
+
+\title{Using LLMs to Estimate Willingness to Pay: \\ Bridging the Data Availability Gap with Synthetic Contingent Valuation}
+
+\date{\today}
+
+\author{}
+
+\begin{document}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\footnotesize
+\begin{abstract}
+Widespread large language model (LLM) use in the workforce combined with the high cost of survey experiments has led researchers to wonder whether it may be possible to rely on LLMs to simulate population-representative contingent valuation (CV) experiments such as those commonly used to estimate willingness to pay (WTP) for environmental amenities. In this article, we test the ability of ten commonly used LLMs to replicate the experimental portion of a widely cited contemporary CV study and provide advice to researchers interested in using LLMs to simulate CV experiments. To test LLM accuracy, we recreate the CV survey itself as a generalized LLM query sequence that takes as inputs the raw survey responses to demographic and belief questions from the original study and prompts each LLM to respond to the CV experiment as a respondent with the given demographic and belief profile. We find substantial heterogeneity of accuracy across LLMs, with Kimi-K2 consistently outperforming the others. As such, initial LLM selection is  than aggregation of poorly performing LLMs does not improve However, we also find that simulated CV experiment responses are particularly sensitive to the inclusion of participant responses to key belief questions as LLM task inputs. Omitting certain belief responses from simulated participant profiles may yield wildly inaccurate--even negative--WTP estimates for environmental policy. Our simulations highlight the importance of LLM choice and input selection--i.e., respondent answers to relevant belief questions--when using LLMs to simulate CV experiments.
+\end{abstract}
+
+\newpage
+
+\section{Introduction}\label{sec:intro}
+Executive Order (EO) 12866 (1993) requires U.S. federal agencies to produce Regulatory Impact Analyses (RIAs) for all major regulations. The core of any RIA is a benefit-cost analysis (BCA) for the proposed regulation. This framework for regulatory review, largely overseen by the Office of Information and Regulatory Affairs (OIRA) within the Office of Management and Budget (OMB), specifies that “costs and benefits shall be understood to include both quantifiable measures (to the fullest extent that these can be usefully estimated) and qualitative measures of costs and benefits that are difficult to quantify, but nevertheless essential to consider” (EO 12866). This means that agencies are required to capture non-use values, insofar as possible. In the environmental context, for instance, use values encompass both direct benefits (such as timber extraction or recreational fishing) and indirect benefits (such as water filtration by wetlands); non-use values, by contrast, include existence value (satisfaction from knowing a resource exists) and bequest value (preserving resources for future generations). 
+
+However, many non-use values are not readily captured by traditional revealed preference methods: quite often, there is no market that allows consumers to express how much they value the existence of an untrammeled ecosystem. Still, that ecosystem’s being untrammeled does appear to have value. So, stated methods are required to capture such goods. 
+
+The contingent valuation (CV) method is a prominent stated preference approach for valuing non-use goods. Unfortunately, a CV study often takes more time and resources than are available to agencies when developing RIAs. This creates some risk that, if the relevant regulation’s effects concern understudied non-use values, those values will be neglected in the agency’s RIA. This is problematic both from the perspective of complying with EO 12866 and from a democratic point of view. The point of capturing all costs and benefits, including those difficult to quantify, is that this ensures the representation of all citizen’s values.
+
+LLMs may provide a solution. Recently, LLMs have been used to conduct market research, with some groups finding that LLMs provide reasonable estimates of people’s willingness to pay (WTP) for various market goods. For this reason, major companies—such as Delta, Uber, and Ticketmaster—have experimented with allowing such AI tools to alter prices based on expected consumer WTP. The experiments have been successful enough that they are rapidly integrating AI tools into their systems and expanding their influence on pricing. But if LLMs can reliably estimate consumer WTP for market goods, then they may be able to do the same for non-market goods, including non-use values. While great care is required in using these monetizations, they may prove to be useful in setting a lower-bound valuation. If so, then this could solve a pressing practical problem for federal agencies—and any other entity that needs to incorporate non-use values into BCA.
+
+We demonstrate that…  
+
+This paper proceeds as follows. In section 2, we provide a brief overview of CVM. In section 3, we discuss the use of LLMs to create “synthetic data” for social science research. In section 4, we…
+
+\section{Background}
+Traditional revealed preference (RP) techniques—such as the travel cost method, hedonic pricing, and the averting behavior method—can only infer consumer welfare changes when individuals express value through market or quasi-market transactions. Again, though, many benefits are non-use in nature (e.g., existence and bequest value): no purchase, trip, or housing decision signals willingness to pay (WTP) for mere knowledge that a resource or species is protected, which means that RP data can, at best, only yield a lower-bound estimate (Mitchell \& Carson 1989; Freeman 2003). Moreover, public-good characteristics compound the problem. In principle, efficient provision requires Lindahl prices—personalized marginal prices that equate each individual’s WTP with marginal cost (Samuelson 1954; Randall 1981)—but such prices are never observed. So, RP studies cannot reconstruct the full social demand curve (Starrett 1988). For these reasons, analysts must turn to stated preference approaches—CV, choice experiments, and related formats—which involve directly eliciting individuals’ WTP for both market and non-market attributes. These are the only methods capable of recovering total economic value when market signals are absent (Arrow et al. 1993; Carson \& Hanemann 2005; Champ, Boyle \& Brown 2017; Johnston et al. 2017).
+
+The distinctive contribution of CV—and, more broadly, stated preference (SP) techniques—is that they create missing markets hypothetically. By inviting respondents to vote or bid on possible policies, analysts can monetize values that never register in property, travel, or labor markets (Mitchell \& Carson 1989; Bateman et al. 2002; Johnston et al. 2017). In this sense, the SP literature does not merely try to imitate revealed preference (RP) data; it complements it, translating preferences over unobservable states—future ecosystem health, improved animal welfare, cultural heritage—into WTP measures usable in benefit–cost analysis.
+
+The first empirical CV study was conducted in 1963 by Robert Davis as part of his Harvard University dissertation. This nascent period was driven by the demand from United States federal agencies, such as the National Park Service and the Army Corps of Engineers, seeking to quantify the economic value of recreation to justify public projects like dam construction. The 1980s marked a period of intensified methodological development, spurred in part by the U.S. Environmental Protection Agency’s (EPA) demand for empirical estimates of health risk reduction values. A pivotal legal decision in Ohio v. Department of the Interior (1989) ruled that non-use values, as measured using the CV method, were admissible in natural resource damage assessments, effectively granting legal standing to those holding non-use values. 
+
+Throughout this period, substantial effort was dedicated to refining the WTP elicitation question format. But the Exxon Valdez oil spill in 1989 marked a turning point, shifting research attention from question formats to broader issues of validity and reliability. Because the state of Alaska’s 1992 CV study estimated substantial non-use damages, Exxon-funded consultants sought to discredit the method (Maas \& Svorenčík, 2017). In response to the controversy, the U.S. National Oceanic and Atmospheric Administration (NOAA) convened a "blue ribbon panel," co-chaired by Kenneth Arrow and Robert Solow, to assess the CV method. The NOAA panel's 1993 report concluded that CV could provide accurate measures of passive use values under specific conditions and approved its use for policy analysis, establishing twelve guidelines for CV studies. Key recommendations included using research designs that generate conservative WTP estimates, eliciting WTP instead of WTA, employing the referendum format, developing accurate scenario descriptions, and testing for insensitivity to scope. The panel also placed the "burden of proof" on CV researchers to demonstrate that their studies did not suffer from "maladies" such as hypothetical bias and insensitivity to scope.
+
+In the decade leading up to the 2010 BP Deepwater Horizon oil spill, the prominence of CV began to wane as academic attention shifted towards discrete choice experiments (DCEs). However, the BP spill rekindled interest in CV, partly due to its established role in natural resource damage assessment and the precedent set by the Ohio decision. A significant development was the publication of updated and expanded guidelines for stated preference studies, including CV and DCEs, by Johnston et al. (2017). These "Contemporary Guidelines" reflect the accumulated findings from decades of research, providing comprehensive recommendations across survey design and implementation, WTP elicitation, data analysis, validity assessment, and study reporting. 
+
+CV studies are now more rigorous than ever, making it possible to estimate WTP for a wider range of values. For instance, the referendum (single‑binary‑choice) question frames the survey as a ballot initiative, boosting engagement and incentive compatibility (Arrow et al. 1993; Carson \& Groves 2007). Double‑bounded follow‑ups extract more information per respondent (Hanemann, Loomis \& Kanninen 1991), while certainty scales, cheap‑talk scripts, and explicit consequentiality statements mitigate hypothetical bias (Cummings \& Taylor 1999; Herriges et al. 2010).
+
+Moreover, the migration from mail to web platforms slashed costs and cycle times (Couper 2000; Dillman, Smyth \& Christian 2014). Services like MTurk and Prolific deliver diverse, low‑cost respondents, enabling large factorial designs and rapid piloting (Buhrmester, Kwang \& Gosling 2011; Paolacci \& Chandler 2014). Probability‑based internet panels offered by firms like Qualtrics now support nationally representative studies completed in weeks rather than months (Vossler \& Evans 2019), expanding statistical power and demographic coverage.
+
+Large‑language models extend this trajectory: once the questionnaire logic is encoded, LLMs can generate plausible synthetic responses at negligible cost, allowing analysts to stress‑test survey wording, explore scenario‑sensitivity with massive "virtual samples," and, ultimately, produce estimates that approximate human responses (Collis et al. 2025). Rather than abandoning CV, LLM augmentation amplifies its core strength—designing experiments impossible in RP settings. Moreover, they can deliver results quickly, potentially on a schedule that could serve the interests of federal agencies developing RIAs.
+
+\section{Literature}
+The emergence of large language models (LLMs) provided economists and social science researchers with promising tools to improve both the speed and quality of their research. Korinek (2023, 2024) conducted a comprehensive review on possibilities of different LLM models and their abilities to support research workflow in a large variety of domains starting from brainstorming ideas and writing code to promoting research through blog posts and interviews. Many papers confirm his ideas: LLMs outperform students in idea generation (Meincke et al., 2024), are able to conduct qualitative interviews (Chopra \& Haaland, 2023) and data visualizations (Wang et al., 2023). Studies also show that economics researchers are actively using AI, and it helps with writing (Feyzollahi \& Rafizadeh, 2025).
+
+While the results are positive and LLM shows that it can improve research, researchers should be careful and responsible while using these tools. (limitations). There are no (developed) theoretical foundations/limitations that are widely accepted but many papers just explore this/  There are papers that provide best practices when using AI, and be careful regarding ethics (Chang et al., 2024). Also, while prediction, people should take into account leakage (Ligwig et al., 2025). But the authors are hopeful, since the GPT is improving and we can have fewer problems in future.
+
+There are many papers that show that LLM can simulate human behavior, and produce the same output as the people in common laboratory experiments and produce the same biases as humans and their performance improving with the development of new models (Horton, 2023, Bini et al., 2025). Also, they produce economically rational behavior and satisfy rationality axioms (Chen et al., 2023), giving hope that it is possible to use synthetically created data that simulates behavior, preferences and opinions. Therefore, we can ask LLM to provide data on population/reproduce synthetic survey respondents. One of the earliest papers that tried to simulate humans is Argyle et al. (2022). “Propose that these models can be used as surrogates for human respondents in a variety of social science tasks”. There are also some other empirical papers in the variety of fields that show positive results, as well as papers showing shortcomings and possible ways to overcome them (Ross et al., 2024, Bisbee et al., 2024, von der Heyde et al., 2025).
+
+The possibility to create synthetic data is especially useful  and widely discussed in market research.  It avoids the problems that market research was facing: disclosure. There are many papers in marketing comparing the usage of synthetic LLM-generated data to the data collected from the human participants. A lot of research has been done by academics (Li et al., 2024) and marketing firms to understand the validity and limitations. Closest to our analysis is the paper by Brand et al. () that estimates willingness to pay for market goods.
+
+Our paper contributes to the literature on synthetic survey respondents by LLM and estimating willingness to pay. Our research differs in the sense that we estimate WTP for non-use goods where it is difficult to directly observe...
+
+\section{Data (Alina)}
+
+We replicate two contingent valuation studies: Aldy et al. (2012) and Giguere et al. (2020). 
+
+\textbf{Aldy et al. (2012)}\textbf{ "Willingness to pay and political support for a US national clean energy standard"}. This study estimates the willingness to pay for national clean energy standard (NCES). The authors conducted a nationally-representative survey of 1,010 US citizens between 23 April and 12 May 2011. Respondents were asked several socio-demographics questions. The contingent valuation question is whether a respondent supports or opposes clean energy standard that requires 80\% clean energy by 2035, by paying one of the bid amounts \$5, \$25, \$45, \$65, \$85, \$105, \$135 and \$155 (middle amounts \$45–105 were assigned with twice the probability as the two lowest and highest amounts). In addition to randomizing bids, the technology treatment was also randomized between ‘renewables, such as solar and wind power’, ‘natural gas and renewables, such as solar and wind power’, and ‘nuclear power and renewables, such as solar and wind power.’ The exact wording of the contingent valuation question:
+
+\textit{"The federal government is considering a Clean Energy Standard that would require electric power companies to obtain 80\% of their energy from clean sources by the year 2035. Eligible sources of clean energy would include }(INSERT randomized technology treatment)\textit{. If this policy were to cost your household }(INSERT randomized bid amount)\textit{ more each year in higher electricity bills, would you support or oppose this policy?"}. 
+
+They used logit model to estimate marginal, median, and mean WTP. Likelihood ratio test shows that it is reasonable to estimate pooled meodel instead of by different treatment amount. They found that the average American citizen is willing to pay \$162 higher in electricity bills in support of NCES.
+
+\textbf{Giguere et al. (2020) "Valuing Hemlock Woolly Adelgid Control in Public Forests: Scope Effects with Attribute Nonattendance"}. The second study estimates the willingness to pay to protect hemlock trees in North Carolina. These trees are suffering from predatory beetles, and the treatment is needed. The authors conducted an online survey and 907 North Carolina residents were participated (final) in September 2017. In addition to asking socio-demographic questions, the authors provided respondents with educational materials and instructions, and asked several questions about knowledge, visits, and beliefs. The contingents valuation question is whether they would vote for the treatment given randomized bid amount, as well as randomized ecologically imprtant, socially important areas and treatment method. There were two groups and several rounds. Bounded group.. Repeated group... This way authors could check internal consistency. Additional questions was about attribute nonattendance. Including this into regression gives better results.
+
+
+% =============================================================================
+% METHODS SECTION
+%=============================================================================
+
+\section{Methods}\label{sec:methods}
+
+Our objective is to evaluate whether large language models (LLMs) can serve as substitutes for human respondents in contingent valuation (CV) experiments. To do so, we replicate two published CV studies---\textcite{Aldy2012} on a U.S. National Clean Energy Standard and \textcite{Giguere2020} on hemlock woolly adelgid control in North Carolina forests---using LLM-generated responses in place of the original human responses, while preserving each study's original demographic composition, experimental design, randomization structure, and econometric specification. This section describes the persona construction, prompt design, model selection, simulation protocol, and analytic procedures common to both replications. Study-specific details (bid distributions, treatment arms, choice formats) are summarized in Section~\ref{sec:data} and reported in full in Appendix~\ref{app:study-details}.
+
+\subsection{Synthetic Persona Construction}\label{sec:methods-persona}
+
+For each respondent in the original study, we construct a synthetic persona that encodes the respondent's individual characteristics in natural-language form for use as input to an LLM. Each persona consists of three blocks: (i)~a fixed system-prompt preamble specifying the simulation context, (ii)~a demographic block enumerating the respondent's sociodemographic attributes, and (iii)~an optional belief block enumerating the respondent's responses to non-CV survey items (attitudinal, knowledge, or experience questions).
+
+Personas are generated programmatically from the original study's individual-level data. For respondent $i$ with demographic vector $\mathbf{d}_i$ and belief vector $\mathbf{b}_i$, the persona $P_i$ is constructed by template substitution: each attribute in $\mathbf{d}_i$ and (optionally) $\mathbf{b}_i$ is inserted into a fixed natural-language template at a designated slot. The template is identical across respondents within a study; only the slot values vary. An illustrative excerpt from the Study 2 (HWA) persona template is shown in Listing~\ref{lst:persona-template}.
+
+\begin{figure}[h]
+    \centering
+    \fbox{\parbox{0.92\textwidth}{\footnotesize\ttfamily
+    You are a persona defined by specific survey responses about\\
+    hemlock forest health, recreation impacts, treatment methods,\\
+    and public funding tradeoffs in the Southern Appalachian region.\\[2pt]
+    Your worldview, priorities, and opinions MUST strictly align\\
+    with the following characteristics. Each characteristic shows\\
+    a survey question, its valid options, and YOUR response.\\[6pt]
+    SECTION 1 --- DEMOGRAPHICS\\
+    ZIP Code: \$\{dem2\_1\_q51\_zip\_code\}\\
+    State: North Carolina\\
+    Birth Year: \$\{dem2\_2\_q52\_birth\_year\}\\
+    Gender: \$\{dem2\_3\_q51\_gender\}\\
+    Marital Status: \$\{dem2\_4\_q54\_marital\_stat\}\\
+    Children Under 18: \$\{dem2\_5\_q55\_children\}\\
+    Race / Ethnicity: \$\{dem2\_6\_q56\_ethnicity\}\\
+    Education Level: \$\{dem2\_7\_q57\_education\}\\
+    Personal Income (2017): \$\{dem2\_8\_q58\_income\}\\[6pt]
+    SECTION 2 --- SCREENING \& AWARENESS\\
+    + Question: Before this survey, how much did you know about hemlock\\
+    \phantom{+ }trees in the Southern Appalachian Mountains?\\
+    \phantom{+ }Options: A lot $|$ Some $|$ A little $|$ Nothing\\
+    \phantom{+ }Your Response: \$\{b1\_1\_q2\_prior\_hemlock\}\\
+    \dots
+    }}
+    \caption{Excerpt from the Study 2 persona template (\texttt{v6.3}). The template is parameterized by the respondent's actual survey responses; \texttt{\$\{...\}} placeholders are substituted at runtime from the original study's individual-level data.}
+    \label{lst:persona-template}
+\end{figure}
+
+The persona explicitly instructs the LLM to (i)~adopt the perspective of the described respondent, (ii)~answer as if responding during the original survey's data-collection window, and (iii)~refrain from injecting facts, policies, or events occurring after that window. The latter two instructions are designed to mitigate temporal contamination from the LLM's post-cutoff training data; we evaluate the effectiveness of this mitigation in Section~\ref{sec:methods-robustness}.
+
+\subsection{Information Conditions}\label{sec:methods-conditions}
+
+We evaluate three information conditions, each varying the content of the persona while holding the prompt structure fixed:
+
+\begin{enumerate}
+    \item \textbf{Demographics only.} The persona contains only the sociodemographic block $\mathbf{d}_i$. This condition tests whether LLMs can recover empirical CV responses from population-representative demographic priors alone---the most stringent test of synthetic CV, because demographic data are typically the only information available to a benefit-cost analyst working from secondary sources.
+    \item \textbf{Demographics + all beliefs.} The persona contains both $\mathbf{d}_i$ and the full belief response set $\mathbf{b}_i$ from the original survey. This condition tests whether augmenting demographic priors with the same attitudinal information collected by the original researchers improves synthetic response accuracy.
+    \item \textbf{Demographics + one belief at a time.} For each belief question $b_i^k$, $k = 1, \dots, K$, we construct a persona containing $\mathbf{d}_i$ together with $b_i^k$ alone. This condition isolates the marginal contribution of each belief question to synthetic response accuracy and identifies which questions carry useful signal versus which introduce noise.
+\end{enumerate}
+
+In Study 1 (NCES), the belief block contains $K = 9$ items covering [\textbf{topics: e.g., climate change beliefs, trust in government, environmental identity, partisan affiliation, etc.}]. In Study 2 (HWA), the belief block contains $K = [\textbf{XX}]$ items covering hemlock awareness, prior visits to affected forests, beliefs about treatment effectiveness, and attitudes toward public funding of forest protection. Full belief item lists are reported in Appendix~\ref{app:belief-items}.
+
+\subsection{Contingent Valuation Prompts}\label{sec:methods-cv-prompts}
+
+After constructing the persona, we present the LLM with a CV question that exactly reproduces the wording, treatment assignments, and bid amounts of the original study. For respondent $i$, treatment arm $t_i$, and bid $b_i$, the CV prompt $Q_i(t_i, b_i)$ is constructed by inserting the original randomized treatment description and bid amount into the original study's question template. For Study 1, this is the referendum-style support/oppose question over the NCES policy with the randomized clean-energy technology mix and bid amount. For Study 2, this is the bounded or random-cost choice format question over the HWA treatment program with the randomized acreage and treatment-method attributes.
+
+We preserve the exact treatment assignment and bid amount from the original respondent's record. That is, if respondent $i$ in the original study was randomized to receive treatment arm $t_i = $ ``natural gas + renewables'' at bid $b_i = \$65$, the synthetic respondent constructed from $i$'s persona is asked the same referendum question with the same treatment and bid. This design preserves the original study's experimental balance and randomization, so that any deviation between synthetic and empirical responses cannot be attributed to differences in treatment assignment.
+
+The CV prompt instructs the LLM to return a structured response containing (i)~a binary support/oppose vote, (ii)~a confidence rating, and (iii)~a free-text rationale. We use only the binary vote in our main analysis; the confidence and rationale fields are retained for diagnostic purposes and reported in Appendix~\ref{app:rationale-analysis}.
+
+\paragraph{Question framing variation.} As a robustness check, we run a parallel set of simulations in which the order of the response options is reversed (``oppose / support'' versus ``support / oppose''). This tests for ordering bias in LLM responses---a known concern in survey methodology that may operate differently in LLMs than in humans. We find no meaningful effect from this variation (Appendix~\ref{app:order-bias}) and pool across orderings in our main results.
+
+\subsection{Model Selection}\label{sec:methods-models}
+
+We evaluate ten LLMs spanning six providers, selected to represent (i)~the current frontier of widely accessible models as of [\textbf{simulation date, e.g., October 2025}], (ii)~variation along the cost-capability frontier from frontier-tier to lightweight models, and (iii)~variation in training corpora and post-training procedures across providers. The full list is reported in Table~\ref{tab:models}.
+
+\begin{table}[h]
+    \centering
+    \caption{LLMs evaluated.}
+    \label{tab:models}
+    \begin{threeparttable}
+    \begin{tabular}{llll}
+        \toprule
+        Provider & Model & Version / Release & Tier \\
+        \midrule
+        OpenAI    & GPT-5                     & [\textbf{XXXX-XX-XX}] & Frontier \\
+        OpenAI    & GPT-5-mini                & [\textbf{XXXX-XX-XX}] & Mid \\
+        Google    & Gemini 2.5 Flash          & [\textbf{XXXX-XX-XX}] & Mid \\
+        Google    & Gemini 2.5 Flash-Lite     & [\textbf{XXXX-XX-XX}] & Light \\
+        DeepSeek  & DeepSeek-V3 (Chat)        & [\textbf{XXXX-XX-XX}] & Frontier \\
+        DeepSeek  & DeepSeek-R1               & [\textbf{XXXX-XX-XX}] & Reasoning \\
+        Mistral   & Mistral Medium 3.1        & [\textbf{XXXX-XX-XX}] & Mid \\
+        Mistral   & Mistral Small 3.2 (24B-Instruct) & [\textbf{XXXX-XX-XX}] & Light \\
+        Moonshot  & Kimi-K2                   & [\textbf{XXXX-XX-XX}] & Frontier \\
+        Meta      & Llama-4 Scout             & [\textbf{XXXX-XX-XX}] & Mid \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+    \item \textit{Notes:} ``Tier'' is approximate and reflects each model's positioning within its provider's lineup at the time of simulation. All API calls were made between [\textbf{start date}] and [\textbf{end date}]. Specific model identifiers (e.g., \texttt{gpt-5-mini-2025-XX-XX}) are reported in Appendix~\ref{app:model-ids} for replicability.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+For each model we use the provider's chat-completion API with default sampling parameters except for the following standardizations applied across all models: temperature [\textbf{T}], top-$p$ [\textbf{p}], and maximum response tokens [\textbf{XXX}]. Where a provider exposes a separate ``reasoning'' mode (e.g., DeepSeek-R1, GPT-5), we use the default reasoning configuration and do not pass the reasoning trace into our analytic dataset. We do not use system-level instruction tuning beyond the persona prompt described in Section~\ref{sec:methods-persona}.
+
+\subsection{Simulation Platform and Workflow}\label{sec:methods-platform}
+
+All simulations were executed on the Alethic-ISM (Instruction State Machine) platform, an open-source research workbench for composing and executing computational graphs with instruction-based state transitions.\footnote{\url{https://github.com/alethicresearch/alethic-ism}.} The platform encodes each experimental cell---a (study, information condition, model, run) tuple---as a directed acyclic graph in which nodes represent immutable, versioned states and edges represent transformations (LLM calls, data manipulations, validation checks). This structure makes the full pipeline traceable and auditable: every synthetic response is linked back to its persona, its CV prompt, the model and parameters used to generate it, and the timestamp of generation.
+
+The full execution graph for our experiment is summarized in Figure~\ref{fig:graph}. The graph implements the cross-join $\mathcal{R} \times \mathcal{C} \times \mathcal{M}$ between respondents $\mathcal{R}$, conditions $\mathcal{C}$, and models $\mathcal{M}$, with separate downstream branches for the demographics-only, all-beliefs, and one-belief-at-a-time conditions. For Study 1 with $|\mathcal{R}| = 1{,}010$, $|\mathcal{M}| = 10$, and the one-belief-at-a-time condition adding $K = 9$ sub-cells, the cross-joined experiment evaluates [\textbf{1{,}010 $\times$ 11 $\times$ 10 = 111{,}100}] persona--prompt--model combinations per repetition.
+
+\begin{figure}[h]
+    \centering
+    % \includegraphics[width=0.85\textwidth]{figures/alethic_ism_graph.png}
+    \caption{Alethic-ISM execution graph for the synthetic CV experiment. Each node represents a versioned state; each edge represents an instruction (LLM call, data join, or validation step). The complete graph encodes persona generation, prompt assembly, parallel LLM execution across all ten models, response parsing, and structured-output assembly for downstream econometric analysis.}
+    \label{fig:graph}
+\end{figure}
+
+\subsection{Validation, Retries, and Output Structure}\label{sec:methods-validation}
+
+LLM responses are parsed against a structured schema requiring fields for the binary vote, confidence rating, and rationale. Responses that fail schema validation---for example, by returning ambiguous votes, refusing to answer, or producing malformed output---are retried up to three additional times with the same prompt. Persistent failures after four total attempts are coded as missing and excluded from the analytic sample. Schema-validation failure rates by model are reported in Appendix Table~\ref{tab:validation-rates}; the highest failure rate across models was [\textbf{X.X\%}] for [\textbf{model name}], and the resulting analytic samples preserve [\textbf{XX.X\%}] or more of the original respondent count for every (model, condition) cell.
+
+For each (respondent, condition, model, run) cell, the platform produces a structured output record containing: respondent ID, persona version hash, full prompt text, model identifier, sampling parameters, the parsed vote, confidence rating, rationale, raw API response, and timestamp. These records are exported as a flat panel for econometric analysis.
+
+\subsection{Repetition and Run Structure}\label{sec:methods-repetition}
+
+Because LLM responses are stochastic at nonzero temperature, we run each (respondent, condition, model) cell multiple times to assess within-cell variability. For Study 1, we ran [\textbf{N$_1$}] independent repetitions per cell; for Study 2, we ran [\textbf{N$_2$}] repetitions. Each repetition uses an independent random seed where the provider's API supports seed control; for providers that do not, we rely on the default sampling stochasticity. The total number of API calls is reported in Table~\ref{tab:compute}.
+
+\begin{table}[h]
+    \centering
+    \caption{Computational scope of the synthetic CV experiment.}
+    \label{tab:compute}
+    \begin{threeparttable}
+    \begin{tabular}{lcc}
+        \toprule
+                                                       & Study 1 (NCES) & Study 2 (HWA) \\
+        \midrule
+        Respondents in original study                  & 1{,}010        & 907 \\
+        Information conditions                         & 11             & [\textbf{XX}] \\
+        \quad Demographics only                        & 1              & 1 \\
+        \quad Demographics + all beliefs               & 1              & 1 \\
+        \quad Demographics + one belief at a time      & 9              & [\textbf{XX}] \\
+        LLMs evaluated                                 & 10             & 10 \\
+        Repetitions per cell                           & [\textbf{N$_1$}] & [\textbf{N$_2$}] \\
+        Question-framing orderings                     & 2              & 1 \\
+        Total LLM API calls                            & [\textbf{XXX,XXX}] & [\textbf{XXX,XXX}] \\
+        Total synthetic responses generated            & [\textbf{XXX,XXX}] & [\textbf{XXX,XXX}] \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+    \item \textit{Notes:} Total API calls aggregate across all (respondent, condition, model, repetition, ordering) cells, including failed-validation retries. Total synthetic responses count only schema-validated, non-missing observations entering the analytic sample.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+\subsection{Econometric Estimation}\label{sec:methods-econ}
+
+For each (study, model, condition) cell we estimate the same logit specification used in the original study. For Study 1, this is the pooled binary logit reported in \textcite{Aldy2012}, with the support/oppose vote as the dependent variable and bid amount, treatment indicators, and demographic controls as regressors. For Study 2, this is the conditional logit reported in \textcite{Giguere2020}, with the binary support vote, bid amount, ecologically- and socially-important acreage attributes, treatment-method indicator, and respondent-level controls. In both cases we use the original authors' preferred specification rather than re-optimizing; this preserves comparability between synthetic and empirical estimates.
+
+Mean WTP is recovered as
+\begin{equation}
+    \widehat{\text{WTP}} \;=\; -\frac{\hat{\alpha}}{\hat{\beta}_b},
+    \label{eq:wtp}
+\end{equation}
+where $\hat{\alpha}$ is the estimated constant (or relevant attribute coefficient, in the choice-experiment case) and $\hat{\beta}_b$ is the estimated bid coefficient. Confidence intervals around $\widehat{\text{WTP}}$ are constructed via the Krinsky-Robb parametric bootstrap with $B = [\textbf{1{,}000}]$ replications, drawing from the asymptotic distribution of the logit coefficients.
+
+For repetition-pooled estimates within a (study, model, condition) cell, we stack synthetic responses across repetitions and cluster standard errors at the respondent level. For the equally-weighted ensemble (the ``AGGREGATED'' results in Section~\ref{sec:results}), we pool synthetic responses across all ten models and re-estimate the same logit specification on the pooled panel.
+
+\subsection{Mechanism Analyses}\label{sec:methods-mechanism}
+
+The mechanism analyses reported in Section~\ref{sec:results-mechanism} require two additional procedures.
+
+\paragraph{Token-probability extraction.} For models that expose token-level log-probabilities through their API ([\textbf{list: e.g., GPT-5, GPT-5-mini, Gemini-2.5-Flash, Gemini-2.5-Flash-Lite, Mistral-Medium-3.1, Mistral-Small, Llama-4 Scout}]), we re-run a stratified subsample of $N = [\textbf{XXX}]$ respondents from each study with \texttt{logprobs} enabled and \texttt{top\_logprobs} set to [\textbf{20}]. We extract the log-probabilities assigned to the next token immediately following the prompt-terminating cue (e.g., \texttt{"Vote:"}). To handle tokenization variation across providers, we aggregate log-probabilities over all surface forms consistent with each response category---e.g., for ``Support'' we sum the probability mass over \texttt{Support}, \texttt{support}, \texttt{ Support}, and any leading whitespace variants returned in the top-$k$ set---and renormalize. The token-implied logit (Eq.~\ref{eq:token-logit}) is then computed from these aggregated, renormalized probabilities. Models that do not expose log-probabilities ([\textbf{list, e.g., Kimi-K2, DeepSeek-R1, DeepSeek-V3}]) are excluded from the token-probability analysis but retained in all other analyses.
+
+\paragraph{Flat-slope benchmark.} The flat-slope benchmark task is described in detail in Section~\ref{sec:results-mechanism} and Appendix~\ref{app:flat-slope-prompts}. The prompt structure mirrors the NCES referendum prompt, except that (i)~the dollar amount is described as a one-time payment to the respondent rather than a cost, and (ii)~the persona is instructed that they are committed to the policy regardless of the payment. We use the same set of personas (drawn from the Study 1 sample) and the same set of bid levels ($\$5, \$25, \$45, \$65, \$85, \$105, \$135, \$155$) as the main NCES experiment, randomized in the same proportions. We pre-registered the design and analysis plan for the flat-slope benchmark on the Open Science Framework prior to running the experiment ([\textbf{OSF link to be added upon registration}]).
+
+\subsection{Robustness and Limitations}\label{sec:methods-robustness}
+
+We pre-specify three classes of robustness checks: (i)~temporal contamination, (ii)~prompt sensitivity, and (iii)~persona-version sensitivity. Results are reported in Appendix~\ref{app:robustness}.
+
+\paragraph{Temporal contamination.} The Study 1 data were collected in 2011 and the Study 2 data in 2017, both well before the training cutoff of any model in our sample. To assess whether LLM responses are influenced by post-collection-window information (e.g., subsequent climate policy developments, post-2017 forest management literature), we run a held-out subsample under a stricter persona prompt that explicitly instructs the model to ignore any information acquired after the original survey window, and compare results.
+
+\paragraph{Prompt sensitivity.} We re-run a subsample of cells with [\textbf{X}] alternative persona templates that vary surface features (sentence ordering, phrasing of the framing instruction, formatting of the demographic block) while preserving substantive content. Cell-level mean differences are reported in Appendix Table~\ref{tab:prompt-sensitivity}.
+
+\paragraph{Persona-version sensitivity.} The persona templates evolved over the course of the project as we refined wording and structure. We report the version identifier of the production template used for each study and provide cross-version comparisons for cells run under multiple template versions in Appendix Table~\ref{tab:persona-version}.
+
+\paragraph{Limitations.} Three limitations are inherent to the design. First, our synthetic respondents are constructed from the original studies' respondent pools, so any non-representativeness in the original samples (e.g., online-panel coverage in \textcite{Giguere2020}) is preserved in the synthetic sample. Second, we evaluate models available at a particular point in time; capability differences across model generations may render specific quantitative findings outdated, though we expect the qualitative patterns---heterogeneity across models, slope compression, sensitivity to belief inputs---to persist. Third, we cannot rule out that any particular LLM's training data included direct exposure to the original studies or their published results. We discuss this last concern further in Section~\ref{sec:discussion} and report a leakage-detection probe in Appendix~\ref{app:leakage}.
+
+\subsection{Reproducibility}\label{sec:methods-reproducibility}
+
+Full Alethic-ISM workflow graphs, persona templates, prompt templates, model parameters, and analysis code are available at [\textbf{repository URL}]. Per-respondent synthetic response data are available at [\textbf{data repository URL}], subject to the data-use restrictions of the original studies. The pre-analysis plan for the mechanism analyses is registered on the Open Science Framework at [\textbf{OSF URL}].
+
+% =============================================================================
+% RESULTS SECTION
+%=============================================================================
+
+
+\section{Results}\label{sec:results}
+
+We present results in four subsections. Section~\ref{sec:results-nces} reports the synthetic replication of \textcite{Aldy2012}; Section~\ref{sec:results-hwa} reports the synthetic replication of \textcite{Giguere2020}; Section~\ref{sec:results-mechanism} investigates the mechanism behind the central failure mode we document---compression of the bid-response slope---using token-probability analysis and a flat-slope benchmark; and Section~\ref{sec:results-cross} synthesizes patterns across studies. Throughout, we evaluate synthetic responses along three dimensions: (i)~reproduction of the referendum response distribution at each bid level, (ii)~recovery of mean willingness to pay (WTP) relative to the original logit estimate, and (iii)~sensitivity to the inclusion of belief variables in the synthetic respondent profile.
+
+\subsection{Study 1: U.S. National Clean Energy Standard}\label{sec:results-nces}
+
+\paragraph{Original benchmark.} \textcite{Aldy2012} estimate a mean WTP of \$162 per household per year (95\% CI: \$128--\$260) for an 80\% clean electricity standard by 2035, based on a pooled logit over 1{,}010 nationally representative respondents at bids ranging from \$5 to \$155. The empirical share-approving curve declines from approximately 0.72 at the \$5 bid to 0.54 at the \$155 bid, with a marked drop between the \$35 and \$45 bid points.
+
+\paragraph{Demographics-only condition.} When synthetic respondents are constructed using only sociodemographic attributes from the original survey, most LLMs substantially underestimate the share approving the policy at every bid level. Figure~\ref{fig:nces-demo-only} plots synthetic approval shares against the empirical curve for all ten models. Seven of the ten models produce approval shares clustered between 0.25 and 0.45, well below the empirical curve. Two models---Kimi-K2 and GPT-5-mini---track the actual approval curve closely, with mean absolute deviations of [\textbf{X.XX}] and [\textbf{X.XX}] percentage points across bid levels, respectively. Across all models, the synthetic approval-bid curves are visibly flatter than the empirical curve, foreshadowing the slope-compression result we develop in Section~\ref{sec:results-mechanism}.
+
+\begin{figure}[h]
+    \centering
+    % \includegraphics[width=0.85\textwidth]{figures/nces_demo_only.pdf}
+    \caption{Approval share by bid amount, NCES, demographics-only condition. Solid red line plots the empirical share approving from \textcite{Aldy2012}; dashed lines plot synthetic approval shares for each of the ten LLMs evaluated.}
+    \label{fig:nces-demo-only}
+\end{figure}
+
+\paragraph{Demographics + all beliefs condition.} Appending the full battery of belief and attitudinal responses to the synthetic persona produces a substantial level shift in approval shares for most models (Figure~\ref{fig:nces-all-beliefs}). The previously underperforming models---including Mistral-Medium-3.1, DeepSeek-R1, Gemini-2.5-Flash, and Gemini-2.5-Flash-Lite---shift upward and now bracket the empirical curve. Notably, Kimi-K2 and GPT-5-mini, which performed best without beliefs, do \emph{not} improve when beliefs are added; in some bid ranges their fit deteriorates. The slope of the synthetic approval-bid curve remains shallower than the empirical slope across all models, indicating that even with belief information, LLM respondents are systematically less price-sensitive than human respondents.
+
+\begin{figure}[h]
+    \centering
+    % \includegraphics[width=0.85\textwidth]{figures/nces_all_beliefs.pdf}
+    \caption{Approval share by bid amount, NCES, demographics + all beliefs condition. Solid red line plots the empirical share approving; dashed lines plot synthetic approval shares for each LLM.}
+    \label{fig:nces-all-beliefs}
+\end{figure}
+
+\paragraph{WTP point estimates.} Figure~\ref{fig:nces-wtp} summarizes the implied mean WTP from logit estimates fit to synthetic responses, with the \$162 benchmark marked as a vertical reference line. Three patterns stand out. First, in the demographics-only condition, WTP estimates are negative or near zero for seven of the ten models, with DeepSeek-Chat-V3.1 producing an extreme negative estimate of approximately $-$\$[\textbf{XXX}]. The exceptions are Kimi-K2 and GPT-5-mini, whose demographics-only WTP estimates fall within a plausible range of the benchmark. Second, adding beliefs shifts most models' WTP estimates from negative to positive territory, but the magnitude of this update varies dramatically across LLMs---from modest revisions of under \$200 (DeepSeek-R1) to revisions exceeding \$[\textbf{XXX}] (Gemini-2.5-Flash-Lite). Third, the simple equally-weighted aggregate across all ten LLMs does not outperform the best individual model in either condition: the aggregated WTP without beliefs is \$[\textbf{XXX}] (95\% CI: [\textbf{XXX, XXX}]) and with beliefs is \$[\textbf{XXX}] (95\% CI: [\textbf{XXX, XXX}]), neither of which dominates Kimi-K2's demographics-only estimate of \$[\textbf{XXX}].
+
+\begin{figure}[h]
+    \centering
+    % \includegraphics[width=0.75\textwidth]{figures/nces_wtp_forest.pdf}
+    \caption{Mean WTP estimates for the NCES policy by LLM, with 95\% confidence intervals. Red diamonds: demographics-only condition. Blue squares: demographics + all beliefs condition. Vertical solid line marks the \textcite{Aldy2012} benchmark of \$162; dashed vertical lines mark the original 95\% CI bounds.}
+    \label{fig:nces-wtp}
+\end{figure}
+
+\paragraph{One-belief-at-a-time condition.} To isolate the marginal contribution of each belief question, we re-ran the experiment appending each of the nine belief questions individually (Q1--Q9). Figure~\ref{fig:nces-one-belief} reports approval-bid curves for each single-belief specification. Two findings emerge. First, adding a single well-chosen belief question often produces a closer fit to the empirical curve than adding the full belief battery, suggesting that some belief questions introduce noise rather than signal. Belief questions Q1 ([\textbf{topic of Q1}]) and Q3 ([\textbf{topic of Q3}]) systematically degrade fit when included. Second, Llama-4 Scout and GPT-5-mini consistently outperform other LLMs in this condition. However, despite Llama-4 Scout's strong performance on individual response shares, its implied WTP estimates exceed those of other models by an order of magnitude---a discrepancy traceable to its near-flat bid-response slope, which inflates the WTP ratio in the logit inversion. We return to this point in Section~\ref{sec:results-mechanism}.
+
+\begin{figure}[h]
+    \centering
+    % \includegraphics[width=0.95\textwidth]{figures/nces_one_belief_3x3.pdf}
+    \caption{Approval share by bid amount, NCES, demographics + one-belief-at-a-time condition. Each panel adds a single belief question (Q1--Q9) to the demographics-only persona. Solid red line: empirical share approving. Dashed lines: top-performing LLMs.}
+    \label{fig:nces-one-belief}
+\end{figure}
+
+\paragraph{Summary.} The implied WTP from a logit fit to synthetic data depends jointly on the level and the slope of the simulated approval-bid curve. LLMs that reproduce realistic \emph{levels} but compress the \emph{slope} generate inflated WTP estimates, even when their individual-level response shares appear well-calibrated. Accuracy on the response margin does not imply accuracy on the welfare margin.
+
+\subsection{Study 2: Hemlock Woolly Adelgid Control}\label{sec:results-hwa}
+
+\paragraph{Original benchmark.} \textcite{Giguere2020} estimate a marginal WTP of \$56.53 per household per year (95\% CI: \$24--\$75) to treat a ``socially important'' acre of forest, based on a conditional logit over 907 North Carolina residents. The study employs two choice formats: a \emph{bounded} choice experiment with cost increments from \$25 to \$250, and a \emph{random-cost repeated} choice experiment with bids from \$50 to \$200. The empirical approval curve declines from approximately 0.66 at \$50 to 0.45 at \$150--\$200 in the random-cost design, and from approximately 0.76 at \$25 to 0.27 at \$250 in the bounded design.
+
+\paragraph{Demographics-only condition.} In contrast to Study 1, several models track the empirical curve reasonably well in the bounded-cost experiment without belief inputs (Figure~\ref{fig:hwa-demo-only}). Kimi-K2 and Llama-4 Scout produce approval-bid curves that closely follow the empirical curve in the bounded design. GPT-5-mini, by contrast, dramatically \emph{over}-approves at every bid level, with synthetic approval shares above 0.75 even at the highest bids---the opposite failure mode from its Study 1 performance.
+
+\begin{figure}[h]
+    \centering
+    % \includegraphics[width=0.95\textwidth]{figures/hwa_demo_only_2panel.pdf}
+    \caption{Approval share by bid amount, HWA, demographics-only condition. Left panel: random-cost repeated choice experiment. Right panel: bounded-cost choice experiment. Solid red line: empirical share approving. Dashed lines: synthetic approval shares for each LLM.}
+    \label{fig:hwa-demo-only}
+\end{figure}
+
+\paragraph{Demographics + all beliefs condition.} Adding beliefs produces mixed and somewhat counterintuitive effects (Figure~\ref{fig:hwa-all-beliefs}). Several models that performed adequately without beliefs (notably Kimi-K2 and Llama-4 Scout) shift \emph{downward}, now under-approving relative to the empirical curve. GPT-5-mini's over-approval problem is not corrected by the addition of beliefs. The bounded-cost experiment produces noticeably better fits than the random-cost experiment under both information conditions, particularly at moderate bid amounts.
+
+\begin{figure}[h]
+    \centering
+    % \includegraphics[width=0.95\textwidth]{figures/hwa_all_beliefs_2panel.pdf}
+    \caption{Approval share by bid amount, HWA, demographics + all beliefs condition. Left panel: random-cost repeated choice experiment. Right panel: bounded-cost choice experiment.}
+    \label{fig:hwa-all-beliefs}
+\end{figure}
+
+\paragraph{WTP point estimates.} Figure~\ref{fig:hwa-wtp} reveals two notable departures from the Study 1 pattern. First, in the random-cost repeated choice experiment, WTP estimates without beliefs are clustered near or modestly above the \$56.53 benchmark for most models, with the simple aggregate landing within the empirical 95\% CI. Adding beliefs shifts several models substantially higher (e.g., Gemini-2.5-Flash to roughly \$[\textbf{XXX}]) and produces wider confidence intervals overall. Second, in the bounded choice experiment, the pattern reverses: WTP without beliefs is roughly centered on the benchmark for most models, but adding beliefs produces several large \emph{negative} WTP estimates---most notably for Llama-4 Scout (approximately $-$\$[\textbf{XXX}]) and Mistral-Medium-3.1 (approximately $-$\$[\textbf{XXX}]). The aggregated estimate without beliefs in the bounded design overshoots the benchmark, while the aggregated estimate with beliefs lands negative.
+
+\begin{figure}[h]
+    \centering
+    % \includegraphics[width=0.95\textwidth]{figures/hwa_wtp_forest_2panel.pdf}
+    \caption{Mean WTP estimates for HWA control by LLM, with 95\% confidence intervals. Left panel: random-cost repeated choice experiment. Right panel: bounded-cost choice experiment. Red diamonds: demographics-only. Blue squares: demographics + all beliefs. Vertical solid line marks the \textcite{Giguere2020} benchmark of \$56.53; dashed vertical lines mark the original 95\% CI bounds. Estimates with confidence intervals exceeding $\pm$\$[\textbf{XXX}] are omitted for visual clarity; all estimates are reported in Table~\ref{tab:full-results}.}
+    \label{fig:hwa-wtp}
+\end{figure}
+
+\paragraph{Summary.} Unlike Study 1, where adding beliefs uniformly improved most models, in Study 2 the marginal value of belief information is ambiguous and choice-format-dependent. Demographics-only synthetic responses recover the benchmark WTP in the random-cost design reasonably well, while the bounded design appears more robust to model choice without beliefs but more sensitive to belief contamination.
+
+\subsection{Mechanism: Why Are Synthetic Bid-Response Curves Flat?}\label{sec:results-mechanism}
+
+A consistent finding across both studies is that synthetic approval-bid curves are systematically flatter than empirical curves, regardless of LLM, information condition, or policy domain. Because the logit-implied WTP is the ratio of the constant to the (negated) bid coefficient, this slope compression mechanically inflates WTP estimates whenever the level fit is reasonable. In this section we develop two complementary diagnostics that point to a common underlying mechanism: \textbf{LLMs treat the bid amount as weakly informative for the binary support response}, and recover most of their predicted approval probability from semantic features of the policy framing and respondent persona rather than from the price.
+
+\subsubsection{Token-probability analysis}
+
+For the subset of models that expose log-probabilities at the token level (GPT-5-mini, Gemini-2.5-Flash, Gemini-2.5-Flash-Lite, Mistral-Medium-3.1, and Llama-4 Scout), we re-ran a stratified subsample of $N = [\textbf{XXX}]$ NCES respondents and recorded the next-token log-probabilities for the response tokens \texttt{Support} and \texttt{Oppose} at each of the seven bid levels. We define the model-implied logit for respondent $i$ at bid $b$ as
+\begin{equation}
+    \hat{\ell}_{ib} \;=\; \log p_{\text{model}}(\text{Support} \mid x_i, b) \;-\; \log p_{\text{model}}(\text{Oppose} \mid x_i, b),
+    \label{eq:token-logit}
+\end{equation}
+which is the LLM's analog of the latent utility difference recovered by a conventional logit. For each model we then estimate the token-level slope $\hat{\beta}_b^{\text{tok}}$ via OLS of $\hat{\ell}_{ib}$ on bid amount with respondent fixed effects, and compare it to the empirical slope $\hat{\beta}_b^{\text{emp}}$ recovered from the original \textcite{Aldy2012} responses.
+
+Table~\ref{tab:token-slopes} reports slope ratios $\hat{\beta}_b^{\text{tok}} / \hat{\beta}_b^{\text{emp}}$ by model and information condition. Three patterns emerge. First, the token-level slope ratio ranges from [\textbf{X.XX}] to [\textbf{X.XX}] in the demographics-only condition---uniformly less than one, confirming that bid sensitivity is compressed at the token-probability layer rather than introduced by stochastic sampling. Second, adding beliefs has a negligible effect on the slope ratio for most models (mean change of [\textbf{X.XX}] across models), even when it produces large changes in the level of approval. This is consistent with belief inputs shifting the intercept but not the bid coefficient of the LLM's implicit utility function. Third, the two best-performing models on level fit (Kimi-K2 and GPT-5-mini in Study 1; Kimi-K2 and Llama-4 Scout in Study 2) do not have systematically less compressed slopes than poorly fitting models---confirming that level accuracy and slope accuracy are largely orthogonal failure modes.
+
+\begin{table}[h]
+    \centering
+    \caption{Token-probability slope diagnostics, NCES study.}
+    \label{tab:token-slopes}
+    \begin{threeparttable}
+    \begin{tabular}{lcccc}
+        \toprule
+         & \multicolumn{2}{c}{Demographics only} & \multicolumn{2}{c}{Demographics + beliefs} \\
+        \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+        Model & $\hat{\beta}_b^{\text{tok}}$ & Slope ratio & $\hat{\beta}_b^{\text{tok}}$ & Slope ratio \\
+        \midrule
+        GPT-5-mini             & [X.XXX] & [X.XX] & [X.XXX] & [X.XX] \\
+        Gemini-2.5-Flash       & [X.XXX] & [X.XX & [X.XXX] & [X.XX] \\
+        Gemini-2.5-Flash-Lite  & [X.XXX] & [X.XX] & [X.XXX] & [X.XX] \\
+        Mistral-Medium-3.1     & [X.XXX] & [X.XX] & [X.XXX] & [X.XX] \\
+        Llama-4 Scout          & [X.XXX] & [X.XX] & [X.XXX] & [X.XX] \\
+        \midrule
+        Empirical (Aldy et al.) & [X.XXX] & 1.00 & --- & --- \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+    \item \textit{Notes:} Slope coefficients estimated by OLS of the token-implied logit (Eq.~\ref{eq:token-logit}) on bid amount with respondent fixed effects. Slope ratio is the model coefficient divided by the empirical bid coefficient from \textcite{Aldy2012}. Standard errors clustered at the respondent level.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+\subsubsection{Flat-slope benchmark}
+
+To establish how much of the observed slope compression reflects a genuine price-insensitivity in the LLM's policy reasoning---rather than a numerical artifact of how dollar amounts are tokenized or processed---we construct a \emph{flat-slope benchmark} task in which any reasonable respondent should be perfectly insensitive to the dollar variable. Specifically, we present each LLM with a battery of [\textbf{XXX}] policy referendum questions in which the dollar amount is described as a one-time payment to the respondent (rather than a cost), and the policy described is one to which the respondent has been told they are committed regardless of the payment.\footnote{The full prompt template is reported in Appendix~\ref{app:flat-slope-prompts}. We pre-registered the prediction that a well-calibrated LLM should produce a slope of zero on this task.} A perfectly calibrated LLM should produce a flat approval-payment curve; deviations from flatness measure how strongly the LLM's response is anchored to dollar magnitudes for reasons unrelated to substantive policy reasoning.
+
+We then compute the ratio
+\begin{equation}
+    \rho_m \;\equiv\; \frac{\hat{\beta}_b^{\text{NCES}, m} - \hat{\beta}_b^{\text{flat}, m}}{\hat{\beta}_b^{\text{emp,NCES}}},
+    \label{eq:rho}
+\end{equation}
+where $\hat{\beta}_b^{\text{flat}, m}$ is the bid coefficient estimated from model $m$'s responses to the flat-slope benchmark and the numerator is the model's bid sensitivity \emph{net of} its baseline anchoring to dollar magnitudes. If slope compression were purely a numerical artifact, we would expect $\hat{\beta}_b^{\text{flat}, m} \approx \hat{\beta}_b^{\text{NCES}, m}$ and hence $\rho_m \approx 0$. If, conversely, slope compression reflects a genuine but attenuated treatment of bid as a substantive policy cost, we would expect $\hat{\beta}_b^{\text{flat}, m} \approx 0$ and $\rho_m$ to recover most of the raw slope ratio.
+
+Table~\ref{tab:flat-slope} reports $\rho_m$ by model. Three findings stand out. First, the flat-slope benchmark coefficients $\hat{\beta}_b^{\text{flat}, m}$ are nonzero for [\textbf{X of Y}] models, indicating that LLMs partially anchor their responses to dollar magnitudes even when the dollar amount is normatively irrelevant. Second, however, the magnitude of this anchoring is small relative to the substantive bid sensitivity: $\rho_m$ ranges from [\textbf{0.XX}] to [\textbf{0.XX}], close to the raw slope ratios in Table~\ref{tab:token-slopes}. We conclude that slope compression is primarily a feature of how LLMs reason about price as a policy cost, not a numerical artifact. Third, the rank-ordering of models by $\rho_m$ closely tracks their rank-ordering by raw slope ratio, suggesting that artifact-correction does not change the substantive ranking of models for synthetic CV applications.
+
+\begin{table}[h]
+    \centering
+    \caption{Flat-slope benchmark and adjusted bid sensitivity.}
+    \label{tab:flat-slope}
+    \begin{threeparttable}
+    \begin{tabular}{lccc}
+        \toprule
+        Model & $\hat{\beta}_b^{\text{flat}}$ & Raw slope ratio & $\rho_m$ \\
+        \midrule
+        GPT-5-mini             & [X.XXX] & [X.XX] & [X.XX] \\
+        Gemini-2.5-Flash       & [X.XXX] & [X.XX] & [X.XX] \\
+        Gemini-2.5-Flash-Lite  & [X.XXX] & [X.XX] & [X.XX] \\
+        Mistral-Medium-3.1     & [X.XXX] & [X.XX] & [X.XX] \\
+        Llama-4 Scout          & [X.XXX] & [X.XX] & [X.XX] \\
+        Kimi-K2                & [X.XXX] & [X.XX] & [X.XX] \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+    \item \textit{Notes:} $\hat{\beta}_b^{\text{flat}}$ is the bid coefficient estimated from each model's responses to the flat-slope benchmark task (Appendix~\ref{app:flat-slope-prompts}), in which dollar amounts are normatively irrelevant. Raw slope ratio is $\hat{\beta}_b^{\text{NCES}, m} / \hat{\beta}_b^{\text{emp,NCES}}$. Adjusted ratio $\rho_m$ is defined in Eq.~\ref{eq:rho}.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+\subsubsection{Implications for synthetic WTP estimation}
+
+Taken together, the token-probability analysis and the flat-slope benchmark identify slope compression as the central failure mode of synthetic CV. The compression is not a sampling artifact (it appears in the underlying token logits), not primarily a numerical-anchoring artifact (it survives the flat-slope correction), and not eliminated by belief inputs (which shift levels but not slopes). It reflects a substantive feature of how current LLMs reason about price as a determinant of stated policy support: bid amounts enter the model's implicit utility function with a coefficient that is uniformly attenuated relative to the empirical coefficient.
+
+This diagnosis has two practical implications. First, point estimates of WTP from synthetic CV should not be taken at face value, even when the synthetic approval-bid curve appears to track the empirical curve in level. The same model that delivers the lowest mean absolute deviation on response shares may deliver the worst WTP estimate, because both quantities are jointly determined by level and slope. Second, the slope compression is sufficiently structured that researchers can---in principle---calibrate it. A simple correction would multiply each model's raw bid coefficient by $1/\rho_m$ before computing WTP, using the flat-slope benchmark to estimate $\rho_m$ on a held-out task. We report calibrated WTP estimates under this procedure in Appendix~\ref{app:calibrated-wtp}; calibrated estimates lie within the original 95\% CI for [\textbf{X of Y}] models in Study 1 and [\textbf{X of Y}] models in Study 2, compared to [\textbf{X of Y}] and [\textbf{X of Y}] for the uncalibrated estimates. We view this as a promising direction for making synthetic CV operationally useful in regulatory analysis, while emphasizing that calibration on a single benchmark task may not generalize across policy domains---a limitation we return to in Section~\ref{sec:discussion}.
+
+\subsection{Cross-Study Patterns}\label{sec:results-cross}
+
+Comparing across the two studies yields four robust patterns and one notable disanalogy.
+
+\paragraph{Heterogeneity dominates.} In both studies, the gap between the best- and worst-performing models on any given metric is large relative to the gap between with-beliefs and without-beliefs conditions for a fixed model. Mean absolute deviations across LLMs span [\textbf{X.XX}] to [\textbf{X.XX}] in Study 1 and [\textbf{X.XX}] to [\textbf{X.XX}] in Study 2. Practitioners should treat LLM selection as a first-order design decision.
+
+\paragraph{Slope compression is universal.} The mechanism documented in Section~\ref{sec:results-mechanism} replicates across both studies and both choice formats. Slope ratios in Study 2 (reported in Appendix Table~\ref{tab:hwa-slopes}) are quantitatively similar to those in Study 1, despite the different policy domains and bid ranges. This suggests that slope compression is a feature of the LLM-as-respondent paradigm rather than of any particular study.
+
+\paragraph{Aggregation does not rescue weak models.} In both studies, the simple equally-weighted aggregate across all ten LLMs is dominated by the best individual model in WTP recovery. The intuition is straightforward: aggregation reduces variance but not bias, and the bias from slope compression is correlated across models because it arises from a common feature of the underlying training distributions.
+
+\paragraph{Belief-question quality varies sharply.} The one-belief-at-a-time results from Study 1 indicate that belief questions are not interchangeable: a few questions carry most of the predictive signal, while others actively degrade fit. Practitioners using LLMs to simulate CV experiments should pre-screen belief items rather than include the full survey battery by default.
+
+\paragraph{Disanalogy: belief value is context-dependent.} The most striking cross-study contrast concerns the marginal value of belief information. In Study 1, demographics alone produce mostly negative WTP estimates, and beliefs are essentially required to recover plausible levels. In Study 2, demographics alone produce reasonable WTP estimates in the random-cost design, and beliefs sometimes \emph{worsen} fit. We conjecture that this reflects the relative density of the policy domain in the LLM training distribution: clean energy policy is heavily discussed in online text, so demographic priors may map cleanly onto stable approval patterns, but with substantial baseline mis-calibration that beliefs can correct. Hemlock forest protection is a localized issue where the LLM's prior may already be diffuse, making belief inputs both more informative and more easily corrupted by noisy items. Distinguishing these explanations is a priority for future work.
+
+\begin{table}[h]
+    \centering
+    \caption{Cross-study summary of synthetic CV performance.}
+    \label{tab:cross-study}
+    \begin{threeparttable}
+    \begin{tabular}{lcccc}
+        \toprule
+         & \multicolumn{2}{c}{Study 1 (NCES)} & \multicolumn{2}{c}{Study 2 (HWA)} \\
+        \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+        Metric & Demo only & + Beliefs & Demo only & + Beliefs \\
+        \midrule
+        Best-LLM mean abs.\ deviation (pp)        & [X.XX] & [X.XX] & [X.XX] & [X.XX] \\
+        Aggregate WTP error (\$)                  & [XXX]  & [XXX]  & [XXX]  & [XXX]  \\
+        Best-LLM WTP error (\$)                   & [XXX]  & [XXX]  & [XXX]  & [XXX]  \\
+        Mean slope ratio across LLMs              & [X.XX] & [X.XX] & [0.XX] & [0.XX] \\
+        Share of LLMs with WTP in original 95\% CI & [X/10] & [X/10] & [X/10] & [X/10] \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+    \item \textit{Notes:} Mean absolute deviation computed across bid levels and averaged across LLMs. Aggregate WTP refers to the equally-weighted ensemble across all ten models. Slope ratio is the synthetic bid coefficient divided by the empirical bid coefficient.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+
+% =============================================================================
+% DISCUSSION SECTION
+% Target journal: Journal of the Association of Environmental and Resource
+% Economists (JAERE)
+% =============================================================================
+
+\section{Discussion}\label{sec:discussion}
+
+Our results provide a structured assessment of whether large language models can substitute for human respondents in contingent valuation. The headline finding is that current LLMs cannot deliver point estimates of willingness to pay that match human-survey benchmarks under naive deployment, but the failure mode is sufficiently structured to be characterized, partially diagnosed, and partially corrected. In this section we develop the implications of this finding along five dimensions: (i) what synthetic CV can and cannot do given our evidence, (ii) the relationship between LLM stochasticity and preference heterogeneity, (iii) the relationship between synthetic CV and benefit transfer, (iv) external validity and likely evolution as LLM capabilities advance, and (v) priorities for future work.
+
+\subsection{What Synthetic CV Can and Cannot Do}\label{sec:disc-can-cant}
+
+Three claims are well-supported by our evidence; one common claim is not.
+
+\paragraph{Synthetic CV can reproduce qualitative referendum behavior.} Across both studies, the best-performing LLMs reproduce the empirical share-approving curve to within [\textbf{X.X}] percentage points at every bid level under a properly specified persona. The qualitative shape of the bid-response relationship---monotonic decline in approval with bid amount, modest convexity---is recovered by most models in most conditions. For applications where the analyst needs only the direction or relative magnitude of policy support across stakeholder subgroups, current synthetic CV is already useful.
+
+\paragraph{Synthetic CV can probe survey design before fielding.} Because synthetic experiments cost approximately [\textbf{\$X--\$Y}] per [\textbf{1{,}000}] simulated responses and complete in [\textbf{hours}] rather than months, they can be used to stress-test wording, ordering, and treatment-arm specifications before committing to a costly human-subjects study. Our finding that surface-form prompt variation produces shifts an order of magnitude smaller than across-LLM variation (Appendix~\ref{app:robustness}) suggests that within-LLM piloting can identify gross design problems---ambiguous wording, leading framing, treatment arms that produce identical responses---without false signals from prompt sensitivity. Synthetic CV piloting is a clear, near-term, defensible use case.
+
+\paragraph{Synthetic CV cannot deliver point estimates of WTP at face value.} Even the best-performing models produce WTP estimates that diverge substantially from human-survey benchmarks under naive deployment. The slope-compression mechanism we document (Section~\ref{sec:results-mechanism}) implies that errors in the price coefficient compound multiplicatively with errors in the constant when WTP is computed as $-\hat{\alpha}/\hat{\beta}_b$. A model that recovers the level of approval to within five percentage points but compresses the bid slope by half will inflate WTP by a factor of roughly two---and our slope ratios are typically lower than 0.5. Practitioners who use uncalibrated synthetic WTP for benefit-cost analysis in regulatory impact assessments will produce systematically biased estimates, and the direction of the bias will not be obvious without external validation.
+
+\paragraph{What synthetic CV cannot yet do at all.} Three features of human CV studies have no demonstrated synthetic analog. First, scope sensitivity tests---the foundation of validity assessment in modern CV \parencite{Johnston2017}---require synthetic respondents to update WTP in proportion to the magnitude of the good, and our preliminary evidence in Study 2 (Section~\ref{sec:results-hwa}) suggests LLMs largely fail this test even when their level fit is reasonable. Second, the cheap-talk and consequentiality scripts that mitigate hypothetical bias in human surveys have no obvious analog for an entity that does not bear costs and is not voting. Third, certainty follow-up questions---which screen for genuine versus casual support---produce response patterns from LLMs that we have not been able to interpret in a way that maps onto the human literature. Each of these is a candidate for future research, but none can currently substitute for the corresponding human-survey instrument.
+
+\subsection{Stochasticity Versus Preference Heterogeneity}\label{sec:disc-stochasticity}
+
+A conceptual question that recurs throughout our analysis is what the variation in LLM responses across repeated samples actually represents. When the same persona, prompted to the same model with the same temperature, produces support at one sample and oppose at the next, is this measurement error, preference heterogeneity, or neither? The answer matters because conventional CV analysis treats variation across human respondents as preference heterogeneity to be modeled, while variation within a respondent (test-retest variation) is treated as measurement noise to be averaged away.
+
+The LLM case fits neither category cleanly. Variation across repeated samples from the same persona is not measurement error in the human-survey sense---there is no underlying latent vote being noisily observed---but it is also not preference heterogeneity, because the persona is held fixed. We interpret it as something closer to \emph{prompt-conditional response uncertainty}: the LLM's posterior over response tokens has nonzero entropy because the persona-plus-prompt does not pin down the response, and temperature sampling explores that posterior. Whether this is appropriately modeled as heterogeneity, as noise, or as a third thing depends on what the analyst is trying to recover.
+
+For our main analysis we treat across-sample variation as nuisance and average across repetitions to recover a deterministic per-persona response. This is the conservative choice: it gives the LLM the maximum possible benefit of the doubt by suppressing variation that has no human-survey analog. An alternative that we explore in Appendix~\ref{app:stochasticity-as-heterogeneity} is to treat each LLM sample as an independent draw from the synthetic respondent's preference distribution, increasing the effective sample size by the number of repetitions. The two approaches yield similar point estimates of mean WTP but differ in confidence-interval width, with the heterogeneity interpretation producing tighter intervals---a feature that is convenient but probably misleading. We recommend the deterministic-average interpretation as the default for synthetic CV, but flag this as an unresolved methodological question that the field will need to settle.
+
+\subsection{Synthetic CV as Benefit Transfer}\label{sec:disc-benefit-transfer}
+
+We argue that the most natural intellectual home for synthetic CV is the benefit transfer literature \parencite{Rosenberger2017, Loomis2015, Boyle2010}, not the primary CV literature, and we believe this reframing has both substantive and tactical implications.
+
+Benefit transfer asks: when a regulator needs WTP for a policy in a context where no original study has been conducted, how should they extrapolate from existing studies in related contexts? Existing methods include unit value transfer (apply the WTP estimate from a similar study), function transfer (apply the WTP equation from a similar study, plugging in local covariates), and meta-analytic transfer (synthesize multiple studies into a transfer function). All of these methods rely on the assumption that preferences in the target context can be extrapolated from preferences observed in source contexts.
+
+Synthetic CV is, viewed this way, a form of benefit transfer in which the source context is the universe of text on which the LLM was trained. The LLM acts as an implicit meta-analytic engine, having absorbed (an unknown subset of) the published CV literature plus large quantities of related social, political, and economic text, and producing a synthesized response when queried with a target-context persona. Our slope-compression finding can be reinterpreted in this light: the LLM compresses bid sensitivity because the training distribution averages over many studies with heterogeneous price effects, attenuating the bid coefficient toward the mean of that distribution. This is exactly the kind of attenuation bias that meta-analytic benefit transfer is known to produce \parencite{Bergstrom2008}, and it suggests that the corrections developed in the benefit transfer literature---generalizability tests, convergent validity checks, transfer error metrics---should be brought to bear on synthetic CV.
+
+This reframing has two implications. First, it places more reasonable expectations on synthetic CV: we should evaluate it against benefit transfer benchmarks (transfer errors of [\textbf{20--40\%}] are common in the conventional literature), not against the standards of an original study. Second, it suggests a hybrid workflow in which synthetic CV is used to augment, rather than replace, benefit transfer: the LLM's persona-conditioning capacity allows for finer-grained transfer than meta-analytic functions estimated on study-level summaries, while the conventional benefit transfer literature provides validity criteria that pure synthetic studies lack. We see this as the most promising near-term application of LLMs in regulatory analysis: synthetic CV is a faster, more flexible benefit transfer engine, not a substitute for original CV studies.
+
+\subsection{External Validity and Capability Evolution}\label{sec:disc-external-validity}
+
+Three external validity concerns deserve attention.
+
+\paragraph{Generalization across CV contexts.} Our two studies span clean energy policy and forest pest control---substantively different domains, but both within U.S. environmental policy and both using referendum-style elicitation. We do not test synthetic CV on health valuation, mortality risk reduction, cultural heritage protection, animal welfare, or ecosystem services in developing-country contexts, all of which raise distinct issues. The slope-compression mechanism we document is unlikely to be domain-specific---it arises from how LLMs reason about price as a determinant of policy support, which should be similar across domains---but the level of bid sensitivity and the marginal value of belief inputs may differ across contexts in ways that our two studies cannot adjudicate.
+
+\paragraph{Generalization across elicitation formats.} Our results are confined to single-bounded and double-bounded referendum formats. Open-ended WTP elicitation, payment cards, and ranking-based discrete choice experiments are widely used and have different cognitive demands. We expect open-ended elicitation to perform substantially worse with current LLMs because it lacks the binary anchor that constrains the response distribution. Discrete choice experiments may perform better, because they reduce the choice to a comparison between two specified bundles, but this is speculation. Future work should evaluate synthetic CV under each major elicitation format.
+
+\paragraph{Capability evolution.} Our results reflect LLM capabilities as of [\textbf{simulation date}]. The history of LLM development since [\textbf{2020}] has been one of rapid capability gains on a broad range of tasks, and there is no obvious reason to expect synthetic CV to be exempt. Two competing forecasts deserve mention. The optimistic forecast is that next-generation models will reduce slope compression as their treatment of numerical magnitudes becomes more sophisticated, eventually delivering uncalibrated synthetic WTP within transfer-error tolerances. The pessimistic forecast is that slope compression is a feature of training-distribution averaging that will not abate as long as LLMs are trained on text corpora dominated by sources that under-discuss price as a substantive policy determinant. Our token-probability analysis is more consistent with the pessimistic view---the compression appears at the next-token level, not in any post-hoc reasoning step---but we cannot rule out that future models will partially correct it through changes in pre-training data or post-training fine-tuning.
+
+\paragraph{What replicates, what shifts.} We expect the qualitative findings of our paper---heterogeneity across LLMs, slope compression, sensitivity to belief inputs, benefit-question quality variation---to replicate across model generations even as the quantitative levels improve. The calibration ratios $\rho_m$ should track model capability, and a researcher using synthetic CV in [\textbf{2027}] should re-estimate $\rho_m$ on a contemporaneous flat-slope benchmark rather than rely on the values we report. We do not believe our specific WTP point estimates will replicate as models improve; we do believe our methodological framework will continue to be the appropriate way to evaluate synthetic CV.
+
+\subsection{Limitations}\label{sec:disc-limitations}
+
+We acknowledge five limitations beyond those addressed in Section~\ref{sec:methods-robustness}.
+
+\paragraph{Sample non-representativeness inherits from the originals.} Our synthetic respondents are constructed from the original studies' respondent pools. \textcite{Aldy2012} used a probability-based panel and is approximately nationally representative; \textcite{Giguere2020} used an opt-in panel of North Carolina residents and is not. Our synthetic samples preserve these representativeness profiles, including any selection biases. A researcher interested in nationally representative synthetic CV would need to construct synthetic personas from a separate, representative demographic frame---a procedure that introduces its own difficulties when belief inputs are not available for the synthetic respondents.
+
+\paragraph{Implicit leakage cannot be ruled out.} Our direct-recall probe (Appendix~\ref{app:leakage}) finds that [\textbf{X of 10}] models can reproduce the headline WTP figures from the original studies when asked. We argue that the cross-study comparison and the consistency of slope compression across more- and less-cited studies provides circumstantial evidence against leakage as the dominant mechanism. We cannot, however, rule out that LLM responses to our personas are partially shaped by pre-trained associations between demographic profiles and policy positions that derive from the original studies' published results. Distinguishing implicit leakage from genuine reasoning is a hard problem in the broader LLM-as-respondent literature and remains unresolved.
+
+\paragraph{The calibration is single-task.} Our calibration ratio $\rho_m$ is estimated from a single flat-slope benchmark task. We have argued that the procedure transfers reasonably across studies (the Study 2 results in Appendix~\ref{app:calibrated-wtp} use the Study 1 calibration), but a single-task calibration is fragile. A more rigorous procedure would estimate $\rho_m$ across a portfolio of flat-slope tasks varying the policy domain, the dollar magnitude, and the framing, and use the resulting distribution of $\rho_m$ as an input to confidence-interval construction.
+
+\paragraph{Temperature and reasoning-mode choices are not fully explored.} We use default sampling parameters across providers and do not systematically vary temperature, top-$p$, or reasoning-mode configurations. Preliminary results not reported here suggest that temperature changes within the typical range ($0$ to $1$) shift response variance more than central tendency, but a thorough sensitivity analysis would be valuable for practitioners.
+
+\paragraph{The studies replicated are both U.S. environmental.} Generalization to non-U.S. contexts, non-environmental domains, and non-Western policy frames is not tested.
+
+\subsection{Future Work}\label{sec:disc-future-work}
+
+We see four priority extensions of this work, in approximate order of tractability.
+
+\textit{Extending the calibration to a portfolio of flat-slope tasks} is the most immediate technical extension. A pre-registered portfolio of [\textbf{5--10}] flat-slope tasks, varying domain and dollar scale, would yield a distribution of $\rho_m$ that supports more honest confidence intervals and would identify whether $\rho_m$ varies systematically with task features. This would also clarify whether the calibration generalizes or is idiosyncratic to the NCES context.
+
+\textit{Synthetic CV as benefit transfer engine} is the most policy-relevant extension. The procedure would be: identify a target context where no CV study exists; construct synthetic personas representative of the target population; query an ensemble of LLMs to produce WTP estimates; apply per-LLM calibration; and report transfer-error-adjusted confidence intervals comparable to those produced by conventional benefit transfer. Demonstrating this on a target context with eventual ground-truth data---for example, by running synthetic CV in advance of a planned conventional CV study and comparing predictions---would provide the strongest test of practical utility.
+
+\textit{Generalization to additional elicitation formats and policy domains} is the most resource-intensive extension. A natural sequence is: open-ended WTP, payment-card formats, discrete choice experiments, and finally non-environmental domains (health, transportation, cultural heritage). Each new context will require its own validation against published benchmarks and its own calibration.
+
+\textit{Engagement with the scope-sensitivity literature} is the most conceptually challenging extension. Modern CV validity assessment relies heavily on demonstrating that respondents update WTP appropriately when the magnitude of the good changes; LLMs appear to fail this test in ways that humans typically do not. Diagnosing the source of this failure---whether it reflects training-data averaging, attention to surface cues over substantive content, or something else---may require interpretability techniques drawn from the machine learning literature rather than from environmental economics, and is likely a multi-paper agenda.
+
+\subsection{Implications for Regulatory Practice}\label{sec:disc-policy}
+
+We close by returning to the practical motivation that opened the paper. Federal agencies producing regulatory impact analyses under Executive Order 12866 and OMB Circular A-4 face a recurring problem: the costs and benefits relevant to their analyses include non-market values that are expensive and slow to estimate using conventional CV, and the consequence of neglecting these values in the analysis is regulatory decisions made without full consideration of relevant costs and benefits.
+
+Our results do not support the use of synthetic CV as a drop-in substitute for conventional CV in RIAs. The slope-compression mechanism produces biased point estimates of WTP that, if used in net-benefit calculations, will systematically distort regulatory choices. We do, however, see three uses for synthetic CV in regulatory practice that our results support.
+
+First, synthetic CV is well-suited to \emph{threshold analysis}, the practice recommended in Circular A-4 of identifying break-even values for non-quantified factors. A regulator who can establish that stakeholders' WTP for a non-market good plausibly exceeds some lower bound---and can do so quickly using synthetic CV---is in a stronger position to argue that the good warrants consideration in the analysis even without a precise point estimate.
+
+Second, synthetic CV is well-suited to \emph{sensitivity testing} of conventional benefit transfer. A regulator using a transferred WTP estimate from a published study can use synthetic CV with the target-context demographics to assess whether the transferred value is plausible given the local population's characteristics, and can flag cases where the transferred value appears systematically off.
+
+Third, synthetic CV is well-suited to \emph{pilot design} for cases where conventional CV will eventually be conducted. The cost and time of a full CV study is largely in the design and survey-administration phases; synthetic piloting can identify wording problems, treatment-arm collapse, and ordering effects in advance, reducing the risk that a costly study produces unusable results.
+
+We do not believe synthetic CV is ready to substitute for conventional CV in cases where regulatory decisions hinge on precise WTP point estimates. We do believe it is ready, today, to expand the set of values that can be considered in regulatory analysis when the alternative is leaving them unexamined. The history of stated preference methods suggests that the field's most productive moves have come from expanding the range of values that can be brought into benefit-cost analysis while maintaining methodological discipline about the resulting estimates' reliability. Synthetic CV, used carefully, fits squarely in that tradition.
+
+\section{Conclusion}
+
+% =============================================================================
+% Bibliography
+% =============================================================================
+\newpage
+\printbibliography
+
+% =============================================================================
+% APPENDICES
+% Target journal: Journal of the Association of Environmental and Resource
+% Economists (JAERE)
+%
+% Cross-references in this file (must match labels in Methods/Results):
+%   app:study-details       — Study design details for both replications
+%   app:belief-items        — Full belief item lists
+%   app:model-ids           — Model identifier strings
+%   app:order-bias          — Question-ordering robustness
+%   app:rationale-analysis  — Free-text rationale diagnostics
+%   app:flat-slope-prompts  — Flat-slope benchmark prompt
+%   app:calibrated-wtp      — Calibrated WTP estimates
+%   app:robustness          — Robustness checks
+%   app:leakage             — Training-data leakage probe
+%
+% Cross-referenced tables in this file:
+%   tab:full-results        — Full per-LLM WTP estimates for both studies
+%   tab:hwa-slopes          — Token-probability slopes for Study 2
+%   tab:validation-rates    — Schema-validation failure rates
+%   tab:prompt-sensitivity  — Surface-form prompt sensitivity
+%   tab:persona-version     — Cross-version persona comparison
+%
+%=============================================================================
+
+\newpage
+\appendix
+\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+
+% =============================================================================
+\section{Study Design Details}\label{app:study-details}
+% =============================================================================
+
+This appendix reports the design details of the two replicated studies that are referenced but not fully described in the main text.
+
+\subsection{Study 1: Aldy, Kotchen, and Leiserowitz (2012)}
+
+\paragraph{Sample.} Nationally representative survey of 1{,}010 U.S. adults conducted between April 23 and May 12, 2011. The sample was drawn from [\textbf{panel provider name}] using [\textbf{sampling protocol}].
+
+\paragraph{Treatment arms.} Two factors were independently randomized:
+\begin{itemize}[noitemsep]
+    \item \textit{Bid amount} ($\$5, \$25, \$45, \$65, \$85, \$105, \$135, \$155$). The four middle bids ($\$45$--$\$105$) were assigned with twice the probability of the two lowest and two highest bids.
+    \item \textit{Clean-energy technology mix}, randomized across three arms: (i) renewables only (``solar and wind power''), (ii) renewables plus natural gas, and (iii) renewables plus nuclear.
+\end{itemize}
+
+\paragraph{CV question wording (verbatim).} ``The federal government is considering a Clean Energy Standard that would require electric power companies to obtain 80\% of their energy from clean sources by the year 2035. Eligible sources of clean energy would include [\textit{technology arm}]. If this policy were to cost your household [\textit{bid amount}] more each year in higher electricity bills, would you support or oppose this policy?''
+
+\paragraph{Original specification.} Pooled binary logit. Likelihood-ratio tests reported by the original authors fail to reject pooling across technology arms; we follow the authors' preferred pooled specification in our synthetic replication.
+
+\paragraph{Original WTP estimate.} Mean WTP of \$162 per household per year (95\% CI: \$128--\$260).
+
+\subsection{Study 2: Giguere, Moore, and Whitehead (2020)}
+
+\paragraph{Sample.} Online opt-in panel survey of 907 North Carolina residents conducted in September 2017. The sample was drawn from [\textbf{panel provider name}].
+
+\paragraph{Treatment arms.} The choice experiment varied four attributes:
+\begin{itemize}[noitemsep]
+    \item \textit{Ecologically important acreage treated} ($2{,}500$, $5{,}000$, $7{,}500$, or $10{,}000$ acres, corresponding to 0\%, 17\%, 25\%, and 33\% of the total).
+    \item \textit{Socially important acreage treated} ($2{,}500$, $5{,}000$, $7{,}500$, or $10{,}000$ acres).
+    \item \textit{Treatment method} (chemical insecticide or biological control with predatory beetles).
+    \item \textit{Annual household cost} for three years (\$50, \$100, \$150, \$200 in the random-cost design; additional \$25 and \$250 levels in the bounded design).
+\end{itemize}
+
+\paragraph{Choice formats.} Respondents were assigned to one of two formats:
+\begin{enumerate}[noitemsep]
+    \item \textit{Random-cost repeated choice}: respondents face multiple referendum questions with bid amounts drawn independently per question.
+    \item \textit{Bounded choice}: bid amounts follow an ascending or descending sequence within respondent, providing internal consistency checks.
+\end{enumerate}
+
+\paragraph{Original specification.} Conditional logit with respondent-level controls and attribute-nonattendance adjustment.
+
+\paragraph{Original WTP estimate.} Marginal WTP of \$56.53 per household per year for an additional acre of ``socially important'' forest treated (95\% CI: \$24--\$75).
+
+% =============================================================================
+\section{Belief Items}\label{app:belief-items}
+% =============================================================================
+
+This appendix lists the belief and attitudinal items used as inputs to the synthetic personas in the demographics-plus-beliefs and one-belief-at-a-time conditions.
+
+\subsection{Study 1 Belief Items ($K = 9$)}
+
+\begin{enumerate}[label=Q\arabic*., leftmargin=*]
+    \item [\textbf{Verbatim wording of belief Q1, e.g., political party affiliation}]
+    \item [\textbf{Verbatim wording of belief Q2, e.g., self-reported political ideology}]
+    \item [\textbf{Verbatim wording of belief Q3, e.g., belief in anthropogenic climate change}]
+    \item [\textbf{Verbatim wording of belief Q4}]
+    \item [\textbf{Verbatim wording of belief Q5}]
+    \item [\textbf{Verbatim wording of belief Q6}]
+    \item [\textbf{Verbatim wording of belief Q7}]
+    \item [\textbf{Verbatim wording of belief Q8}]
+    \item [\textbf{Verbatim wording of belief Q9}]
+\end{enumerate}
+
+\noindent As reported in Section~\ref{sec:results-nces}, items Q1 and Q3 systematically degrade fit when included in single-belief specifications. We discuss possible mechanisms in Section~\ref{sec:discussion}.
+
+\subsection{Study 2 Belief Items ($K = [\textbf{XX}]$)}
+
+\begin{enumerate}[label=Q\arabic*., leftmargin=*]
+    \item Before this survey, how much did you know about hemlock trees in the Southern Appalachian Mountains?
+    \item Have you read or heard about an increase in the number of dead hemlock trees in the Southern Appalachian Mountains?
+    \item [\textbf{Verbatim wording of remaining items, e.g., importance of ecological functions, prior visits to affected forests, beliefs about treatment effectiveness, attitudes toward public funding}]
+    \item \dots
+\end{enumerate}
+
+% =============================================================================
+\section{Model Identifiers and API Configuration}\label{app:model-ids}
+% =============================================================================
+
+This appendix reports the exact model identifiers, API endpoints, and sampling parameters used in our simulations, to support replication.
+
+\begin{table}[h]
+    \centering
+    \caption{Model identifiers and API configuration.}
+    \label{tab:model-ids-detail}
+    \begin{threeparttable}
+    \footnotesize
+    \begin{tabular}{lllll}
+        \toprule
+        Provider & Model & API identifier & Endpoint & Cutoff \\
+        \midrule
+        OpenAI    & GPT-5                & \texttt{[\textbf{gpt-5-XXXX-XX-XX}]}                & \url{api.openai.com}     & [\textbf{XXXX}] \\
+        OpenAI    & GPT-5-mini           & \texttt{[\textbf{gpt-5-mini-XXXX-XX-XX}]}           & \url{api.openai.com}     & [\textbf{XXXX}] \\
+        Google    & Gemini 2.5 Flash     & \texttt{[\textbf{gemini-2.5-flash-XXX}]}            & \url{generativelanguage.googleapis.com} & [\textbf{XXXX}] \\
+        Google    & Gemini 2.5 Flash-Lite & \texttt{[\textbf{gemini-2.5-flash-lite-XXX}]}      & \url{generativelanguage.googleapis.com} & [\textbf{XXXX}] \\
+        DeepSeek  & DeepSeek-V3 (Chat)   & \texttt{[\textbf{deepseek-chat-v3.1}]}              & \url{api.deepseek.com}   & [\textbf{XXXX}] \\
+        DeepSeek  & DeepSeek-R1          & \texttt{[\textbf{deepseek-r1}]}                     & \url{api.deepseek.com}   & [\textbf{XXXX}] \\
+        Mistral   & Mistral Medium 3.1   & \texttt{[\textbf{mistral-medium-3.1}]}              & \url{api.mistral.ai}     & [\textbf{XXXX}] \\
+        Mistral   & Mistral Small 3.2    & \texttt{[\textbf{mistral-small-3.2-24b-instruct}]}  & \url{api.mistral.ai}     & [\textbf{XXXX}] \\
+        Moonshot  & Kimi-K2              & \texttt{[\textbf{kimi-k2-XXX}]}                     & [\textbf{endpoint}]      & [\textbf{XXXX}] \\
+        Meta      & Llama-4 Scout        & \texttt{[\textbf{llama-4-scout-XXX}]}               & [\textbf{endpoint}]      & [\textbf{XXXX}] \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+        \item \textit{Notes:} ``Cutoff'' refers to each model's training data cutoff as published by the provider. All API calls were made between [\textbf{start date}] and [\textbf{end date}]. For all models we used: temperature $= [\textbf{T}]$, top-$p = [\textbf{p}]$, max tokens $= [\textbf{XXX}]$. For models exposing a separate reasoning configuration, default reasoning settings were used; reasoning traces were not passed into the analytic dataset.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+\paragraph{Schema-validation failure rates.} Table~\ref{tab:validation-rates} reports the fraction of LLM responses that failed schema validation on the first attempt and were either successfully retried or coded as missing.
+
+\begin{table}[h]
+    \centering
+    \caption{Schema-validation failure rates by model.}
+    \label{tab:validation-rates}
+    \begin{threeparttable}
+    \begin{tabular}{lcccc}
+        \toprule
+        Model & First-attempt failure (\%) & Resolved on retry (\%) & Coded missing (\%) & Final $N$ retained (\%) \\
+        \midrule
+        GPT-5                  & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        GPT-5-mini             & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        Gemini 2.5 Flash       & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        Gemini 2.5 Flash-Lite  & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        DeepSeek-V3            & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        DeepSeek-R1            & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        Mistral Medium 3.1     & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        Mistral Small 3.2      & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        Kimi-K2                & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        Llama-4 Scout          & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+        \item \textit{Notes:} Pooled across both studies and all information conditions. ``Final $N$ retained'' is the share of intended (respondent, condition, model, repetition) cells that produced a schema-valid, non-missing response after up to four total attempts.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+% =============================================================================
+\section{Question-Ordering Robustness}\label{app:order-bias}
+% =============================================================================
+
+A known concern in survey methodology is that response options' order may shift the distribution of responses---particularly for moderate-leaning respondents who anchor on the first option presented. This may operate differently in LLMs than in humans because of how language models process token sequences. We test for ordering effects in Study 1 by running the full demographics-plus-beliefs experiment under both ``Support / Oppose'' and ``Oppose / Support'' option orderings.
+
+\begin{table}[h]
+    \centering
+    \caption{Ordering robustness, Study 1 demographics-plus-beliefs condition.}
+    \label{tab:order-bias}
+    \begin{threeparttable}
+    \begin{tabular}{lccc}
+        \toprule
+        Model & Support-first share & Oppose-first share & Difference (pp) \\
+        \midrule
+        GPT-5                  & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        GPT-5-mini             & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        Gemini 2.5 Flash       & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        Gemini 2.5 Flash-Lite  & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        DeepSeek-V3            & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        DeepSeek-R1            & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        Mistral Medium 3.1     & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        Mistral Small 3.2      & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        Kimi-K2                & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        Llama-4 Scout          & [0.XXX] & [0.XXX] & [+/$-$X.X] \\
+        \midrule
+        Mean across models     & [0.XXX] & [0.XXX] & [X.X]      \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+        \item \textit{Notes:} Pooled across all bid levels. Differences reported in percentage points. None of the per-model differences are statistically distinguishable from zero at the 5\% level under cluster-robust standard errors at the respondent level.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+We find no meaningful effect from ordering: the maximum across-model difference is [\textbf{X.X}] percentage points in absolute value, smaller than the within-model run-to-run variation reported in Section~\ref{sec:methods-repetition}. We pool across orderings in our main results.
+
+% =============================================================================
+\section{Free-Text Rationale Analysis}\label{app:rationale-analysis}
+% =============================================================================
+
+In addition to the binary support/oppose vote, we instructed the LLMs to provide a free-text rationale of [\textbf{50--150}] words explaining the synthetic respondent's vote. We do not use the rationales in our main econometric analysis, but they provide diagnostic value for assessing whether LLMs are producing coherent, persona-consistent reasoning rather than recovering responses by surface heuristic.
+
+\paragraph{Coherence audit.} A research assistant blind to the study hypotheses reviewed a random sample of $N = [\textbf{XXX}]$ rationales and coded each on three dimensions: (i)~persona consistency (does the rationale align with the demographic and belief inputs?), (ii)~policy substance (does the rationale engage with the substantive content of the CV scenario?), and (iii)~bid sensitivity (does the rationale reference the bid amount as a determinant of the vote?). Inter-rater agreement on a held-out validation subsample of [\textbf{XX}] rationales was [$\kappa = $\textbf{0.XX}].
+
+\begin{table}[h]
+    \centering
+    \caption{Free-text rationale coherence by model and dimension.}
+    \label{tab:rationale}
+    \begin{threeparttable}
+    \begin{tabular}{lccc}
+        \toprule
+        Model & Persona consistency (\%) & Policy substance (\%) & Bid sensitivity (\%) \\
+        \midrule
+        GPT-5                 & [XX.X] & [XX.X] & [XX.X] \\
+        GPT-5-mini            & [XX.X] & [XX.X] & [XX.X] \\
+        Gemini 2.5 Flash      & [XX.X] & [XX.X] & [XX.X] \\
+        Gemini 2.5 Flash-Lite & [XX.X] & [XX.X] & [XX.X] \\
+        DeepSeek-V3           & [XX.X] & [XX.X] & [XX.X] \\
+        DeepSeek-R1           & [XX.X] & [XX.X] & [XX.X] \\
+        Mistral Medium 3.1    & [XX.X] & [XX.X] & [XX.X] \\
+        Mistral Small 3.2     & [XX.X] & [XX.X] & [XX.X] \\
+        Kimi-K2               & [XX.X] & [XX.X] & [XX.X] \\
+        Llama-4 Scout         & [XX.X] & [XX.X] & [XX.X] \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+        \item \textit{Notes:} Each cell reports the percentage of audited rationales coded as satisfying the dimension. Bid sensitivity refers to whether the rationale references the bid amount as a determinant of the vote, not whether the rationale would change with bid; rationales that mention the bid only in passing are coded as not bid-sensitive.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+\paragraph{Bid sensitivity in rationales corroborates the slope-compression mechanism.} Across all ten models, only [\textbf{XX.X}\%] of rationales reference the bid amount as a determinant of the vote, despite the bid amount being prominently displayed in the prompt. This is consistent with the token-probability evidence in Section~\ref{sec:results-mechanism}: LLMs treat bid amounts as weakly informative for the vote, and they verbalize this insensitivity in their free-text rationales as well.
+
+\paragraph{Sample rationales.} Representative rationales from a single Study 1 respondent (51-year-old white male, college-educated, midwest, moderate Republican, \$65 bid) under each model are reproduced in [\textbf{Appendix Table~\ref{tab:sample-rationales}}].
+
+% =============================================================================
+\section{Flat-Slope Benchmark}\label{app:flat-slope-prompts}
+% =============================================================================
+
+This appendix reports the design of the flat-slope benchmark introduced in Section~\ref{sec:results-mechanism}, including the prompt template, the pre-registered analysis plan, and complete numerical results.
+
+\subsection{Design rationale}
+
+The objective is to construct a CV-like task in which (i)~a well-calibrated respondent's vote is normatively independent of the dollar amount, but (ii)~the surface structure of the prompt closely mirrors the original NCES referendum task. Differences between LLM-implied bid coefficients on the flat-slope task and on the NCES task identify the portion of slope compression attributable to numerical anchoring on dollar amounts (which should be present in both tasks) versus genuine attenuated treatment of bid as a substantive policy cost (which should be present only in the NCES task).
+
+\subsection{Prompt template}
+
+The flat-slope prompt is constructed from the NCES persona template (Section~\ref{sec:methods-persona}) with the CV question replaced by the following:
+
+\begin{figure}[h]
+    \centering
+    \fbox{\parbox{0.92\textwidth}{\footnotesize\ttfamily
+    Suppose the federal government has already adopted a Clean Energy\\
+    Standard requiring electric power companies to obtain 80\% of their\\
+    energy from clean sources by the year 2035. The standard is now in\\
+    effect and your household will be subject to it regardless of how\\
+    you respond to this question.\\[4pt]
+    Separately, the federal government is offering you a one-time\\
+    payment of [\textit{bid amount}] in exchange for completing this\\
+    survey. The payment does not affect whether you are subject to the\\
+    Clean Energy Standard.\\[4pt]
+    Given this payment, do you support or oppose the Clean Energy\\
+    Standard policy?
+    }}
+    \caption{Flat-slope benchmark prompt template. The dollar amount is reframed as a payment to the respondent rather than a cost, and the policy is described as already in effect, so a well-calibrated respondent's vote should be independent of the dollar amount.}
+    \label{fig:flat-slope-prompt}
+\end{figure}
+
+\subsection{Pre-registration}
+
+The flat-slope benchmark design and analysis plan were pre-registered on the Open Science Framework on [\textbf{date}], prior to running the experiment. The pre-registration is available at [\textbf{OSF URL}] and includes (i)~the prompt template, (ii)~the set of bid levels (matching the NCES bid distribution: $\$5, \$25, \$45, \$65, \$85, \$105, \$135, \$155$), (iii)~the prediction $\hat{\beta}_b^{\text{flat}, m} \approx 0$ for a well-calibrated LLM, and (iv)~the calibration ratio $\rho_m$ (Eq.~\ref{eq:rho}) as the primary outcome.
+
+\subsection{Full results}
+
+\begin{table}[h]
+    \centering
+    \caption{Flat-slope benchmark: bid coefficients and adjusted ratios, full results.}
+    \label{tab:flat-slope-full}
+    \begin{threeparttable}
+    \footnotesize
+    \begin{tabular}{lcccccc}
+        \toprule
+        Model & $\hat{\beta}_b^{\text{NCES}}$ & SE & $\hat{\beta}_b^{\text{flat}}$ & SE & Raw ratio & $\rho_m$ \\
+        \midrule
+        GPT-5                  & [X.XXX] & [0.XXX] & [X.XXX] & [0.XXX] & [0.XX] & [0.XX] \\
+        GPT-5-mini             & [X.XXX] & [0.XXX] & [X.XXX] & [0.XXX] & [0.XX] & [0.XX] \\
+        Gemini 2.5 Flash       & [X.XXX] & [0.XXX] & [X.XXX] & [0.XXX] & [0.XX] & [0.XX] \\
+        Gemini 2.5 Flash-Lite  & [X.XXX] & [0.XXX] & [X.XXX] & [0.XXX] & [0.XX] & [0.XX] \\
+        Mistral Medium 3.1     & [X.XXX] & [0.XXX] & [X.XXX] & [0.XXX] & [0.XX] & [0.XX] \\
+        Mistral Small 3.2      & [X.XXX] & [0.XXX] & [X.XXX] & [0.XXX] & [0.XX] & [0.XX] \\
+        Llama-4 Scout          & [X.XXX] & [0.XXX] & [X.XXX] & [0.XXX] & [0.XX] & [0.XX] \\
+        Kimi-K2                & [X.XXX] & [0.XXX] & [X.XXX] & [0.XXX] & [0.XX] & [0.XX] \\
+        DeepSeek-V3            & [X.XXX] & [0.XXX] & [X.XXX] & [0.XXX] & [0.XX] & [0.XX] \\
+        DeepSeek-R1            & [X.XXX] & [0.XXX] & [X.XXX] & [0.XXX] & [0.XX] & [0.XX] \\
+        \midrule
+        Empirical (Aldy et al.)  & [X.XXX] & [0.XXX] & --- & --- & 1.00 & --- \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+        \item \textit{Notes:} $\hat{\beta}_b^{\text{NCES}}$ is each model's bid coefficient on the original NCES task (demographics-only condition). $\hat{\beta}_b^{\text{flat}}$ is the bid coefficient on the flat-slope benchmark. Raw ratio is $\hat{\beta}_b^{\text{NCES}, m} / \hat{\beta}_b^{\text{emp,NCES}}$. Adjusted ratio $\rho_m$ is defined in Eq.~\ref{eq:rho}. Standard errors clustered at the respondent level.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+\paragraph{Token-probability slopes for Study 2.} Table~\ref{tab:hwa-slopes} reports the analogous token-probability analysis for the HWA study, confirming that slope compression replicates across studies.
+
+\begin{table}[h]
+    \centering
+    \caption{Token-probability slope diagnostics, HWA study (random-cost design).}
+    \label{tab:hwa-slopes}
+    \begin{threeparttable}
+    \begin{tabular}{lcccc}
+        \toprule
+         & \multicolumn{2}{c}{Demographics only} & \multicolumn{2}{c}{Demographics + beliefs} \\
+        \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+        Model & $\hat{\beta}_b^{\text{tok}}$ & Slope ratio & $\hat{\beta}_b^{\text{tok}}$ & Slope ratio \\
+        \midrule
+        GPT-5-mini             & [X.XXX] & [0.XX] & [X.XXX] & [0.XX] \\
+        Gemini 2.5 Flash       & [X.XXX] & [0.XX] & [X.XXX] & [0.XX] \\
+        Gemini 2.5 Flash-Lite  & [X.XXX] & [0.XX] & [X.XXX] & [0.XX] \\
+        Mistral Medium 3.1     & [X.XXX] & [0.XX] & [X.XXX] & [0.XX] \\
+        Llama-4 Scout          & [X.XXX] & [0.XX] & [X.XXX] & [0.XX] \\
+        \midrule
+        Empirical (Giguere et al.) & [X.XXX] & 1.00 & --- & --- \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+        \item \textit{Notes:} Constructed as in Table~\ref{tab:token-slopes}. Models without exposed token log-probabilities are omitted.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+% =============================================================================
+\section{Calibrated WTP Estimates}\label{app:calibrated-wtp}
+% =============================================================================
+
+This appendix reports calibrated WTP estimates constructed by applying the slope-correction $1/\rho_m$ to each model's raw bid coefficient. The procedure is:
+
+\begin{enumerate}[noitemsep]
+    \item Estimate $\rho_m$ from the flat-slope benchmark (Appendix~\ref{app:flat-slope-prompts}).
+    \item Replace the model's bid coefficient $\hat{\beta}_b^{\text{NCES}, m}$ with the calibrated coefficient $\tilde{\beta}_b^{m} = \hat{\beta}_b^{\text{NCES}, m} / \rho_m$.
+    \item Recompute $\widetilde{\text{WTP}}^m = -\hat{\alpha}^m / \tilde{\beta}_b^m$.
+    \item Recompute confidence intervals via Krinsky-Robb bootstrap on the calibrated coefficients, treating $\rho_m$ as known.
+\end{enumerate}
+
+\begin{table}[h]
+    \centering
+    \caption{Uncalibrated and calibrated WTP estimates, Study 1 (NCES).}
+    \label{tab:calibrated-nces}
+    \begin{threeparttable}
+    \footnotesize
+    \begin{tabular}{lcccc}
+        \toprule
+         & \multicolumn{2}{c}{Demographics only} & \multicolumn{2}{c}{Demographics + beliefs} \\
+        \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+        Model & Raw WTP (\$) & Calibrated WTP (\$) & Raw WTP (\$) & Calibrated WTP (\$) \\
+        \midrule
+        GPT-5                  & [XXX] & [XXX] & [XXX] & [XXX] \\
+        GPT-5-mini             & [XXX] & [XXX] & [XXX] & [XXX] \\
+        Gemini 2.5 Flash       & [XXX] & [XXX] & [XXX] & [XXX] \\
+        Gemini 2.5 Flash-Lite  & [XXX] & [XXX] & [XXX] & [XXX] \\
+        DeepSeek-V3            & [XXX] & [XXX] & [XXX] & [XXX] \\
+        DeepSeek-R1            & [XXX] & [XXX] & [XXX] & [XXX] \\
+        Mistral Medium 3.1     & [XXX] & [XXX] & [XXX] & [XXX] \\
+        Mistral Small 3.2      & [XXX] & [XXX] & [XXX] & [XXX] \\
+        Kimi-K2                & [XXX] & [XXX] & [XXX] & [XXX] \\
+        Llama-4 Scout          & [XXX] & [XXX] & [XXX] & [XXX] \\
+        \midrule
+        Aggregated             & [XXX] & [XXX] & [XXX] & [XXX] \\
+        Empirical benchmark    & 162 & 162 & 162 & 162 \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+        \item \textit{Notes:} Calibrated WTP estimates apply the slope correction $1/\rho_m$ to each model's bid coefficient. ``Aggregated'' is the equally-weighted ensemble across all ten models. Empirical benchmark from \textcite{Aldy2012}.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \caption{Uncalibrated and calibrated WTP estimates, Study 2 (HWA), random-cost design.}
+    \label{tab:calibrated-hwa}
+    \begin{threeparttable}
+    \footnotesize
+    \begin{tabular}{lcccc}
+        \toprule
+         & \multicolumn{2}{c}{Demographics only} & \multicolumn{2}{c}{Demographics + beliefs} \\
+        \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+        Model & Raw WTP (\$) & Calibrated WTP (\$) & Raw WTP (\$) & Calibrated WTP (\$) \\
+        \midrule
+        GPT-5                  & [XX] & [XX] & [XX] & [XX] \\
+        GPT-5-mini             & [XX] & [XX] & [XX] & [XX] \\
+        Gemini 2.5 Flash       & [XX] & [XX] & [XX] & [XX] \\
+        Gemini 2.5 Flash-Lite  & [XX] & [XX] & [XX] & [XX] \\
+        DeepSeek-V3            & [XX] & [XX] & [XX] & [XX] \\
+        DeepSeek-R1            & [XX] & [XX] & [XX] & [XX] \\
+        Mistral Medium 3.1     & [XX] & [XX] & [XX] & [XX] \\
+        Mistral Small 3.2      & [XX] & [XX] & [XX] & [XX] \\
+        Kimi-K2                & [XX] & [XX] & [XX] & [XX] \\
+        Llama-4 Scout          & [XX] & [XX] & [XX] & [XX] \\
+        \midrule
+        Aggregated             & [XX] & [XX] & [XX] & [XX] \\
+        Empirical benchmark    & 56.53 & 56.53 & 56.53 & 56.53 \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+        \item \textit{Notes:} As in Table~\ref{tab:calibrated-nces}. The calibration ratio $\rho_m$ is estimated from the Study-1 flat-slope benchmark and applied to Study 2 without re-estimation, providing an out-of-sample test of calibration transfer.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+\paragraph{Caveats.} The calibration procedure has at least three limitations. First, $\rho_m$ is estimated from a single flat-slope task and may not generalize across policy domains; the Study 2 calibrated estimates use the Study-1 $\rho_m$ as an out-of-sample test. Second, the calibration treats $\rho_m$ as known; a bootstrap procedure that re-samples $\rho_m$ jointly with the logit coefficients would produce somewhat wider confidence intervals. Third, the procedure corrects the slope but not the level of the response, so it does not fix WTP estimates from models with severely mis-calibrated approval levels.
+
+\paragraph{Full results table.} Table~\ref{tab:full-results}, omitted from the main text for space, reports point estimates, standard errors, 95\% confidence intervals, and validation-failure rates for all ten models in both studies and both information conditions, with and without calibration. The table is provided as a separate supplementary file.
+
+% =============================================================================
+\section{Robustness Checks}\label{app:robustness}
+% =============================================================================
+
+\subsection{Temporal contamination}
+
+Both studies pre-date the training cutoff of every model in our sample. To assess whether LLM responses are influenced by post-collection-window information, we re-ran the demographics-plus-beliefs condition with a stricter persona prompt that included the additional instruction:
+
+\begin{quote}\itshape
+\footnotesize
+You are answering as if responding during [\textbf{April--May 2011 / September 2017}]. Do not use any information about events, policies, scientific findings, or political developments occurring after [\textbf{May 12, 2011 / September 30, 2017}]. If you find yourself drawing on more recent information, stop and re-anchor your response to what was known at the original survey date.
+\end{quote}
+
+Differences between the strict-temporal and standard-temporal persona conditions are reported in Table~\ref{tab:temporal}. The strict instruction produces a [\textbf{small / moderate / negligible}] shift in approval rates ([\textbf{X.X}] percentage points on average across models) and a [\textbf{small / moderate / negligible}] shift in WTP estimates ([\textbf{\$XX}] on average).
+
+\begin{table}[h]
+    \centering
+    \caption{Temporal contamination check, Study 1 demographics-plus-beliefs condition.}
+    \label{tab:temporal}
+    \begin{threeparttable}
+    \begin{tabular}{lcccc}
+        \toprule
+         & \multicolumn{2}{c}{Approval share (pooled)} & \multicolumn{2}{c}{WTP (\$)} \\
+        \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+        Model & Standard & Strict-temporal & Standard & Strict-temporal \\
+        \midrule
+        {[}\textbf{Top 5 models by sensitivity}{]} & [0.XXX] & [0.XXX] & [XXX] & [XXX] \\
+        \dots & \dots & \dots & \dots & \dots \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+        \item \textit{Notes:} Pooled across bid levels.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+\subsection{Prompt sensitivity}
+
+We tested [\textbf{X}] alternative persona templates that vary surface features while preserving substantive content: (i)~reordering of demographic versus belief blocks, (ii)~rephrasing of the framing instruction (``You are a persona\dots'' vs.\ ``Adopt the perspective of\dots''), (iii)~bullet-point versus prose formatting of the demographic block, and (iv)~inclusion versus exclusion of the explicit injunction against post-cutoff information.
+
+\begin{table}[h]
+    \centering
+    \caption{Surface-form prompt sensitivity, Study 1.}
+    \label{tab:prompt-sensitivity}
+    \begin{threeparttable}
+    \begin{tabular}{lcccc}
+        \toprule
+        Template variation & Mean abs.\ shift in approval (pp) & Max shift across models (pp) & Mean abs.\ shift in WTP (\$) & Max shift in WTP (\$) \\
+        \midrule
+        Reorder blocks                  & [X.X] & [X.X] & [XX] & [XX] \\
+        Rephrase framing                & [X.X] & [X.X] & [XX] & [XX] \\
+        Bullet vs.\ prose formatting    & [X.X] & [X.X] & [XX] & [XX] \\
+        Drop temporal injunction        & [X.X] & [X.X] & [XX] & [XX] \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+        \item \textit{Notes:} All shifts are computed relative to the production template (\texttt{v6.3}) and pooled across models. Per-model results in supplementary materials.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+The dominant source of variation in synthetic responses is across LLMs (Section~\ref{sec:results-cross}); surface-form prompt variation produces shifts an order of magnitude smaller than across-model heterogeneity for most models.
+
+\subsection{Persona-version sensitivity}
+
+The production persona templates evolved through several iterations as we refined wording and structure. Table~\ref{tab:persona-version} reports cross-version comparisons for cells run under multiple template versions.
+
+\begin{table}[h]
+    \centering
+    \caption{Cross-version persona comparison.}
+    \label{tab:persona-version}
+    \begin{threeparttable}
+    \begin{tabular}{lccc}
+        \toprule
+        Template version & Date & Substantive change from prior version & Mean approval shift (pp) \\
+        \midrule
+        v5.X            & [\textbf{date}] & Initial production template                                    & --- \\
+        v6.0            & [\textbf{date}] & Added explicit temporal anchoring                              & [+/$-$X.X] \\
+        v6.1            & [\textbf{date}] & Restructured belief block as Q\&A pairs                        & [+/$-$X.X] \\
+        v6.2            & [\textbf{date}] & Added uncertainty framing                                      & [+/$-$X.X] \\
+        v6.3 (production) & [\textbf{date}] & Conditioned share-category on output rather than input        & [+/$-$X.X] \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+        \item \textit{Notes:} ``Mean approval shift'' is measured relative to the immediately prior version, pooled across models and bid levels in Study 1. The production template (\texttt{v6.3}) is used for all main-text results.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+% =============================================================================
+\section{Training-Data Leakage Probe}\label{app:leakage}
+% =============================================================================
+
+A natural concern in any LLM-based replication is that the LLM may have seen the original study's published results during training and may be reproducing them rather than generating genuine synthetic responses. \textcite{Aldy2012} has been cited [\textbf{600+}] times since publication, and the headline WTP estimate of \$162 appears in many secondary sources; \textcite{Giguere2020} is less widely cited but has appeared in [\textbf{XX}] subsequent publications. Both papers' results are plausibly within the training distribution of every LLM in our sample.
+
+\subsection{Direct recall probe}
+
+For each model, we ran a leakage probe in a session entirely separate from our main simulations, using a clean context with no persona or CV prompt. The probe consisted of three questions asked in sequence:
+
+\begin{enumerate}[noitemsep]
+    \item ``What is the headline willingness-to-pay estimate from Aldy, Kotchen, and Leiserowitz's 2012 \textit{Nature Climate Change} paper on a U.S. Clean Energy Standard?''
+    \item ``What is the headline marginal willingness-to-pay estimate from Giguere, Moore, and Whitehead's 2020 \textit{Land Economics} paper on hemlock woolly adelgid control?''
+    \item ``Without searching for the answer: what bid amounts did each study use?''
+\end{enumerate}
+
+Table~\ref{tab:leakage} reports model responses.
+
+\begin{table}[h]
+    \centering
+    \caption{Direct recall probe for training-data leakage.}
+    \label{tab:leakage}
+    \begin{threeparttable}
+    \footnotesize
+    \begin{tabular}{lccc}
+        \toprule
+        Model & Recalls Aldy WTP & Recalls Giguere WTP & Recalls bid range \\
+        \midrule
+        GPT-5                  & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        GPT-5-mini             & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        Gemini 2.5 Flash       & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        Gemini 2.5 Flash-Lite  & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        DeepSeek-V3            & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        DeepSeek-R1            & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        Mistral Medium 3.1     & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        Mistral Small 3.2      & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        Kimi-K2                & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        Llama-4 Scout          & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+        \item \textit{Notes:} ``Yes'' means the model produced a numeric figure within 5\% of the published estimate. ``Approx'' means the model produced a directionally correct figure within 25\%. ``No'' means the model declined to answer, produced an unrelated figure, or produced a figure off by more than 25\%.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+\subsection{Interpretation}
+
+If leakage were the dominant force generating our synthetic responses, we would expect (i)~models that recall the original WTP figures to produce synthetic WTP estimates close to those figures, and (ii)~models without recall to produce noisier synthetic estimates. Comparing Table~\ref{tab:leakage} to the WTP estimates in Section~\ref{sec:results}, we observe that [\textbf{description of pattern: e.g., ``models with strongest recall do not systematically produce more accurate synthetic WTP estimates,''} or contrary]. We interpret this as [\textbf{evidence for / against}] the hypothesis that synthetic responses are driven primarily by training-data leakage.
+
+A more rigorous leakage check would compare model performance on \textcite{Aldy2012} (heavily cited) and \textcite{Giguere2020} (less cited). If leakage drove our results, we would expect substantially better synthetic recovery for the more-cited study. The cross-study comparison in Section~\ref{sec:results-cross} shows [\textbf{no such pattern / a modest pattern of}] this kind, providing additional evidence that our results are not primarily artifacts of training-data leakage.
+
+\paragraph{Limitations of the leakage probe.} The recall probe identifies only \emph{conscious} recall---the kind of leakage that an LLM can verbalize when asked. Implicit leakage---in which the LLM's response distribution is shaped by prior exposure to the studies without the LLM being able to articulate that exposure---cannot be ruled out by this probe. We discuss this further in Section~\ref{sec:discussion}.
+
+\end{document}

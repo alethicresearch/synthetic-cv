@@ -1,0 +1,31 @@
+\begin{table}[h]
+\centering
+\caption{Synthetic-to-empirical bid-coefficient ratios (Study 1).}
+\label{tab:slope-ratios-Study1}
+\begin{threeparttable}
+\footnotesize
+\begin{tabular}{lcc}
+\toprule
+Model & Demographics only & + Beliefs \\
+\midrule
+AGGREGATED &   0.570 &   0.399 \\
+\midrule
+deepseek-chat-v3.1 &   0.293 &   0.688 \\
+deepseek-r1 &   1.149 &   0.784 \\
+gemini-2.5-flash &   0.933 &   0.436 \\
+gemini-2.5-flash-lite &   1.322 &   0.294 \\
+llama-4-scout &   0.252 &   0.009 \\
+mistral-medium-3.1 &   0.435 &   0.610 \\
+mistral-small-3.2-24b &   0.258 &   0.200 \\
+kimi-k2 &   0.713 &   0.264 \\
+gpt-5-mini &   1.120 &   0.363 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} Ratio of synthetic to empirical bid coefficients from binary logit estimates of the \textcite{Aldy2012} specification. 
+Values below 1 in magnitude indicate slope compression. 
+A value near 0 indicates near-insensitivity to bid amount. 
+Empirical bid coefficient used as denominator is from Table~\ref{tab:repl-logit-Study1}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

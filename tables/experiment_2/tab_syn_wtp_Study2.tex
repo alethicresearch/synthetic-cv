@@ -1,0 +1,75 @@
+\begin{table}[h]
+\centering
+\caption{Synthetic willingness to pay for an additional acre of socially important forest treated (Study 2).}
+\label{tab:syn-wtp-Study2}
+\begin{threeparttable}
+\footnotesize
+\begin{tabularx}{\textwidth}{l XXXX}
+\toprule
+ & \multicolumn{2}{c}{Random-cost design} & \multicolumn{2}{c}{Bounded design} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+Model & w/o beliefs & w/ beliefs & w/o beliefs & w/ beliefs \\
+\midrule
+AGGREGATED 
+    &  \makecell[t]{65.3 \\ {\scriptsize [86.4, 44.2]}} 
+    &  \makecell[t]{57.9 \\ {\scriptsize [103.7, 12.2]}} 
+    &  \makecell[t]{211.7 \\ {\scriptsize [307.0, 116.3]}} 
+    &  \makecell[t]{-94.9 \\ {\scriptsize [-33.4, -156.5]}} \\
+\midrule
+deepseek-chat-v3.1 
+    &  \makecell[t]{32.6 \\ {\scriptsize [50.0, 15.1]}} 
+    &  \makecell[t]{78.2 \\ {\scriptsize [157.7, -1.4]}} 
+    &  \makecell[t]{52.1 \\ {\scriptsize [71.9, 32.2]}} 
+    &  \makecell[t]{-129.2 \\ {\scriptsize [5.3, -263.6]}} \\
+deepseek-r1 
+    &  \makecell[t]{62.6 \\ {\scriptsize [97.0, 28.3]}} 
+    &  \makecell[t]{44.2 \\ {\scriptsize [94.6, -6.1]}} 
+    &  \makecell[t]{39.4 \\ {\scriptsize [58.3, 20.6]}} 
+    &  \makecell[t]{-88.3 \\ {\scriptsize [-5.6, -171.1]}} \\
+gemini-2.5-flash 
+    &  \makecell[t]{12.1 \\ {\scriptsize [23.4, 0.7]}} 
+    &  \makecell[t]{425.0 \\ {\scriptsize [1879.3, -1029.3]}} 
+    &  \makecell[t]{0.3 \\ {\scriptsize [14.6, -13.9]}} 
+    &  \makecell[t]{-122.4 \\ {\scriptsize [-8.9, -235.9]}} \\
+gemini-2.5-flash-lite 
+    &  \makecell[t]{-10.8 \\ {\scriptsize [34.4,  -55.9]}}
+    &   \makecell[t]{79.6 \\ {\scriptsize [353.4, -194.1]}} 
+    &   \makecell[t]{24.2 \\ {\scriptsize [58.4,   -9.9]}} 
+    &  \makecell[t]{-52.2 \\ {\scriptsize [-0.5, -103.9]}} \\
+gpt-5-mini 
+    &    \makecell[t]{7.6 \\ {\scriptsize [31.7,  -16.4]}} 
+    &  \makecell[t]{122.8 \\ {\scriptsize [679.3, -433.7]}} 
+    &    \makecell[t]{3.1 \\ {\scriptsize [15.6,   -9.5]}} 
+    &   \makecell[t]{-6.5 \\ {\scriptsize [39.6,  -52.5]}} \\
+kimi-k2 
+    &   \makecell[t]{66.6 \\ {\scriptsize [89.0,   44.3]}} 
+    &   \makecell[t]{40.1 \\ {\scriptsize [61.5,   18.6]}} 
+    &   \makecell[t]{47.1 \\ {\scriptsize [65.1,   29.1]}} 
+    &   \makecell[t]{77.9 \\ {\scriptsize [128.0,   27.8]}} \\
+llama-4-scout 
+    &   \makecell[t]{51.8 \\ {\scriptsize [187.3,  -83.7]}} 
+    &  \makecell[t]{174.2 \\ {\scriptsize [285.5,   62.8]}} 
+    &   \makecell[t]{35.0 \\ {\scriptsize [68.9,    1.1]}} 
+    & \makecell[t]{-761.7 \\ {\scriptsize [-84.2, -1439.2]}} \\
+mistral-medium-3.1 
+    &   \makecell[t]{40.7 \\ {\scriptsize [55.4,   26.0]}} 
+    &   \makecell[t]{92.6 \\ {\scriptsize [195.1,   -9.8]}} 
+    &   \makecell[t]{41.0 \\ {\scriptsize [53.5,   28.6]}} 
+    & \makecell[t]{-127.3 \\ {\scriptsize [-15.0, -239.7]}} \\
+mistral-small-3.2-24b 
+    &   \makecell[t]{57.1 \\ {\scriptsize [83.9,   30.4]}} 
+    & \makecell[t]{-134.4 \\ {\scriptsize [36.5, -305.3]}} 
+    &  \makecell[t]{144.2 \\ {\scriptsize [214.5,   73.9]}} 
+    &  \makecell[t]{-58.2 \\ {\scriptsize [-25.6,  -90.8]}} \\
+\midrule
+Empirical (Giguere et al.) & \multicolumn{4}{c}{\makecell{56.53 \\ {\scriptsize[24, 75]}}} \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} Marginal WTP (\$/household/year) for an additional acre of socially important forest treated. 
+Bracketed values are 95\% confidence intervals computed by the delta method via \texttt{nlcom}. 
+ pools synthetic responses across all nine LLMs and re-estimates the conditional logit on the pooled data. 
+Empirical benchmark from \textcite{Giguere2020}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

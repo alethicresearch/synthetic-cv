@@ -1,0 +1,45 @@
+\begin{table}[h]
+\centering
+\caption{Synthetic logit estimates, Study 1 (NCES): Demographics + beliefs.}
+\label{tab:syn-logit-withBeliefs}
+\begin{threeparttable}
+\footnotesize
+\begin{tabular}{lcccccrr}
+\toprule
+Model & Bid (\$) & NatGas & Nuclear & College & Age & N & $\hat\beta_{bid}/\hat\beta_{bid}^{emp}$ \\
+\midrule
+deepseek-chat-v3.1 &  -0.00406 &  -0.244 &  -0.077 &   0.406 & -0.0037 &    22,229 &  0.688 \\
+ & (  0.00035) & (  0.035) & (  0.035) & (  0.035) & ( 0.0009) & & \\
+deepseek-r1 &  -0.00462 &  -0.261 &  -0.083 &   0.331 & -0.0015 &    22,225 &  0.784 \\
+ & (  0.00035) & (  0.035) & (  0.036) & (  0.035) & ( 0.0009) & & \\
+gemini-2.5-flash &  -0.00257 &  -0.349 &  -0.095 &   0.174 & -0.0038 &    22,045 &  0.436 \\
+ & (  0.00036) & (  0.036) & (  0.037) & (  0.036) & ( 0.0010) & & \\
+gemini-2.5-flash-lite &  -0.00174 &  -0.425 &  -0.102 &   0.238 & -0.0050 &    22,186 &  0.294 \\
+ & (  0.00036) & (  0.036) & (  0.037) & (  0.036) & ( 0.0010) & & \\
+llama-4-scout &  -0.00005 &  -0.157 &  -0.076 &   0.180 & -0.0084 &    20,339 &  0.009 \\
+ & (  0.00039) & (  0.040) & (  0.040) & (  0.039) & ( 0.0011) & & \\
+mistral-medium-3.1 &  -0.00360 &  -0.377 &  -0.121 &   0.189 & -0.0065 &    22,111 &  0.610 \\
+ & (  0.00036) & (  0.036) & (0.037) & (  0.036) & ( 0.0010) & & \\
+mistral-small-3.2-24b &  -0.00118 &  -0.274 &  -0.050 &   0.312 & -0.0052 &    22,181 &  0.200 \\
+ & (  0.00036) & (  0.036) & (  0.037) & (  0.036) & ( 0.0010) & & \\
+kimi-k2 &  -0.00156 &  -0.255 &  -0.161 &   0.113 & -0.0062 &    22,151 &  0.264 \\
+ & (  0.00037) & (  0.037) & (  0.038) & (  0.037) & ( 0.0010) & & \\
+gpt-5-mini &  -0.00214 &  -0.110 &  -0.065 &   0.017 & -0.0052 &    23,044 &  0.363 \\
+ & (  0.00037) & (  0.037) & (  0.038) & (  0.037) & ( 0.0010) & & \\
+\midrule
+Aggregated &  -0.00235 &  -0.266 &  -0.088 &   0.217 & -0.0048 &   198,511 &  0.399 \\
+ & (  0.00012) & (  0.012) & (  0.012) & (  0.012) & ( 0.0003) & & \\
+\midrule
+Empirical (Aldy et al.) &  -0.00590 &  -0.338 &  -0.305 &   0.159 & -0.0106 &       983 & 1.000 \\
+ & (  0.00165) & (  0.169) & (  0.171) & (  0.167) & ( 0.0046) & & \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} Binary logit estimates of the \textcite{Aldy2012} specification on synthetic responses, persona condition: Demographics + beliefs. 
+Standard errors in parentheses; one observation per persona-LLM-repetition cell. 
+Final column reports the synthetic bid coefficient divided by the empirical bid coefficient; values below 1 in magnitude indicate slope compression. 
+Coefficients shown are a subset; the full coefficient vector appears in the supplementary table. 
+Empirical benchmark is the same specification on \textcite{Aldy2012} human-respondent data; WTP is computed on the collapsed-to-persona synthetic sample to match the empirical sample structure (see Table~\ref{tab:syn-wtp-Study1}).
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

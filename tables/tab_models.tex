@@ -1,0 +1,35 @@
+% Extracted from LandEcon_Draft0.tex, lines 668--698.
+% Insert in main document with: \input{tables/tab_models.tex}
+% The tabular body is wrapped in \resizebox{\textwidth}{!}{...} to prevent margin overflow.
+% Requires graphicx, which LandEcon_Draft0.tex already loads.
+
+\begin{table}[h]
+    \centering
+    \caption{LLMs evaluated.}
+    \begin{threeparttable}
+    \begin{tabular}{llll}
+        \toprule
+        Provider & Model & Version / Release & Tier \\
+        \midrule
+        OpenAI    & GPT-5                     & [\textbf{XXXX-XX-XX}] & Frontier \\
+        OpenAI    & GPT-5-mini                & [\textbf{XXXX-XX-XX}] & Mid \\
+        Google    & Gemini 2.5 Flash          & [\textbf{XXXX-XX-XX}] & Mid \\
+        Google    & Gemini 2.5 Flash-Lite     & [\textbf{XXXX-XX-XX}] & Light \\
+        DeepSeek  & DeepSeek-V3 (Chat)        & [\textbf{XXXX-XX-XX}] & Frontier \\
+        DeepSeek  & DeepSeek-R1               & [\textbf{XXXX-XX-XX}] & Reasoning \\
+        Mistral   & Mistral Medium 3.1        & [\textbf{XXXX-XX-XX}] & Mid \\
+        Mistral   & Mistral Small 3.2 (24B-Instruct) & [\textbf{XXXX-XX-XX}] & Light \\
+        Moonshot  & Kimi-K2                   & [\textbf{XXXX-XX-XX}] & Frontier \\
+        Meta      & Llama-4 Scout             & [\textbf{XXXX-XX-XX}] & Mid \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+    \item \textit{Notes:} ``Tier'' is approximate and reflects each model's
+    positioning within its provider's lineup at the time of simulation.
+    All API calls were made between [\textbf{start date}] and
+    [\textbf{end date}]. Specific model identifiers (e.g.,
+    \texttt{gpt-5-mini-2025-XX-XX}) are reported in
+    Appendix~\ref{app:model-ids} for replicability.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
