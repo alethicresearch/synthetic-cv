@@ -4,9 +4,7 @@
 
 Trevor Woolley<sup>†</sup> (UC Berkeley) · Sankalpa Ghose (NUS, Alethic Research) · Alina Khindanova (UT San Antonio) · Kasra Rasaee (Bloomberg, Alethic Research) · Bob Fischer<sup>†</sup> (Texas State)
 
-<sup>†</sup>Corresponding authors: trevor_woolley@berkeley.edu · fischer@txstate.edu
-
-[Paper](#) · [Interactive Explorer](https://alethic.ai/wtp) · [Cite](#citation)
+[Paper](#) · [Research Page](https://alethic.ai/wtp) · [Cite](#citation)
 
 ---
 
