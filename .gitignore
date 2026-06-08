@@ -6,3 +6,6 @@ __pycache__/
 .RData
 *.Rproj.user/
 node_modules/
+
+# Stata swap/lock files
+*.stswp

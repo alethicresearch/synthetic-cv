@@ -1,34 +1,12 @@
-# Code
+# code
 
-## Structure
+All analysis and simulation code for the project.
 
-```
-code/
-├── simulation/     Alethic-ISM workflow graphs and persona/prompt templates
-├── analysis/       Econometric estimation scripts (R/Stata)
-└── figures/        Figure generation scripts (R)
-```
+| Folder | Contents | Owner |
+|---|---|---|
+| `cv-replication/` | Stata replication of Study 1 and Study 2 logit/conditional logit estimates | Trevor Woolley |
+| `experiment-c/` | Analysis scripts for Experiment C (Aldy et al. 2012 replication) | Alina Khindanova |
+| `experiment-e/` | Analysis scripts for Experiment E (Giguere et al. 2020 replication) | Alina Khindanova |
 
-## Requirements
-
-- **R** ≥ 4.2 with packages: `tidyverse`, `survival`, `mlogit`, `krinsky` (see `analysis/install_packages.R`)
-- **Alethic-ISM** for re-running simulations (see `simulation/README.md`)
-
-## Quick start
-
-```bash
-# Replicate Study 1 WTP estimates
-cd code/analysis
-Rscript study1_estimation.R
-
-# Replicate Study 2 conditional logit estimates
-Rscript study2_estimation.R
-
-# Regenerate WTP forest plot (Figure 4)
-Rscript figures/figure4_wtp_s1.R
-```
-
-## Simulation
-
-See `code/simulation/README.md` for instructions on re-running the LLM simulations
-via Alethic-ISM.
+ISM simulation workflows live in the `alethic-ism/` submodule at the repo root.
+See `../CONTRIBUTING.md` for submodule setup.

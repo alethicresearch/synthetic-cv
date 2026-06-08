@@ -1,0 +1,4 @@
+[submodule "alethic-ism"]
+	path = alethic-ism
+	url = https://github.com/alethicresearch/alethic-ism.git
+	branch = main
