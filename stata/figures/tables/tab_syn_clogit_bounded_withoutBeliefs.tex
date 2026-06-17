@@ -1,0 +1,45 @@
+\begin{table}[h]
+\centering
+\caption{Synthetic conditional logit estimates: Bounded choice design, Demographics only.}
+\label{tab:syn-clogit-bounded-withoutBeliefs}
+\begin{threeparttable}
+\footnotesize
+\begin{tabular}{lcccccccr}
+\toprule
+Model & COST & ECOL & SOCIAL & BIOL & CHEM & N & $\hat\beta_{COST}/\hat\beta_{COST}^{emp}$ \\
+\midrule
+deepseek-chat-v3.1 &   -0.0078 &     -0.01 &      0.21 &    5.4194 &    4.0343 &    25,562 &  1.570 \\
+ & (   0.0007) & (     0.07) & (     0.08) & (   0.2351) & (   0.2104) & & \\
+deepseek-r1 &   -0.0102 &      0.08 &      0.13 &    6.3330 &    4.1056 &    27,108 &  2.055 \\
+ & (   0.0008) & (     0.08) & (     0.08) & (   0.2770) & (   0.2236) & & \\
+gemini-2.5-flash &   -0.0122 &     -0.03 &      0.04 &    6.7153 &    5.5741 &    25,384 &  2.456 \\
+ & (   0.0009) & (     0.08) & (     0.09) & (   0.3040) & (   0.2780) & & \\
+gemini-2.5-flash-lite &   -0.0135 &      0.25 &      0.17 &   11.0763 &    7.6889 &    34,804 &  2.715 \\
+ & (   0.0023) & (     0.14) & (     0.14) & (   0.9719) & (   0.6660) & & \\
+gpt-5-mini &   -0.0142 &     -0.10 &      0.15 &    9.3981 &    6.9681 &    35,492 &  2.867 \\
+ & (   0.0013) & (     0.09) & (     0.10) & (   0.4641) & (   0.3950) & & \\
+kimi-k2 &   -0.0149 &     -0.03 &      0.13 &    6.9468 &    6.2774 &    30,666 &  3.001 \\
+ & (   0.0010) & (     0.08) & (     0.08) & (   0.3074) & (   0.2899) & & \\
+llama-4-scout &   -0.0180 &      0.26 &      0.25 &   11.7972 &    8.7512 &    35,430 &  3.625 \\
+ & (   0.0032) & (     0.13) & (     0.14) & (   1.0674) & (   0.8965) & & \\
+mistral-medium-3.1 &   -0.0091 &     -0.05 &      0.21 &    6.4494 &    3.5797 &    33,146 &  1.834 \\
+ & (   0.0008) & (     0.07) & (     0.07) & (   0.2560) & (   0.1919) & & \\
+mistral-small-3.2-24b-instruct &   -0.0072 &      0.01 &      0.13 &    6.8410 &    5.9502 &    31,918 &  1.452 \\
+ & (   0.0010) & (     0.09) & (     0.10) & (   0.3453) & (   0.3156) & & \\
+\midrule
+Aggregated &   -0.0080 &     -0.01 &      0.10 &    6.5965 &    5.2066 &   280,532 &  1.613 \\
+ & (   0.0003) & (     0.03) & (     0.03) & (   0.0950) & (   0.0842) & & \\
+\midrule
+Empirical (Giguere et al.) &   -0.0050 &     -0.05 &      0.11 &    7.9272 &    6.2729 &   280,422 & 1.000 \\
+ & (   0.0006) & (     0.07) & (     0.07) & (   0.2302) & (   0.2043) & & \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} Conditional logit estimates from Bounded choice design choice data, persona condition: Demographics only. 
+Standard errors in parentheses. 
+Final column reports the synthetic bid coefficient divided by the empirical bid coefficient; values below 1 indicate slope compression. 
+Aggregated row pools synthetic responses across all nine LLMs; each (provider, respondent, attempt) cell forms its own choice set. 
+Empirical benchmark is the same unadjusted specification estimated on \textcite{Giguere2020} human-respondent data.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
