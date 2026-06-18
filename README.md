@@ -53,8 +53,6 @@ replication_analysis_code/  All Stata scripts and output figures for replication
 research_website/         Source for the GitHub Pages research page
   index.html              Self-contained research page (interactive results explorer)
 alethic-ism/              Simulation platform (git submodule)
-data/                     Placeholder; synthetic response panels will be deposited here
-results/                  Placeholder; final tables and figures
 ```
 
 To pull the latest paper draft from Overleaf:
