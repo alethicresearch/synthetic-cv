@@ -160,4 +160,4 @@ See [`data/README.md`](data/README.md) for a full description of every file in t
 - File paths are hardcoded as Windows-style paths (`D:\Projects\LLM_CV\...`) in some scripts. Update `global datadir` and `global figdir` for your local environment before running.
 - The `.stswp` files in `do/` are Stata editor swap files and can be safely ignored or deleted.
 - `Paper Replication_AK.do` uses `original_data.csv` from `data/raw/Experiment2/` as its input — ensure that file is present before running.
-- LLM providers 0–8 in the data files correspond to: deepseek-chat-v3.1 (0), deepseek-r1 (1), gemini-2.5-flash (2), gemini-2.5-flash-lite (3), gpt-5-mini (4), kimi-k2 (5), llama-4-scout (6), mistral-medium-3.1 (7), mistral-small-3.2-24b-instruct (8). *(Confirm this mapping against `provider_id_xwalk.dta`.)*
+- LLM providers in the data files are 1-indexed and correspond to: deepseek-chat-v3.1 (1), deepseek-r1 (2), gemini-2.5-flash (3), gemini-2.5-flash-lite (4), llama-4-scout (5), mistral-medium-3.1 (6), mistral-small-3.2-24b-instruct (7), kimi-k2 (8), gpt-5-mini (9). This mapping is confirmed directly from `provider_id_xwalk.dta`.
