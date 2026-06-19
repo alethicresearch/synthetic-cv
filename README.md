@@ -63,8 +63,15 @@ git push origin main
 
 ## Data Access
 
-**Replication datasets** (Stata format): hosted on Google Drive due to size (up to 7.8 GB per file).
-See [`replication_analysis_code/data/README.md`](replication_analysis_code/data/README.md) for the full file inventory and download link.
+**Replication datasets** (Stata format): archived on Zenodo at
+[https://doi.org/10.5281/zenodo.20754919](https://doi.org/10.5281/zenodo.20754919),
+subject to the data-use restrictions of the original studies. This is the
+citable, permanent archive — cite this DOI when referencing the data.
+
+Additional intermediate/working files not included in the Zenodo archive
+remain available on Google Drive; see
+[`replication_analysis_code/data/README.md`](replication_analysis_code/data/README.md)
+for the full file inventory and Drive link.
 
 **Original human-survey data**: not redistributed per data-use agreements with the original authors.
 Request Study 1 data from Aldy/Kotchen/Leiserowitz and Study 2 data from Giguere/Moore/Whitehead directly.
