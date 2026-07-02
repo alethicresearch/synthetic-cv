@@ -1,6 +1,6 @@
 # Experiment - WTP E - 2026JUN19: Run Summary
 
-| version | provider | runs | rows | distinct\_ids | rows\_per\_run | effective\_runs | errors | total\_incl\_errors | error\_pct |
+| version | provider | runs | rows | ids | rows/run | eff\_runs | errors | total\_w\_err | err\_pct |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | v4\.0-db | gpt-5-mini | 1 | 2632 | 901 | 2632 | NaN | 0 | 2632 | 0.0000 |
 | v4\.0-db | kimi-k2 | 1 | 2511 | 904 | 2511 | NaN | 0 | 2511 | 0.0000 |
@@ -53,7 +53,7 @@
 
 ## Summary by model (errors are rough estimates — see note below)
 
-| provider | rows | errors | total\_incl\_errors | error\_pct |
+| provider | rows | errors | total\_w\_err | err\_pct |
 | :--- | ---: | ---: | ---: | ---: |
 | gemini-2.5-flash-lite | 65,187 | 3,097 | 68,284 | 4.5355 |
 | deepseek-chat-v3.1 | 67,218 | 2,934 | 70,152 | 4.1823 |
