@@ -618,14 +618,16 @@
         called contingent valuation (CV), underpins many official benefit–cost analyses. But
         fielding such surveys is slow and expensive, and researchers have begun asking whether
         large language models could stand in for human respondents.</p>
-        <p>This project puts that idea to a direct test. We gave ten LLMs personas built from
-        real survey participants — their age, income, education, and (in one condition) their
-        stated beliefs — and had them answer the same questionnaires from two published CV
-        studies: a national survey on a U.S. clean energy standard (Aldy et al., 2012) and a
-        North Carolina survey on protecting hemlock forests from an invasive pest
-        (Giguere et al., 2020). Because both
-        original studies report household willingness to pay (WTP), the "synthetic" answers can
-        be compared directly against real human benchmarks.</p>
+        <p>This project puts that idea to a direct test using two published CV studies: a
+        national survey on a U.S. clean energy standard (Aldy et al., 2012) and a North
+        Carolina survey on protecting hemlock forests from an invasive pest (Giguere et al.,
+        2020). For each of the original respondents, we reconstruct a synthetic persona
+        one-to-one from their actual survey responses — demographics alone, or demographics
+        plus their stated beliefs — and prompt ten frontier and mid-tier LLMs to act as that
+        person and vote on the same referendum question, under the original study's exact
+        randomization and cost assignments. The synthetic responses are then run through the
+        original studies' own econometric specifications, so the resulting willingness-to-pay
+        (WTP) estimates can be compared directly against the published human benchmarks.</p>
         <p>The short answer: not yet — and the ways the models miss are systematic, not random.
         The interactive charts below let you compare every model against the human benchmarks
         yourself.</p>
