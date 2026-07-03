@@ -612,41 +612,43 @@
       <!-- ─── Overview ───────────────────────────────────────────────────── -->
       <section class="overview" aria-labelledby="overview-heading">
         <p class="section-label" id="overview-heading">About this project</p>
-        <p>When governments weigh an environmental policy — cleaner electricity, protecting
-        forests from an invasive pest — they often rely on surveys that ask people directly:
-        <em>would you support this policy if it cost your household $X per year?</em> This method,
-        called contingent valuation (CV), underpins many official benefit–cost analyses. But
-        fielding such surveys is slow and expensive, and researchers have begun asking whether
-        large language models could stand in for human respondents.</p>
-        <p>This project puts that idea to a direct test using two published CV studies: a
-        national survey on a proposed U.S. National Clean Energy Standard (NCES; Aldy et al.,
-        2012) and a North Carolina survey on protecting hemlock forests from the hemlock
-        woolly adelgid (HWA), an invasive pest (Giguere et al., 2020). For each of the original respondents, we reconstruct a synthetic persona
+        <p>When policymakers need to value something that doesn't have a market price —
+        cleaner air, protecting a forest from an invasive pest, preserving a historic site,
+        reducing health risk — they often rely on surveys that ask people directly:
+        <em>would you support this, if it cost your household $X?</em> This method, called
+        contingent valuation (CV), underpins many official benefit–cost analyses of nonmarket
+        goods. But fielding such surveys is slow and expensive, and researchers have begun
+        asking whether large language models could stand in for human respondents.</p>
+        <p>This project puts that idea to a direct test using two published CV studies, both
+        in the environmental domain: a national survey on a proposed U.S. National Clean
+        Energy Standard (NCES; Aldy et al., 2012) and a North Carolina survey on protecting
+        hemlock forests from the hemlock woolly adelgid (HWA), an invasive pest (Giguere et
+        al., 2020). For each of the original respondents, we reconstruct a synthetic persona
         one-to-one from their actual survey responses — demographics alone, or demographics
         plus their stated beliefs — and prompt ten frontier and mid-tier LLMs to act as that
         person and vote on the same referendum question, under the original study's exact
-        randomization and cost assignments. The synthetic responses are then run through the
-        original studies' own econometric specifications, so the resulting willingness-to-pay
-        (WTP) estimates can be compared directly against the published human benchmarks.</p>
+        randomization and cost assignments. Nine of the ten models were evaluated across
+        repeated runs; the tenth (GPT-5) was evaluated once, given its substantially higher
+        inference cost, and is excluded from the main pooled results. The synthetic responses
+        are then run through the original studies' own econometric specifications, so the
+        resulting willingness-to-pay (WTP) estimates can be compared directly against the
+        published human benchmarks of $164 and $56.37 per household per year.</p>
       </section>
 
       <!-- ─── Finding Block ──────────────────────────────────────────────── -->
       <p class="section-label">Key finding</p>
       <div class="finding" role="note" aria-label="Key finding">
-        Naive synthetic CV does not recover the published WTP benchmarks — but the failure is
-        structured rather than random. Across all models, synthetic respondents are
-        systematically less price-sensitive than humans: approval-bid curves are flatter than
-        the empirical ones, and because logit-implied WTP is the ratio of the constant to the
-        bid coefficient, this slope compression mechanically inflates WTP estimates.
-        Token-probability analysis shows the compression arises at the next-token layer rather
-        than from numerical anchoring, and a pre-registered flat-slope benchmark yields
-        per-model calibration ratios that recover synthetic WTP within the original confidence
-        intervals for most models. The right comparison for synthetic CV is therefore benefit
-        transfer — the standard regulatory practice of reusing WTP estimates from existing
-        studies in new policy contexts — rather than an original survey. By that standard,
-        three uses are already within reach: checking whether a policy's benefits plausibly
-        clear a cost threshold, stress-testing values transferred from other studies, and
-        piloting survey designs before they are fielded.
+        Naive synthetic CV does not recover the published WTP benchmarks. Most models produce
+        estimates that are negative, near zero, or off by an order of magnitude, and the
+        errors follow a clear pattern rather than appearing random: synthetic approval-bid
+        curves are flatter than the real ones, which mechanically distorts the implied
+        willingness to pay. A few models, notably Kimi-K2 and GPT-5-mini, come much closer to
+        the human benchmark than the rest. A direct-recall probe suggests this isn't because
+        they memorized the original study results, pointing instead to differences in how each
+        model reasons about the survey inputs. Taken together, these results suggest synthetic
+        CV currently works best as a fast, cheap form of benefit transfer — useful for
+        threshold analysis, sensitivity-testing existing estimates, and piloting survey
+        designs before fielding them.
       </div>
 
       <!-- ─── Interactive Explorer ───────────────────────────────────────── -->
