@@ -628,31 +628,24 @@
         randomization and cost assignments. The synthetic responses are then run through the
         original studies' own econometric specifications, so the resulting willingness-to-pay
         (WTP) estimates can be compared directly against the published human benchmarks.</p>
-        <p>The headline result: no model reproduces the human benchmarks out of the box — but
-        the failure is structured, not random. Synthetic respondents are systematically less
-        price-sensitive than humans, and once that bias is measured and corrected for,
-        synthetic WTP lands within the original studies' confidence intervals for most models.
-        Understood as a fast, inexpensive form of benefit transfer rather than a replacement
-        for original surveys, synthetic CV already supports practical regulatory uses:
-        threshold analysis, sensitivity testing of transferred values, and piloting survey
-        designs before fielding them. The interactive charts below let you compare every model
-        against the human benchmarks yourself.</p>
+        <p>The interactive charts below let you compare every model's estimates against the
+        human benchmarks yourself.</p>
       </section>
 
       <!-- ─── Finding Block ──────────────────────────────────────────────── -->
       <p class="section-label">Key finding</p>
       <div class="finding" role="note" aria-label="Key finding">
-        Naive synthetic CV does not recover published WTP benchmarks, but the failure is
-        structured rather than random. Synthetic approval-bid curves are systematically flatter
-        than empirical curves across all models, and because logit-implied WTP is the ratio of
-        the constant to the bid coefficient, this slope compression mechanically inflates WTP
-        estimates. Token-probability analysis establishes that the compression is present at
-        the next-token layer and is not primarily a numerical-anchoring artifact. A
-        pre-registered flat-slope benchmark yields per-model calibration ratios that, applied
-        to the bid coefficient, recover synthetic WTP within the original confidence intervals
-        for most models — grounding a benefit-transfer framing under which synthetic CV already
-        supports threshold analysis, sensitivity testing of conventional benefit transfer, and
-        pilot design for planned CV studies.
+        Naive synthetic CV does not recover the published WTP benchmarks — but the failure is
+        structured rather than random. Across all models, synthetic respondents are
+        systematically less price-sensitive than humans: approval-bid curves are flatter than
+        the empirical ones, and because logit-implied WTP is the ratio of the constant to the
+        bid coefficient, this slope compression mechanically inflates WTP estimates.
+        Token-probability analysis shows the compression arises at the next-token layer rather
+        than from numerical anchoring, and a pre-registered flat-slope benchmark yields
+        per-model calibration ratios that recover synthetic WTP within the original confidence
+        intervals for most models. The productive frame is benefit transfer, not primary CV:
+        current capabilities already support threshold analysis, sensitivity testing of
+        conventional benefit transfer, and pilot design for planned CV studies.
       </div>
 
       <!-- ─── Interactive Explorer ───────────────────────────────────────── -->
