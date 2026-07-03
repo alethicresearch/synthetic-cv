@@ -103,7 +103,8 @@ Requirements: Stata 15+, with `mixlogit`, `wtpcikr`, and `esttab` installed via 
           and Rasaee, Kasra and Fischer, Bob},
   journal={[Journal TBD]},
   year={2026},
-  note={Preprint: [DOI TBD]. Data and code: https://github.com/alethicresearch/synthetic-cv}
+  note={Preprint: [DOI TBD]. Data and code: https://github.com/alethicresearch/synthetic-cv.
+        Data archive: https://doi.org/10.5281/zenodo.20754919}
 }
 ```
 

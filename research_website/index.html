@@ -6,6 +6,15 @@
   <meta name="description" content="Research page for 'Can Large Language Models Estimate Willingness to Pay? Evidence from Two Contingent Valuation Replications'">
   <title>Can LLMs Estimate WTP?</title>
 
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Can Large Language Models Estimate Willingness to Pay?">
+  <meta property="og:description" content="Synthetic replications of two published contingent valuation studies benchmark leading LLMs against human willingness-to-pay estimates — with interactive results.">
+  <meta property="og:url" content="https://alethicresearch.github.io/synthetic-cv/">
+  <meta property="og:site_name" content="Alethic Research">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Can Large Language Models Estimate Willingness to Pay?">
+  <meta name="twitter:description" content="Synthetic replications of two published contingent valuation studies benchmark leading LLMs against human willingness-to-pay estimates — with interactive results.">
+
   <link rel="icon" type="image/png" href="favicon.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -605,6 +614,7 @@
         <div class="hero-actions">
           <a href="https://github.com/alethicresearch/synthetic-cv/blob/main/paper/preprint_draft_7.03.26_Can%20Large%20Language%20Models%20Estimate%20Willingness%20to%20Pay.pdf" class="btn" target="_blank" rel="noopener noreferrer">↗ Read the paper</a>
           <a href="https://github.com/alethicresearch/synthetic-cv" class="btn" target="_blank" rel="noopener noreferrer">↗ Data &amp; code</a>
+          <a href="https://doi.org/10.5281/zenodo.20754919" class="btn" target="_blank" rel="noopener noreferrer">↗ Data archive</a>
           <button class="btn" onclick="document.getElementById('citation').scrollIntoView({behavior:'smooth'})">Cite ↓</button>
         </div>
       </section>
@@ -625,12 +635,11 @@
         hemlock forests from the hemlock woolly adelgid (HWA), an invasive pest (Giguere et
         al., 2020). For each of the original respondents, we reconstruct a synthetic persona
         one-to-one from their actual survey responses — demographics alone, or demographics
-        plus their stated beliefs — and prompt ten frontier and mid-tier LLMs to act as that
-        person and vote on the same referendum question, under the original study's exact
-        randomization and cost assignments. The synthetic responses
-        are then run through the original studies' own econometric specifications, so the
-        resulting willingness-to-pay (WTP) estimates can be compared directly against the
-        published human benchmarks.</p>
+        plus their stated beliefs — and benchmark a range of leading LLMs against the same
+        referendum question that person actually faced, under the original study's exact
+        randomization and cost assignments. The synthetic responses are then run through the
+        original studies' own econometric specifications, so the resulting willingness-to-pay
+        (WTP) estimates can be compared directly against the published human benchmarks.</p>
       </section>
 
       <!-- ─── Finding Block ──────────────────────────────────────────────── -->
@@ -896,6 +905,19 @@
         </div>
 
         <div class="methods-subsection">
+          <h3 class="methods-subsection-title">Did the models just memorize the answers?</h3>
+          <p>A direct-recall probe — 20 independent attempts per model in a clean context with
+          no persona, CV prompt, or search access — asked each model for the two studies'
+          published headline WTP figures. Only one model (DeepSeek-R1) showed genuine recall of
+          either figure, and it did not produce more accurate synthetic WTP than models with no
+          recall at all; Kimi-K2, the strongest performer, never reproduced the figure in any
+          attempt. The deviation pattern is also structurally similar across a heavily cited
+          study and a less-cited one. We take this as evidence against training-data leakage
+          driving the results. The full probe pipeline is published at
+          <a href="wtp_recall_probe/" target="_blank" rel="noopener noreferrer">wtp_recall_probe</a>.</p>
+        </div>
+
+        <div class="methods-subsection">
           <h3 class="methods-subsection-title">How to read the plots</h3>
           <p>The forest plots show mean WTP estimates (points) with 95% confidence intervals (lines) for each
           LLM, in two conditions: demographics-only personas (red diamonds) and demographics-plus-beliefs
@@ -921,7 +943,8 @@
              and Rasaee, Kasra and Fischer, Bob},
   journal = {[Journal TBD]},
   year    = {2026},
-  note    = {Preprint: [DOI TBD]. Data and code: https://github.com/alethicresearch/synthetic-cv}
+  note    = {Preprint: [DOI TBD]. Data and code: https://github.com/alethicresearch/synthetic-cv.
+             Data archive: https://doi.org/10.5281/zenodo.20754919}
 }</pre>
           <button class="copy-btn" id="copy-btn" onclick="copyBibtex()" aria-label="Copy BibTeX citation">Copy</button>
         </div>
