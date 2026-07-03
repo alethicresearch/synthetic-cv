@@ -1,16 +1,16 @@
 {
-  "models": ["Aggregated", "DeepSeek Chat v3.1", "DeepSeek R1", "Gemini 2.5 Flash", "Gemini 2.5 Flash-Lite", "Mistral Medium 3.1", "Mistral Small 3.2", "Kimi-K2", "GPT-5-mini"],
+  "models": ["Aggregated", "DeepSeek Chat v3.1", "DeepSeek R1", "Gemini 2.5 Flash", "Gemini 2.5 Flash-Lite", "Llama-4 Scout", "Mistral Medium 3.1", "Mistral Small 3.2", "Kimi-K2", "GPT-5-mini"],
   "note": "Slope compression ratios: synthetic bid coefficient / empirical bid coefficient. Values < 1 indicate synthetic respondents are less price-sensitive than human respondents.",
   "study1": {
-    "no_beliefs":   [0.570, 0.293, 1.149, 0.933, 1.322, 0.435, 0.258, 0.713, 1.120],
-    "with_beliefs": [0.399, 0.688, 0.784, 0.436, 0.294, 0.610, 0.200, 0.264, 0.363]
+    "no_beliefs":   [0.570, 0.293, 1.149, 0.933, 1.322, 0.252, 0.435, 0.258, 0.713, 1.120],
+    "with_beliefs": [0.399, 0.688, 0.784, 0.436, 0.294, 0.009, 0.610, 0.200, 0.264, 0.363]
   },
   "study2_random": {
-    "no_beliefs":   [0.895, 0.777, 0.866, 1.122, 1.021, 1.180, 1.344, 1.097, 1.052],
-    "with_beliefs": [0.321, 0.368, 0.402, 0.119, 0.083, 0.503, 0.138, 0.789, 0.150]
+    "no_beliefs":   [0.895, 0.777, 0.866, 1.122, 1.021, 1.071, 1.180, 1.344, 1.097, 1.052],
+    "with_beliefs": [0.321, 0.368, 0.402, 0.119, 0.083, 0.442, 0.503, 0.138, 0.789, 0.150]
   },
   "study2_bounded": {
-    "no_beliefs":   [1.633, 1.570, 2.055, 2.456, 2.715, 1.834, 1.452, 3.001, 2.867],
-    "with_beliefs": [-0.695, -0.541, -0.394, -0.874, -0.717, -0.642, -1.257, 0.576, -0.926]
+    "no_beliefs":   [1.633, 1.536, 1.987, 2.516, 2.768, 2.811, 1.981, 1.383, 3.253, 2.853],
+    "with_beliefs": [-0.695, -0.541, -0.394, -0.712, -0.675, -0.396, -0.642, -1.257, 0.576, -0.854]
   }
 }
