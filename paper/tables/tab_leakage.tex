@@ -12,20 +12,19 @@
         \toprule
         Model & Recalls Aldy WTP & Recalls Giguere WTP & Recalls bid range \\
         \midrule
-        GPT-5                  & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
-        GPT-5-mini             & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
-        Gemini 2.5 Flash       & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
-        Gemini 2.5 Flash-Lite  & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
-        DeepSeek-V3            & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
-        DeepSeek-R1            & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
-        Mistral Medium 3.1     & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
-        Mistral Small 3.2      & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
-        Kimi-K2                & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
-        Llama-4 Scout          & [Yes/Approx/No] & [Yes/Approx/No] & [Yes/Approx/No] \\
+GPT-5-mini             & No  & No  & No \\
+        Gemini 2.5 Flash       & No  & No  & No \\
+        Gemini 2.5 Flash-Lite  & No  & No  & No \\
+        DeepSeek-V3.1 (Chat)   & No  & No  & No \\
+        DeepSeek-R1            & Yes & No  & No \\
+        Mistral Medium 3.1     & No  & No  & No \\
+        Mistral Small 3.2      & No  & No  & No \\
+        Kimi-K2                & No  & No  & No \\
+        Llama-4 Scout          & No  & No  & No \\
         \bottomrule
     \end{tabular}
     \begin{tablenotes}\footnotesize
-        \item \textit{Notes:} ``Yes'' means the model produced a numeric figure within 5\% of the published estimate. ``Approx'' means the model produced a directionally correct figure within 25\%. ``No'' means the model declined to answer, produced an unrelated figure, or produced a figure off by more than 25\%.
+        \item \textit{Notes:} ``Yes'' means the model produced a numeric figure within 5\% of the published estimate across a majority of 20 repetitions. ``Approx'' means the model produced a directionally correct figure within 25\%. ``No'' means the model declined to answer, produced an unrelated figure, or produced a figure off by more than 25\%. Each cell reflects 20 independent repetitions; models sometimes self-reported high confidence in figures that were incorrect on inspection (e.g., citing a value in the wrong units), so classifications are based on the recalled content itself rather than the model's self-reported confidence. No model reproduced the bid amounts used in either study across 180 total attempts (9 models $\times$ 20 repetitions).
     \end{tablenotes}
     \end{threeparttable}
 \end{table}

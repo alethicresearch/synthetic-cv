@@ -1,32 +1,46 @@
-% Extracted from LandEcon_Draft0.tex, lines 1790--1815.
-% Insert in main document with: \input{tables/tab_validation_rates.tex}
-% The tabular body is wrapped in \resizebox{\textwidth}{!}{...} to prevent margin overflow.
-% Requires graphicx, which LandEcon_Draft0.tex already loads.
-
+% REFRAMED Table D.6 — built from actual error data in the run-summary files.
+% Replaces the previous 4-column [first-attempt / retry / missing / retention]
+% structure (which the data can't fill precisely) with the error data that
+% DOES exist, honestly flagged as approximate per the source files' own caveat.
+%
+% Insert with: \input{tables/tab_validation_rates.tex}
 \begin{table}[h]
     \centering
-    \caption{Schema-validation failure rates by model.}
-    \resizebox{\textwidth}{!}{%
+    \caption{Non-transient generation error rates by model.}
+    \label{tab:validation-rates}
     \begin{threeparttable}
-    \begin{tabular}{lcccc}
+    \begin{tabular}{lcc}
         \toprule
-        Model & First-attempt failure (\%) & Resolved on retry (\%) & Coded missing (\%) & Final $N$ retained (\%) \\
+        Model & Study 1 error rate & Study 2 error rate \\
         \midrule
-        GPT-5                  & [X.X] & [X.X] & [X.X] & [XX.X] \\
-        GPT-5-mini             & [X.X] & [X.X] & [X.X] & [XX.X] \\
-        Gemini 2.5 Flash       & [X.X] & [X.X] & [X.X] & [XX.X] \\
-        Gemini 2.5 Flash-Lite  & [X.X] & [X.X] & [X.X] & [XX.X] \\
-        DeepSeek-V3            & [X.X] & [X.X] & [X.X] & [XX.X] \\
-        DeepSeek-R1            & [X.X] & [X.X] & [X.X] & [XX.X] \\
-        Mistral Medium 3.1     & [X.X] & [X.X] & [X.X] & [XX.X] \\
-        Mistral Small 3.2      & [X.X] & [X.X] & [X.X] & [XX.X] \\
-        Kimi-K2                & [X.X] & [X.X] & [X.X] & [XX.X] \\
-        Llama-4 Scout          & [X.X] & [X.X] & [X.X] & [XX.X] \\
+        GPT-5-mini                       & 0.00\% & 1.05\% \\
+        Gemini 2.5 Flash                 & 0.00\% & 2.85\% \\
+        Gemini 2.5 Flash-Lite            & 0.00\% & 4.54\% \\
+        DeepSeek-V3.1 (Chat)             & 0.01\% & 4.18\% \\
+        DeepSeek-R1                      & 0.00\% & 1.39\% \\
+        Mistral Medium 3.1               & 0.47\% & 0.80\% \\
+        Mistral Small 3.2 (24B-Instruct) & 0.02\% & 2.57\% \\
+        Kimi-K2                          & 0.04\% & 2.56\% \\
+        Llama-4 Scout                    & 19.47\% & 2.69\% \\
         \bottomrule
     \end{tabular}
     \begin{tablenotes}\footnotesize
-        \item \textit{Notes:} Pooled across both studies and all information conditions. ``Final $N$ retained'' is the share of intended (respondent, condition, model, repetition) cells that produced a schema-valid, non-missing response after up to four total attempts.
+    \item \textit{Notes:} Error rates are the share of generation attempts
+    that produced non-transient failures (schema-validation failures and
+    unparseable output; transient rate-limit and network errors are
+    excluded). Rates are computed as errors divided by total attempts
+    (valid responses plus errors) per model, pooled across all conditions
+    within each study. These figures are approximate: run restarts,
+    graph-structure changes, and cleanup cycles introduce attribution
+    noise, and a small number of errors could not be linked to a specific
+    model. All persistent failures (after four total attempts) are coded as
+    missing and excluded from the analytic sample, so these error rates do
+    not affect the validity of reported estimates; they indicate only which
+    models required more regeneration to reach the target sample. GPT-5 is
+    omitted from this table because it was run only once (see
+    Table~\ref{tab:models}). Llama-4 Scout's substantially elevated Study~1
+    error rate is consistent with its degenerate bid-response behavior
+    discussed in Section~\ref{sec:results}.
     \end{tablenotes}
     \end{threeparttable}
-    }
 \end{table}

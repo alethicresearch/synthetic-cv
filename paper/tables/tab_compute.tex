@@ -1,33 +1,83 @@
-% Extracted from LandEcon_Draft0.tex, lines 774--802.
-% Insert in main document with: \input{tables/tab_compute.tex}
-% The tabular body is wrapped in \resizebox{\textwidth}{!}{...} to prevent margin overflow.
-% Requires graphicx, which LandEcon_Draft0.tex already loads.
+% Insert in the main document with:
+% \input{tables/tab_compute.tex}
+%
+% Required packages:
+% \usepackage{booktabs}
+% \usepackage{threeparttable}
 
 \begin{table}[h]
     \centering
     \caption{Computational scope of the synthetic CV experiment.}
+    \label{tab:compute}
     \begin{threeparttable}
-    \begin{tabular}{lcc}
-        \toprule
-                                                       & Study 1 (NCES) & Study 2 (HWA) \\
-        \midrule
-        Respondents in original study                  & 1{,}010        & 907 \\
-        Information conditions                         & 11             & [\textbf{XX}] \\
-        \quad Demographics only                        & 1              & 1 \\
-        \quad Demographics + all beliefs               & 1              & 1 \\
-        \quad Demographics + one belief at a time      & 9              & [\textbf{XX}] \\
-        LLMs evaluated                                 & 10             & 10 \\
-        Repetitions per cell                           & [\textbf{N$_1$}] & [\textbf{N$_2$}] \\
-        Question-framing orderings                     & 2              & 1 \\
-        Total LLM API calls                            & [\textbf{XXX,XXX}] & [\textbf{XXX,XXX}] \\
-        Total synthetic responses generated            & [\textbf{XXX,XXX}] & [\textbf{XXX,XXX}] \\
-        \bottomrule
-    \end{tabular}
-    \begin{tablenotes}\footnotesize
-    \item \textit{Notes:} Total API calls aggregate across all
-    (respondent, condition, model, repetition, ordering) cells, including
-    failed-validation retries. Total synthetic responses count only
-    schema-validated, non-missing observations entering the analytic sample.
-    \end{tablenotes}
+        \begin{tabular}{lcc}
+            \toprule
+                & Study 1 (NCES) & Study 2 (HWA) \\
+            \midrule
+
+            Respondents in original study
+                & 1{,}010
+                & 907 \\
+
+            Information conditions
+                & 15
+                & 2 \\
+
+            \quad Demographics only
+                & 1
+                & 1 \\
+
+            \quad Demographics + all beliefs
+                & 1
+                & 1 \\
+
+            \quad Demographics + one belief at a time
+                & 13
+                & 0 \\
+
+            LLMs evaluated in total
+                & 10
+                & 10 \\
+
+            LLMs evaluated over repeated runs
+                & 9
+                & 9 \\
+
+            Repetitions per cell, repeated models
+                & 11--15 (mean 12.0)
+                & 7--10 (mean 8.2) \\
+
+            GPT-5 run structure
+                & One complete run
+                & One complete run \\
+
+            Question-framing orderings
+                & 2
+                & 1 \\
+
+            Total OpenRouter API calls\textsuperscript{$\dagger$}
+                & $\approx$660{,}000
+                & $\approx$382{,}000 \\
+
+            Total validated synthetic responses
+                & 650{,}434
+                & 367{,}502 \\
+
+            \bottomrule
+        \end{tabular}
+
+        \begin{tablenotes}\footnotesize
+            \item \textit{Notes:}
+            Ten LLMs were evaluated in total. Nine models were evaluated
+            over repeated runs, whereas GPT-5 was evaluated in one complete
+            run of all applicable respondent-condition cells in each study
+            because of its substantially higher inference cost. Repetition
+            ranges and means therefore refer only to the nine repeatedly
+            evaluated models. Study 1 included demographics-only,
+            demographics-plus-all-beliefs, and 13 one-belief-at-a-time
+            conditions. Study 2 included only the demographics-only and
+            demographics-plus-all-beliefs conditions. Response and call totals are for the nine repeatedly-evaluated models; GPT-5's single run is not included. Total OpenRouter API calls (marked $\dagger$) include failed-validation retries and
+            are approximate, as run restarts and cleanup cycles introduce attribution noise; validated-response counts are exact. Total validated synthetic responses count schema-valid, non-missing observations entering the analytic sample.
+        \end{tablenotes}
     \end{threeparttable}
 \end{table}

@@ -1,35 +1,74 @@
-% Extracted from LandEcon_Draft0.tex, lines 668--698.
-% Insert in main document with: \input{tables/tab_models.tex}
-% The tabular body is wrapped in \resizebox{\textwidth}{!}{...} to prevent margin overflow.
-% Requires graphicx, which LandEcon_Draft0.tex already loads.
-
+% Insert in the main document with:
+% \input{tables/tab_models.tex}
+%
+% Required packages:
+% \usepackage{booktabs}
+% \usepackage{threeparttable}
 \begin{table}[h]
     \centering
     \caption{LLMs evaluated.}
+    \label{tab:models}
     \begin{threeparttable}
-    \begin{tabular}{llll}
-        \toprule
-        Provider & Model & Version / Release & Tier \\
-        \midrule
-        OpenAI    & GPT-5                     & [\textbf{XXXX-XX-XX}] & Frontier \\
-        OpenAI    & GPT-5-mini                & [\textbf{XXXX-XX-XX}] & Mid \\
-        Google    & Gemini 2.5 Flash          & [\textbf{XXXX-XX-XX}] & Mid \\
-        Google    & Gemini 2.5 Flash-Lite     & [\textbf{XXXX-XX-XX}] & Light \\
-        DeepSeek  & DeepSeek-V3 (Chat)        & [\textbf{XXXX-XX-XX}] & Frontier \\
-        DeepSeek  & DeepSeek-R1               & [\textbf{XXXX-XX-XX}] & Reasoning \\
-        Mistral   & Mistral Medium 3.1        & [\textbf{XXXX-XX-XX}] & Mid \\
-        Mistral   & Mistral Small 3.2 (24B-Instruct) & [\textbf{XXXX-XX-XX}] & Light \\
-        Moonshot  & Kimi-K2                   & [\textbf{XXXX-XX-XX}] & Frontier \\
-        Meta      & Llama-4 Scout             & [\textbf{XXXX-XX-XX}] & Mid \\
-        \bottomrule
-    \end{tabular}
-    \begin{tablenotes}\footnotesize
-    \item \textit{Notes:} ``Tier'' is approximate and reflects each model's
-    positioning within its provider's lineup at the time of simulation.
-    All API calls were made between [\textbf{start date}] and
-    [\textbf{end date}]. Specific model identifiers (e.g.,
-    \texttt{gpt-5-mini-2025-XX-XX}) are reported in
-    Appendix~\ref{app:model-ids} for replicability.
-    \end{tablenotes}
+        \begin{tabular}{llll}
+            \toprule
+            Provider & Model & Version / Release & Tier \\
+            \midrule
+            OpenAI
+                & GPT-5
+                & 2025-08-07
+                & Frontier \\
+            OpenAI
+                & GPT-5-mini
+                & 2025-08-07
+                & Mid \\
+            Google
+                & Gemini 2.5 Flash
+                & 2025-04-17
+                & Mid \\
+            Google
+                & Gemini 2.5 Flash-Lite
+                & 2025-06-17
+                & Light \\
+            DeepSeek
+                & DeepSeek-V3.1 (Chat)
+                & 2025-08-21
+                & Frontier \\
+            DeepSeek
+                & DeepSeek-R1
+                & 2025-01-20
+                & Reasoning \\
+            Mistral
+                & Mistral Medium 3.1
+                & 2025-08-12
+                & Mid \\
+            Mistral
+                & Mistral Small 3.2 (24B-Instruct)
+                & 2025-06-20
+                & Light \\
+            Moonshot
+                & Kimi-K2
+                & 2025-07-11
+                & Frontier \\
+            Meta
+                & Llama-4 Scout
+                & 2025-04-05
+                & Mid \\
+            \bottomrule
+        \end{tabular}
+        \begin{tablenotes}\footnotesize
+            \item \textit{Notes:}
+            ``Tier'' is approximate and reflects each model's positioning
+            within its provider's lineup at the time of simulation. Ten
+            models were evaluated in total. Nine models were evaluated over
+            repeated runs, whereas GPT-5 was evaluated in a single run
+            because of its substantially higher inference cost. GPT-5 is
+            therefore excluded from repetition-pooled estimates and the
+            nine-model ensemble unless otherwise specified. Study 1 API
+            calls were made in October 2025, and Study 2 API calls were made
+            in March 2026. All calls were routed through the unified
+            OpenRouter API. Specific model identifiers, including OpenRouter
+            slugs such as \texttt{openai/gpt-5-mini}, are reported in
+            Appendix~\ref{app:model-ids} for replicability.
+        \end{tablenotes}
     \end{threeparttable}
 \end{table}

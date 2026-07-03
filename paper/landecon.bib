@@ -123,12 +123,17 @@
 % ⚠ verify exact title/authors/venue; multiple papers in this space
 
 @article{vonderHeyde2025,
-  author    = {von der Heyde, Leah and Haensch, Anna-Carolina and Wenz, Alexander},
+  author    = {von der Heyde, Leah and Haensch, Anna-Carolina and Wenz, Alexander and Ma, Bolei},
   title     = {{United} in Diversity? {Contextual} Biases in {LLM}-Based Predictions of the 2024 {European} Parliament Elections},
   journal   = {arXiv preprint arXiv:2409.09045},
-  year      = {2025}
+  year      = {2024}
 }
-% ⚠ verify; this is one of several plausible von der Heyde et al. LLM-survey papers
+% ✓ verified — arXiv 2409.09045, originally submitted Aug 29, 2024 (v2 revised
+% Apr 17, 2025). Added missing 4th author (Bolei Ma); most citing sources use
+% 2024 as the year, matching original submission. If you specifically intend
+% to cite the April 2025 revision, change year back to 2025 and rename key
+% to vonderHeyde2024 -> vonderHeyde2025 consistently, but 2024 is the more
+% standard citation year for this paper.
 
 @article{Li2024,
   author    = {Li, Peiyao and Castelo, Noah and Katona, Zsolt and Sarvary, Miklos},
@@ -193,21 +198,29 @@
 }
 % ✓ verified
 
-@article{Carson1996,
-  author  = {Carson, Richard T. and Mitchell, Robert C.},
-  title   = {The Value of Clean Water: The Public's Willingness to Pay for Boatable, Fishable, and Swimmable Quality Water},
-  journal = {Water Resources Research},
-  year    = {1993},
-  volume  = {29},
-  number  = {7},
-  pages   = {2445--2454},
-  doi     = {10.1029/93WR00495}
-}
-% ⚠ The 1996 reference in your draft most likely intends the Carson-Mitchell-
-% Hanemann scope-sensitivity work; if you want their 1996 piece on willingness
-% to pay/willingness to accept divergence, change to:
+% UNUSED as of 2026-07-03 verification pass -- confirmed \textcite{Carson1996}
+% does not appear anywhere in the current manuscript (the actual in-text
+% citation in the incentive-compatibility passage is \parencite{Carson2007},
+% a different key). Commented out rather than deleted in case this entry
+% was intended for content that got cut, or in case a future revision
+% re-adds a reference needing it. Original entry + its own verification
+% note preserved below for reference.
+%
+% @article{Carson1996,
+%   author  = {Carson, Richard T. and Mitchell, Robert C.},
+%   title   = {The Value of Clean Water: The Public's Willingness to Pay for Boatable, Fishable, and Swimmable Quality Water},
+%   journal = {Water Resources Research},
+%   year    = {1993},
+%   volume  = {29},
+%   number  = {7},
+%   pages   = {2445--2454},
+%   doi     = {10.1029/93WR00495}
+% }
+% ⚠ The 1996 reference in the draft most likely intended the Carson-Mitchell-
+% Hanemann scope-sensitivity work; if a future revision wants their 1996 piece
+% on willingness to pay/willingness to accept divergence, change to:
 %   journal = {Discussion Paper 96-XX, Resources for the Future}
-% Verify intended target before submission.
+% Verify intended target before re-using.
 
 @article{Heberlein2005,
   author  = {Heberlein, Thomas A. and Wilson, Matthew A. and Bishop, Richard C. and Schaeffer, Nora Cate},
@@ -233,7 +246,7 @@
 }
 % ✓ verified
 
-@article{Vossler2009,
+@article{Vossler2012,
   author  = {Vossler, Christian A. and Doyon, Maurice and Rondeau, Daniel},
   title   = {Truth in Consequentiality: Theory and Field Evidence on Discrete Choice Experiments},
   journal = {American Economic Journal: Microeconomics},
@@ -289,11 +302,29 @@
 % canonical Contemporary Guidelines paper" colloquially; the actual paper
 % title uses "Guidance".
 
+@misc{Whitehead2023,
+  author       = {Whitehead, John C.},
+  title        = {Contingent Valuation},
+  howpublished = {\url{https://www.env-econ.net/contingent-valuation/}},
+  year         = {2023},
+  note         = {Blog post, \textit{Environmental Economics}, posted September 27, 2023}
+}
+
+@article{Hao2025Shenzhen,
+  author  = {Hao, Haiyan and Lin, Jiaying and Qiu, Shiyong and Liu, Li and Dai, Jiahuan},
+  title   = {Comparing Public Willingness-to-Pay for Different Low-Carbon Measures: A Case Study of {Shenzhen}, {China}},
+  journal = {PLOS ONE},
+  volume  = {20},
+  number  = {3},
+  pages   = {e0319687},
+  year    = {2025},
+  doi     = {10.1371/journal.pone.0319687}
+}
 % =============================================================================
 % BENEFIT TRANSFER LITERATURE
 % =============================================================================
 
-@article{Bergstrom2008,
+@article{Bergstrom2006,
   author  = {Bergstrom, John C. and Taylor, Laura O.},
   title   = {Using Meta-Analysis for Benefits Transfer: Theory and Practice},
   journal = {Ecological Economics},
@@ -350,3 +381,25 @@
 }
 % ✓ verified — Chapter 11 in Champ, Boyle, and Brown (eds.), 2nd ed.,
 % Springer 2017. Pagination 431--462.
+
+% =============================================================================
+% PLATFORM / INFRASTRUCTURE
+% =============================================================================
+
+@unpublished{GhoseRasaee2026,
+  author  = {Ghose, Sankalpa and Rasaee, Kasra and Singer, Peter and Savulescu, Julian},
+  title   = {Doing Ethics with {AI}: Practical Ethics Engineering, Product-Led Philosophy, \& Computer-Aided Ethics},
+  note    = {Manuscript in preparation},
+  year    = {2026}
+}
+
+% =============================================================================
+% MODEL TECHNICAL REPORTS
+% =============================================================================
+
+@techreport{KimiTeam2025,
+  author = {{Kimi Team}},
+  title  = {{Kimi K2: Open Agentic Intelligence}},
+  year   = {2025},
+  note   = {arXiv:2507.20534. Released July 11, 2025}
+}

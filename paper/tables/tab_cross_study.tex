@@ -6,6 +6,7 @@
 \begin{table}[h]
     \centering
     \caption{Cross-study summary of synthetic CV performance.}
+    \label{tab:cross-study}
     \resizebox{\textwidth}{!}{%
     \begin{threeparttable}
     \begin{tabular}{lcccc}
@@ -14,21 +15,21 @@
         \cmidrule(lr){2-3} \cmidrule(lr){4-5}
         Metric & Demo only & + Beliefs & Demo only & + Beliefs \\
         \midrule
-        Best-LLM mean abs.\ deviation (pp)              & [X.XX] & [X.XX] & [X.XX] & [X.XX] \\
-        Aggregate WTP error (\$)                        & [XXX]  & [XXX]  & [XXX]  & [XXX]  \\
-        Best-LLM WTP error (\$)                         & [XXX]  & [XXX]  & [XXX]  & [XXX]  \\
-        Synthetic-to-empirical bid coefficient ratio   & [0.XX] & [0.XX] & [0.XX] & [0.XX] \\
-        Share of LLMs with WTP in original 95\% CI      & [X/10] & [X/10] & [X/10] & [X/10] \\
+        Best-LLM mean abs.\ deviation (pp)              & 5.6 & 5.54 & 3.97 \& 7.07 & 12.16 \& 8.07 \\
+        Aggregate WTP error (\$)                        & 173  & 125  & 55.35 \& 155.33   & 47.95 \& 151.27 \\
+        Best-LLM WTP error (\$)                         & 21  & 19  & 2.15 \& 4.27  & 30.15 \& 21.53  \\
+        Mean synthetic-to-empirical bid coefficient ratio   & 0.72 & 0.41 & 1.06 \& 2.34 & 0.33 \& 0.54\\
+        Share of LLMs with WTP in original 95\% CI      & 2/9 & 2/9 & 2/9 \& 6/9 & 0/9 \& 0/9 \\
         \bottomrule
     \end{tabular}
     \begin{tablenotes}\footnotesize
     \item \textit{Notes:} Mean absolute deviation computed across bid
     levels and averaged across LLMs. Aggregate WTP refers to the
-    equally-weighted ensemble across all ten models. The
+    equally-weighted ensemble across all nine models. The
     synthetic-to-empirical bid coefficient ratio is the cross-LLM mean of
     each model's bid coefficient divided by the corresponding empirical
     bid coefficient; values below one indicate flatter synthetic curves
-    than empirical curves.
+    than empirical curves. In Study 2, the first number in each cell represents the value for the random-cost design and the second for the bounded-cost design.
     \end{tablenotes}
     \end{threeparttable}
     }

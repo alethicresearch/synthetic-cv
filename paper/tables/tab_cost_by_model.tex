@@ -1,0 +1,43 @@
+% Cost by model, Study 1 (WTP-C), computed from OpenRouter billing data
+% and Kasra's reconciled total ($922.56 across 9 models, matching the
+% $1,056 OpenRouter total minus non-Study-1 model calls on the same account).
+% Insert with: \input{tables/tab_cost_by_model.tex}
+\begin{table}[h]
+    \centering
+    \caption{Study 1 API cost by model.}
+    \label{tab:cost-by-model}
+    \begin{threeparttable}
+    \begin{tabular}{lrrr}
+        \toprule
+        Model & Total cost (\$) & Validated responses & Cost per 1{,}000 (\$) \\
+        \midrule
+        Gemini 2.5 Flash-Lite            &  25.56 & 44{,}440 & 0.57 \\
+        Mistral Small 3.2 (24B-Instruct) &  25.56 & 44{,}455 & 0.58 \\
+        Gemini 2.5 Flash                 &  78.50 & 44{,}440 & 1.77 \\
+        Llama-4 Scout                    &  79.72 & 39{,}041 & 2.04 \\
+        Mistral Medium 3.1               & 106.05 & 44{,}232 & 2.40 \\
+        GPT-5-mini                       & 116.87 & 46{,}104 & 2.54 \\
+        DeepSeek-V3.1 (Chat)             & 113.79 & 44{,}459 & 2.56 \\
+        Kimi-K2                          & 147.42 & 44{,}481 & 3.31 \\
+        DeepSeek-R1                      & 229.19 & 44{,}456 & 5.16 \\
+        \midrule
+        Total                            & 922.56 & 397{,}108\tnote{a} & 1.42 \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}\footnotesize
+    \item \textit{Notes:} Costs from OpenRouter billing records, pooled
+    across all three information conditions and both question-framing
+    orderings within Study 1. Comparable billing data for Study 2 was not
+    available at the time of writing and is not reported here. GPT-5
+    (evaluated once, not analyzed; see Table~\ref{tab:models}) is excluded.
+    DeepSeek-R1 is a reasoning (chain-of-thought) model and generates
+    substantially more output tokens per response than the other models
+    evaluated, which accounts for its comparatively higher cost.
+    \item[a] Response count here reflects the demographics-only and
+    demographics-plus-all-beliefs conditions only (the summary-by-model
+    totals available from billing records); the one-belief-at-a-time
+    condition's per-model cost was not separately broken out in the
+    billing export.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}

@@ -23,6 +23,8 @@ backend=biber,
 style=authoryear,
 ]{biblatex}
 \addbibresource{jaere.bib}
+\usepackage{lineno}
+\linenumbers
 
 \title{Using LLMs to Estimate Willingness to Pay: \\ Bridging the Data Availability Gap with Synthetic Contingent Valuation}
 
@@ -448,7 +450,7 @@ We present results in four subsections. Section~\ref{sec:results-nces} reports t
     \label{fig:nces-wtp}
 \end{figure}
 
-\paragraph{One-belief-at-a-time condition.} To isolate the marginal contribution of each belief question, we re-ran the experiment appending each of the nine belief questions individually (Q1--Q9). Figure~\ref{fig:nces-one-belief} reports approval-bid curves for each single-belief specification. Two findings emerge. First, adding a single well-chosen belief question often produces a closer fit to the empirical curve than adding the full belief battery, suggesting that some belief questions introduce noise rather than signal. Belief questions Q1 ([\textbf{topic of Q1}]) and Q3 ([\textbf{topic of Q3}]) systematically degrade fit when included. Second, Llama-4 Scout and GPT-5-mini consistently outperform other LLMs in this condition. However, despite Llama-4 Scout's strong performance on individual response shares, its implied WTP estimates exceed those of other models by an order of magnitude---a discrepancy traceable to its near-flat bid-response slope, which inflates the WTP ratio in the logit inversion. We return to this point in Section~\ref{sec:results-mechanism}.
+\paragraph{One-belief-at-a-time condition.} To isolate the marginal contribution of each belief question, we re-ran the experiment appending each of the nine belief questions individually (Q1--Q9). Figure~\ref{fig:nces-one-belief} reports approval-bid curves for each single-belief specification. Two findings emerge. First, adding a single well-chosen belief question often produces a closer fit to the empirical curve than adding the full belief battery, suggesting that some belief questions introduce noise rather than signal. Belief questions Q1 (political party affiliation) and Q3 (anthropogenic climate change) systematically degrade fit when included. Second, Llama-4 Scout and GPT-5-mini consistently outperform other LLMs in this condition. However, despite Llama-4 Scout's strong performance on individual response shares, its implied WTP estimates exceed those of other models by an order of magnitude---a discrepancy traceable to its near-flat bid-response slope, which inflates the WTP ratio in the logit inversion. We return to this point in Section~\ref{sec:results-mechanism}.
 
 \begin{figure}[h]
     \centering

@@ -1,33 +1,31 @@
-% Extracted from LandEcon_Draft0.tex, lines 1760--1786.
 % Insert in main document with: \input{tables/tab_model_ids_detail.tex}
 % The tabular body is wrapped in \resizebox{\textwidth}{!}{...} to prevent margin overflow.
 % Requires graphicx, which LandEcon_Draft0.tex already loads.
-
 \begin{table}[h]
     \centering
     \caption{Model identifiers and API configuration.}
     \resizebox{\textwidth}{!}{%
     \begin{threeparttable}
     \footnotesize
-    \begin{tabular}{lllll}
-        \toprule
-        Provider & Model & API identifier & Endpoint & Cutoff \\
-        \midrule
-        OpenAI    & GPT-5                & \texttt{[\textbf{gpt-5-XXXX-XX-XX}]}                & \url{api.openai.com}     & [\textbf{XXXX}] \\
-        OpenAI    & GPT-5-mini           & \texttt{[\textbf{gpt-5-mini-XXXX-XX-XX}]}           & \url{api.openai.com}     & [\textbf{XXXX}] \\
-        Google    & Gemini 2.5 Flash     & \texttt{[\textbf{gemini-2.5-flash-XXX}]}            & \url{generativelanguage.googleapis.com} & [\textbf{XXXX}] \\
-        Google    & Gemini 2.5 Flash-Lite & \texttt{[\textbf{gemini-2.5-flash-lite-XXX}]}      & \url{generativelanguage.googleapis.com} & [\textbf{XXXX}] \\
-        DeepSeek  & DeepSeek-V3 (Chat)   & \texttt{[\textbf{deepseek-chat-v3.1}]}              & \url{api.deepseek.com}   & [\textbf{XXXX}] \\
-        DeepSeek  & DeepSeek-R1          & \texttt{[\textbf{deepseek-r1}]}                     & \url{api.deepseek.com}   & [\textbf{XXXX}] \\
-        Mistral   & Mistral Medium 3.1   & \texttt{[\textbf{mistral-medium-3.1}]}              & \url{api.mistral.ai}     & [\textbf{XXXX}] \\
-        Mistral   & Mistral Small 3.2    & \texttt{[\textbf{mistral-small-3.2-24b-instruct}]}  & \url{api.mistral.ai}     & [\textbf{XXXX}] \\
-        Moonshot  & Kimi-K2              & \texttt{[\textbf{kimi-k2-XXX}]}                     & [\textbf{endpoint}]      & [\textbf{XXXX}] \\
-        Meta      & Llama-4 Scout        & \texttt{[\textbf{llama-4-scout-XXX}]}               & [\textbf{endpoint}]      & [\textbf{XXXX}] \\
-        \bottomrule
-    \end{tabular}
+    \begin{tabular}{llll}
+\toprule
+Provider & Model & OpenRouter identifier & Cutoff \\
+\midrule
+OpenAI & GPT-5 & \texttt{openai/gpt-5} & 2024-10 \\
+OpenAI & GPT-5-mini & \texttt{openai/gpt-5-mini} & 2024-05 \\
+Google & Gemini 2.5 Flash & \texttt{google/gemini-2.5-flash} & 2025-01 \\
+Google & Gemini 2.5 Flash-Lite & \texttt{google/gemini-2.5-flash-lite} & 2025-01 \\
+DeepSeek & DeepSeek-V3.1 (Chat) & \texttt{deepseek/deepseek-chat-v3.1} & 2023/2024 \\
+DeepSeek & DeepSeek-R1 & \texttt{deepseek/deepseek-r1} & 2023/2024 \\
+Mistral & Mistral Medium 3.1 & \texttt{mistralai/mistral-medium-3.1} & 2025-05 \\
+Mistral & Mistral Small 3.2 & \texttt{mistralai/mistral-small-3.2-24b-instruct} & 2023-10 \\
+Moonshot & Kimi-K2 & \texttt{moonshotai/kimi-k2} & [\texttt{not publicly stated}] \\
+Meta & Llama-4 Scout & \texttt{meta-llama/llama-4-scout} & 2024-08 \\
+\bottomrule
+\end{tabular}
     \begin{tablenotes}\footnotesize
-        \item \textit{Notes:} ``Cutoff'' refers to each model's training data cutoff as published by the provider. All API calls were made between [\textbf{start date}] and [\textbf{end date}]. For all models we used: temperature $= [\textbf{T}]$, top-$p = [\textbf{p}]$, max tokens $= [\textbf{XXX}]$. For models exposing a separate reasoning configuration, default reasoning settings were used; reasoning traces were not passed into the analytic dataset.
-    \end{tablenotes}
+    \item \textit{Notes:} ``Cutoff'' refers to each model's training data cutoff as published by the provider. Cutoffs for DeepSeek-V3.1 and DeepSeek-R1 are reported as a range (2023/2024) due to conflicting figures across provider and third-party sources; the cutoff for Kimi-K2 was not publicly disclosed by Moonshot AI for this model version and is therefore omitted. All API calls were made between October 2025 (Study~1) and March 2026 (Study~2), routed through the unified OpenRouter API. For all models we used: temperature $= 0.7$, top-$p = 1.0$, max tokens $= 2{,}048$. For models exposing a separate reasoning configuration, default reasoning settings were used; reasoning traces were not passed into the analytic dataset.
+\end{tablenotes}
     \end{threeparttable}
     }
 \end{table}
