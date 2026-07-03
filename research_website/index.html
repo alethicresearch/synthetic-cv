@@ -619,9 +619,9 @@
         fielding such surveys is slow and expensive, and researchers have begun asking whether
         large language models could stand in for human respondents.</p>
         <p>This project puts that idea to a direct test using two published CV studies: a
-        national survey on a U.S. clean energy standard (Aldy et al., 2012) and a North
-        Carolina survey on protecting hemlock forests from an invasive pest (Giguere et al.,
-        2020). For each of the original respondents, we reconstruct a synthetic persona
+        national survey on a proposed U.S. National Clean Energy Standard (NCES; Aldy et al.,
+        2012) and a North Carolina survey on protecting hemlock forests from the hemlock
+        woolly adelgid (HWA), an invasive pest (Giguere et al., 2020). For each of the original respondents, we reconstruct a synthetic persona
         one-to-one from their actual survey responses — demographics alone, or demographics
         plus their stated beliefs — and prompt ten frontier and mid-tier LLMs to act as that
         person and vote on the same referendum question, under the original study's exact
@@ -796,9 +796,9 @@
 
           <div class="chart-controls" role="group" aria-label="Study selection">
             <span class="control-label">Study:</span>
-            <button class="ctrl-btn active" data-slope-study="s1">NCES (Study 1)</button>
-            <button class="ctrl-btn" data-slope-study="s2r">HWA random-cost</button>
-            <button class="ctrl-btn" data-slope-study="s2b">HWA bounded</button>
+            <button class="ctrl-btn active" data-slope-study="s1">Study 1 — NCES</button>
+            <button class="ctrl-btn" data-slope-study="s2r">Study 2 — HWA random-cost</button>
+            <button class="ctrl-btn" data-slope-study="s2b">Study 2 — HWA bounded</button>
           </div>
           <div class="chart-controls" role="group" aria-label="Condition selection">
             <span class="control-label">Condition:</span>
