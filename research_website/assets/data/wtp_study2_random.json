@@ -1,6 +1,6 @@
 {
-  "benchmark": 56.53,
-  "benchmark_ci": null,
+  "benchmark": 9.95,
+  "benchmark_ci": [5, 14],
   "design": "random-cost",
   "models": ["Aggregated", "DeepSeek Chat v3.1", "DeepSeek R1", "Gemini 2.5 Flash", "Gemini 2.5 Flash-Lite", "Mistral Medium 3.1", "Mistral Small 3.2", "Kimi-K2", "GPT-5-mini"],
   "conditions": {
