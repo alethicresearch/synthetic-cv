@@ -620,7 +620,7 @@
           <div class="metric-cards">
             <div class="metric-card">
               <div class="metric-card-label">Human benchmark</div>
-              <div class="metric-card-value">$162</div>
+              <div class="metric-card-value">$164</div>
               <div class="metric-card-sub">per household / year</div>
             </div>
             <div class="metric-card">
@@ -653,7 +653,7 @@
             </div>
             <div class="legend-item">
               <div class="legend-line" style="background:var(--accent-green);border-top:2px dashed var(--accent-green);"></div>
-              <span>Human benchmark ($162)</span>
+              <span>Human benchmark ($164)</span>
             </div>
           </div>
 
@@ -667,7 +667,7 @@
           <div class="metric-cards">
             <div class="metric-card">
               <div class="metric-card-label">Human benchmark</div>
-              <div class="metric-card-value">$56.53</div>
+              <div class="metric-card-value" id="wtp2-benchmark-val">$9.95</div>
               <div class="metric-card-sub">per household / year</div>
             </div>
             <div class="metric-card">
@@ -699,7 +699,7 @@
             </div>
             <div class="legend-item">
               <div class="legend-line" style="background:var(--accent-green);border-top:2px dashed var(--accent-green);"></div>
-              <span>Human benchmark ($56.53)</span>
+              <span id="wtp2-benchmark-legend">Human benchmark ($9.95)</span>
             </div>
           </div>
 
@@ -1270,9 +1270,9 @@
       xLabel: 'WTP ($/household/year)',
       annotations: [
         { value: 0, color: '#cccccc', dash: null, width: 1 },
-        { value: 162, color: '#0F6E56', dash: [5, 4], width: 1.5 },
+        { value: 164, color: '#0F6E56', dash: [5, 4], width: 1.5 },
         { value: 128, color: 'rgba(15,110,86,0.25)', dash: [4, 3], width: 1 },
-        { value: 260, color: 'rgba(15,110,86,0.25)', dash: [4, 3], width: 1 }
+        { value: 292, color: 'rgba(15,110,86,0.25)', dash: [4, 3], width: 1 }
       ]
     });
 
@@ -1322,7 +1322,9 @@
       xLabel: 'WTP ($/household/year)',
       annotations: [
         { value: 0, color: '#cccccc', dash: null, width: 1 },
-        { value: 56.53, color: '#0F6E56', dash: [5, 4], width: 1.5 }
+        { value: isRC ? 9.95 : 56.37, color: '#0F6E56', dash: [5, 4], width: 1.5 },
+        { value: isRC ? 5 : 24, color: 'rgba(15,110,86,0.25)', dash: [4, 3], width: 1 },
+        { value: isRC ? 14 : 75, color: 'rgba(15,110,86,0.25)', dash: [4, 3], width: 1 }
       ]
     });
 
@@ -1639,6 +1641,11 @@
     if (btn.dataset.wtp2Filter) {
       state.wtp2Filter = btn.dataset.wtp2Filter;
       setActiveControl('wtp2-filter', btn.dataset.wtp2Filter);
+      const isRC2 = state.wtp2Filter === 'rc';
+      const bmVal = document.getElementById('wtp2-benchmark-val');
+      const bmLeg = document.getElementById('wtp2-benchmark-legend');
+      if (bmVal) bmVal.textContent = isRC2 ? '$9.95' : '$56.37';
+      if (bmLeg) bmLeg.textContent = isRC2 ? 'Human benchmark ($9.95)' : 'Human benchmark ($56.37)';
       renderWTP2();
       return;
     }
