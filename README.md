@@ -4,7 +4,7 @@
 
 Trevor Woolley<sup>†</sup> (UC Berkeley) · Sankalpa Ghose (NUS, Alethic Research) · Alina Khindanova (UT San Antonio) · Kasra Rasaee (Bloomberg, Alethic Research) · Bob Fischer<sup>†</sup> (Texas State)
 
-[Paper](https://github.com/alethicresearch/synthetic-cv/blob/main/paper/preprint_draft_7.03.26_Can%20Large%20Language%20Models%20Estimate%20Willingness%20to%20Pay.pdf) · [Research Page](https://alethicresearch.github.io/synthetic-cv/) · [Cite](#citation)
+[Paper](https://github.com/alethicresearch/synthetic-cv/blob/main/paper/preprint_draft_7.03.26_Using%20LLMs%20to%20Estimate%20Willingness%20to%20Pay.pdf) · [Research Page](https://alethicresearch.github.io/synthetic-cv/) · [Cite](#citation)
 
 ---
 
