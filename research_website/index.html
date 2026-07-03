@@ -188,6 +188,27 @@
       line-height: 1.7;
     }
 
+    /* ─── Overview ───────────────────────────────────────────────────────── */
+    .overview {
+      margin: 0 0 44px;
+    }
+
+    .overview p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 14px;
+    }
+
+    .overview p:first-of-type {
+      font-size: 16px;
+      color: var(--text-primary);
+    }
+
+    .overview p:last-child {
+      margin-bottom: 0;
+    }
+
     /* ─── Section Label ──────────────────────────────────────────────────── */
     .section-label {
       font-size: 11px;
@@ -588,7 +609,30 @@
         </div>
       </section>
 
+      <!-- ─── Overview ───────────────────────────────────────────────────── -->
+      <section class="overview" aria-labelledby="overview-heading">
+        <p class="section-label" id="overview-heading">About this project</p>
+        <p>When governments weigh an environmental policy — cleaner electricity, protecting
+        forests from an invasive pest — they often rely on surveys that ask people directly:
+        <em>would you support this policy if it cost your household $X per year?</em> This method,
+        called contingent valuation (CV), underpins many official benefit–cost analyses. But
+        fielding such surveys is slow and expensive, and researchers have begun asking whether
+        large language models could stand in for human respondents.</p>
+        <p>This project puts that idea to a direct test. We gave ten LLMs personas built from
+        real survey participants — their age, income, education, and (in one condition) their
+        stated beliefs — and had them answer the same questionnaires from two published CV
+        studies: a national survey on a U.S. clean energy standard (Aldy et al., 2012) and a
+        North Carolina survey on protecting hemlock forests from an invasive pest
+        (Giguere et al., 2020). Because both
+        original studies report household willingness to pay (WTP), the "synthetic" answers can
+        be compared directly against real human benchmarks.</p>
+        <p>The short answer: not yet — and the ways the models miss are systematic, not random.
+        The interactive charts below let you compare every model against the human benchmarks
+        yourself.</p>
+      </section>
+
       <!-- ─── Finding Block ──────────────────────────────────────────────── -->
+      <p class="section-label">Key finding</p>
       <div class="finding" role="note" aria-label="Key finding">
         Synthetic contingent valuation does not recover human-survey benchmarks under naive deployment.
         Across both studies and almost every model, synthetic approval-bid curves are systematically

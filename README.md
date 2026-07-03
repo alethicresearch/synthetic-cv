@@ -4,7 +4,7 @@
 
 Trevor Woolley<sup>†</sup> (UC Berkeley) · Sankalpa Ghose (NUS, Alethic Research) · Alina Khindanova (UT San Antonio) · Kasra Rasaee (Bloomberg, Alethic Research) · Bob Fischer<sup>†</sup> (Texas State)
 
-[Paper](https://github.com/alethicresearch/synthetic-cv/blob/main/paper/draft_6.01.26_SYNTH_CV_simulation.pdf) · [Research Page](https://alethicresearch.github.io/synthetic-cv/) · [Cite](#citation)
+[Paper](https://github.com/alethicresearch/synthetic-cv/blob/main/paper/preprint_draft_7.03.26_Can%20Large%20Language%20Models%20Estimate%20Willingness%20to%20Pay.pdf) · [Research Page](https://alethicresearch.github.io/synthetic-cv/) · [Cite](#citation)
 
 ---
 
@@ -14,8 +14,9 @@ We assess whether large language models (LLMs) can substitute for human responde
 in referendum-style contingent valuation (CV). Using individual-level data from two
 published CV studies, we construct synthetic personas one-to-one from each respondent's
 demographic and belief responses, prompt ten frontier and mid-tier LLMs to act as those
-respondents, and compare synthetic willingness to pay (WTP) to published human-survey
-benchmarks of $162 and $56.53 per household per year.
+respondents, and compare synthetic willingness to pay (WTP) to human-survey benchmarks:
+$164/household/year for Study 1 (NCES) and $56.37 (bounded design) / $9.95 per acre
+(random-cost design) for Study 2 (hemlock forest protection).
 
 **Key findings:**
 - Naive synthetic CV does not recover human-survey benchmarks
@@ -28,13 +29,19 @@ benchmarks of $162 and $56.53 per household per year.
 
 | Study | Policy | Benchmark WTP | N | Elicitation |
 |-------|--------|--------------|---|-------------|
-| Aldy, Kotchen & Leiserowitz (2012) | US 80% Clean Energy Standard by 2035 | $162/hh/yr | 1,010 | Single-bounded referendum |
-| Giguere, Moore & Whitehead (2020) | NC Hemlock forest protection | $56.53/hh/yr | 907 | Bounded + random-cost choice |
+| Aldy, Kotchen & Leiserowitz (2012) | US 80% Clean Energy Standard by 2035 | $164/hh/yr [128, 292] | 1,010 | Single-bounded referendum |
+| Giguere, Moore & Whitehead (2020) | NC hemlock forest protection (HWA control) | Bounded: $56.37 [24, 75] · Random-cost: $9.95 [5, 14] | 907 | Bounded + random-cost choice |
+
+Benchmarks are our replication estimates from the original microdata (95% CI in
+brackets); Study 1's $164 replicates the $162 published in Aldy et al. (2012).
 
 ## LLMs Evaluated
 
-GPT-5, GPT-5-mini, Gemini 2.5 Flash, Gemini 2.5 Flash-Lite, DeepSeek-V3 (Chat),
+GPT-5, GPT-5-mini, Gemini 2.5 Flash, Gemini 2.5 Flash-Lite, DeepSeek-V3.1 (Chat),
 DeepSeek-R1, Mistral Medium 3.1, Mistral Small 3.2 (24B-Instruct), Kimi-K2, Llama-4 Scout
+
+Nine models were evaluated over repeated runs; GPT-5 was evaluated in a single run
+due to its higher inference cost and is excluded from the nine-model ensemble.
 
 ## Simulation Platform
 
@@ -45,7 +52,8 @@ with versioned, immutable states. Developed by Rasaee & Ghose (2025).
 ## Repository Structure
 
 ```
-paper/                    Paper draft (LaTeX), synced from Overleaf via git subtree
+paper/                    Paper (LaTeX + preprint PDF), synced from Overleaf via git subtree
+  drafts/                 Archived earlier drafts
 replication_analysis_code/  All Stata scripts and output figures for replication
   do/                     Stata .do scripts (numbered execution order)
   figures/                Output figures (.png and .eps)
