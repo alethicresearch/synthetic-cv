@@ -628,27 +628,31 @@
         randomization and cost assignments. The synthetic responses are then run through the
         original studies' own econometric specifications, so the resulting willingness-to-pay
         (WTP) estimates can be compared directly against the published human benchmarks.</p>
-        <p>The headline result is that current LLMs, deployed naively, do not reproduce the
-        human WTP benchmarks — but the deviations are systematic rather than random, which
-        makes them diagnosable and potentially correctable. And the capability that already
-        works is substantial: the best models closely track how approval declines as the
-        proposed cost rises, recovering the qualitative shape of referendum behavior. At
-        roughly $1.42 per 1,000 responses and days rather than months of fieldwork, synthetic
-        CV is already a practical tool for piloting survey design and mapping relative policy
-        support — and this paper charts what stands between that and full welfare analysis.
-        The interactive charts below let you compare every model against the human benchmarks
-        yourself.</p>
+        <p>The headline result: no model reproduces the human benchmarks out of the box — but
+        the failure is structured, not random. Synthetic respondents are systematically less
+        price-sensitive than humans, and once that bias is measured and corrected for,
+        synthetic WTP lands within the original studies' confidence intervals for most models.
+        Understood as a fast, inexpensive form of benefit transfer rather than a replacement
+        for original surveys, synthetic CV already supports practical regulatory uses:
+        threshold analysis, sensitivity testing of transferred values, and piloting survey
+        designs before fielding them. The interactive charts below let you compare every model
+        against the human benchmarks yourself.</p>
       </section>
 
       <!-- ─── Finding Block ──────────────────────────────────────────────── -->
       <p class="section-label">Key finding</p>
       <div class="finding" role="note" aria-label="Key finding">
-        Synthetic contingent valuation does not recover human-survey benchmarks under naive deployment.
-        Across both studies and almost every model, synthetic approval-bid curves are systematically
-        flatter than empirical curves — a pattern with direct mechanical consequences for
-        willingness-to-pay estimation through the standard logit framework. Across-LLM heterogeneity
-        is large enough that model selection is a first-order design decision; ensemble averaging does
-        not rescue weak models.
+        Naive synthetic CV does not recover published WTP benchmarks, but the failure is
+        structured rather than random. Synthetic approval-bid curves are systematically flatter
+        than empirical curves across all models, and because logit-implied WTP is the ratio of
+        the constant to the bid coefficient, this slope compression mechanically inflates WTP
+        estimates. Token-probability analysis establishes that the compression is present at
+        the next-token layer and is not primarily a numerical-anchoring artifact. A
+        pre-registered flat-slope benchmark yields per-model calibration ratios that, applied
+        to the bid coefficient, recover synthetic WTP within the original confidence intervals
+        for most models — grounding a benefit-transfer framing under which synthetic CV already
+        supports threshold analysis, sensitivity testing of conventional benefit transfer, and
+        pilot design for planned CV studies.
       </div>
 
       <!-- ─── Interactive Explorer ───────────────────────────────────────── -->
