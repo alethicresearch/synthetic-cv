@@ -78,6 +78,7 @@ ssc install grc1leg2
 	drop _merge
 	merge 1:1 bidding_amount using  ${datadir}/synth_beliefs_byProvider.dta
 
+
 	* Plot Actual vs. Synth (without beliefs) by Provider
 	// synth_qsa_mean2 synth_qsa_mean4 synth_qsa_mean6 synth_qsa_mean8 synth_qsa_mean10  synth_qsa_mean12 synth_qsa_mean14 synth_qsa_mean16 synth_qsa_mean18
 	foreach whichone in "qsa" "beliefs" {
@@ -122,6 +123,40 @@ ssc install grc1leg2
 		legend(order(1 "Actual" 2 "Dem_only" 3 "Dem+beliefs")) ///
 		title("Main Plot (rescaled)")
 	
+	
+********************************************************************************
+		* Calculating Mean Absolute Deviations
+		
+	* data needed
+	use  ${datadir}/actual_qsa.dta, clear
+	merge 1:1 bidding_amount using  ${datadir}/synth_demonly_byProvider.dta
+	drop _merge
+	merge 1:1 bidding_amount using  ${datadir}/synth_beliefs_byProvider.dta
+	
+	* the code
+	local providers deepseek_chat deepseek_r1 gemini gemini_lite llama mistral_med mistral_small moonshot gpt
+
+foreach cond in qsa beliefs {
+    
+    local ablist ""
+    local i = 1
+    
+    foreach p of local providers {
+        capture drop diff_`p'
+        capture drop abs_`p'
+        
+        gen diff_`p' = synth_`cond'_mean`i' - actual_qsa
+        gen abs_`p'  = abs(diff_`p')
+        
+        local ablist "`ablist' abs_`p'"
+        local ++i
+    }
+    
+    di as text _n "----- Mean Absolute Deviations: `cond' condition -----"
+    mean `ablist'
+}
+	
+	
 ********************************************************************************
 	/* LESSONS:
 			1. Some models seemingly performed better without being fed beliefs: e.g. .moonshotai/kimi-k2 and openai/gpt-5-mini
@@ -149,9 +184,9 @@ ssc install grc1leg2
 * For inference we'd want either glm with binomial(n_runs) on collapsed
 * means, or a cluster-bootstrap. Discuss in the methods section.
 ********************************************************************************
-
-	matrix temppool = (.3489318, .3346897, .2878942, .4821974, 2.816887, ///
-					   7.222279, 48.81892, .7436419, .2655137, .242116, .1678535)
+	
+	
+	matrix temppool=(.3478163,.3366533,.2878942,.4835664,2.911817,6.792883,46.08516,.6846838,.248797,.2292338,.193502)
 
 	global aldy_rhs "bidding_amount natgas nuclear college male household_size inc0000 age white repub indep noparty"
 
@@ -195,7 +230,7 @@ ssc install grc1leg2
 	gen synth_qsa = 0
 	replace synth_qsa = 1 if qsa == "Support"
 
-	* ─── Aggregated ────────────────────────────────────────────────────────────
+	* ─── Aggregated ───────────────────────────────────────────────────────────
 	logit synth_qsa ${aldy_rhs}
 	eststo logit_dem
 
@@ -705,7 +740,7 @@ ssc install grc1leg2
 
 	use `slope_s1', clear
 	drop if missing(prov_id) | missing(beta_bid)
-	gen ratio = beta_bid / `emp_beta'
+	gen ratio = beta_bid/`emp_beta'
 
 	save "${datadir}/slope_ratios_Study1.dta", replace
 
@@ -823,8 +858,8 @@ ssc install grc1leg2
 	* Insert blanks at positions 3, 6, 9, ... (after each pair)
 	* Loop builds the insertion positions
 	forvalues g = 1/`=`providers_in_data' - 1' {
-		local pos = 3 * `g'
-		insobs 1, before(`pos')
+    local pos = 5 * (`g' - 1) + 3
+    insobs 3, before(`pos')
 	}
 
 	gen row = _n
@@ -832,6 +867,7 @@ ssc install grc1leg2
 	* ── Build the ylabel string dynamically ────────────────────────────────────
 	* Labels go at 1.5, 4.5, 7.5, ... (between each provider's two rows)
 	local ylab ""
+	
 	local provider_list "0 1 2 3 4 5 6 7 8 9"
 	if `drop_llama' == 1 local provider_list "0 1 2 3 4 6 7 8 9"
 
@@ -849,7 +885,7 @@ ssc install grc1leg2
 		if `p' == 9      local name "gpt-5-mini"
 		
 		local ylab `"`ylab' `label_pos' "`name'""'
-		local label_pos = `label_pos' + 3
+		local label_pos = `label_pos' + 5
 	}
 
 	* ── Figure out a sensible x-axis range ─────────────────────────────────────
@@ -883,8 +919,9 @@ ssc install grc1leg2
 		xline(163, lpattern(solid) lcolor(gs8)) ///
 		xline(127, lpattern(dash)  lcolor(gs8)) ///
 		xline(292, lpattern(dash)  lcolor(gs8)) ///
-		xlabel(`xmin_lab'(500)`xmax_lab' 163) ///
-		aspect(.5)
+		xline(0, lcolor(gs12) lwidth(thin)) ///
+		xlabel(`xmin_lab'(500)`xmax_lab' 162) ///
+		//aspect(.5)
 
 	graph export "${figdir}/dot_and_95CI_NCES`fname_suffix'.png", replace width(2000)
 	graph export "${figdir}/dot_and_95CI_NCES`fname_suffix'.eps", replace
