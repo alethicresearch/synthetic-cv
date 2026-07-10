@@ -150,6 +150,7 @@ ssc install estout, replace
 	}
 	
 	
+	
 	// Best without beliefs: openrouter.moonshotai/kimi-k2 openrouter.openai/gpt-5-mini
 	// ^ Provider_ids: 8 and 9
 	// Best with beliefs: openrouter.mistralai/mistral-medium-3.1 
@@ -167,6 +168,59 @@ ssc install estout, replace
 	, col(1) legendfrom(beliefQ_Random_with.gph) ysize(8) xsize(5)
 	graph export "${figdir}/propensity_to_vote_withBeliefs_ForestWTP.eps", replace
 	
+	
+	
+*******************************************************************************	
+	
+	* Mean absolute deviation calculations
+	
+	use  ${datadir}/actual_vote_ForestWTP.dta, clear
+	merge 1:1 cost experiment using  ${datadir}/synth_byProvider_ForestWTP.dta
+	drop _merge
+	// As expected, we don't have matches for cost = 10 & 300 because those aren't in the original data.
+	drop if cost == 5 | cost==300
+	sort experiment cost
+	
+	// 0  "AGGREGATED"   1  "deepseek-chat-v3.1"  2  "deepseek-r1"   3  "gemini-2.5-flash"   4  "gemini-2.5-flash-lite"   5  "gpt-5-mini"   6  "kimi-k2"   7  "llama-4-scout"   8  "mistral-medium-3.1"   9  "mistral-small-3.2-24b-instruct"
+	// first number: if 9 then without, if 6 then with.
+	
+	forvalues i=1/9 {
+	gen abs_dev_without_`i' = abs(syn_vote_9_`i' - actual_vote)
+	gen abs_dev_with_`i' = abs(syn_vote_6_`i' - actual_vote)
+	}
+	
+	di as text _n "----- Mean Absolute Deviations: Bounded/Without ----------"
+	preserve
+	keep if experiment==0
+	forvalues i=1/9 {
+	mean(abs_dev_without_`i')
+	}
+	restore
+	
+	di as text _n "----- Mean Absolute Deviations: Random/Without ----------"
+	preserve
+	keep if experiment==1
+	forvalues i=1/9 {
+	mean(abs_dev_without_`i')
+	}
+	restore
+	
+	di as text _n "----- Mean Absolute Deviations: Bounded/With ----------"
+	preserve
+	keep if experiment==0
+	forvalues i=1/9 {
+	mean(abs_dev_with_`i')
+	}
+	restore
+	
+	di as text _n "----- Mean Absolute Deviations: Random/With ----------"
+	preserve
+	keep if experiment==1
+	forvalues i=1/9 {
+	mean(abs_dev_with_`i')
+	}
+	
+	
 ********************************************************************************
 	/* LESSONS:
 			1. Some models seemingly performed better without being fed beliefs: e.g. .moonshotai/kimi-k2 and openai/gpt-5-mini
@@ -177,44 +231,6 @@ ssc install estout, replace
 ********************************************************************************
 						* LOGIT MODELS AND WTP
 ********************************************************************************
-* Replicate the paper
-********************************************************************************
-// 	use ${datadir}/working_data_Var3.dta, replace
-//
-// // 	preserve
-// 		keep if variant=="demographics only"
-// 		duplicates drop caseid, force // 1010 distinct observations
-//
-// 		tab qsa_actual_response
-// 		drop if qsa_actual_response == "Refused to answer"
-// 		gen actual_qsa = 0
-// 		replace actual_qsa = 1 if qsa_actual_response == "Support"
-//
-// 		eststo clear
-// 		logit actual_qsa bidding_amount natgas nuclear college male household_size inc0000 age white repub indep noparty
-// 		eststo logit_truth
-// 		// the results are the same as in the paper!!
-//
-// 		merge m:1 caseid using ${datadir}/data_merge
-//
-// 		*Estimate WTP
-// 		summarize natgas nuclear college male household_size inc0000 age white repub indep noparty
-// 		matrix temppool=(.3489318,.3346897 ,.2878942 ,.4821974,2.816887,7.222279,48.81892,.7436419,.2655137,.242116,.1678535)
-//
-// 		wtpcikr bidding_amount natgas nuclear college male household_size inc0000 age white repub indep noparty, reps(1000) mym(temppool)
-// 		// True distribution: $163; LB: $127; UB: $292
-// 		clear
-// 		set obs 1
-// 		gen provider_id = . // Aggregate of all LLM results
-// 		gen mean_WTP_actual = r(mean_WTP)
-// 		gen mean_UB_actual   = r(mean_UB)
-// 		gen mean_LB_actual   = r(mean_LB)
-// 		gen CI_Mean_actual  = r(CI_Mean)
-//
-// 		save "${datadir}/wtp_summary_actual_Var3.dta", replace
-// 	restore
-
-
 ********************************************************************************
 * Logit model for synthetic data with individual belief Questions (plus demographics)
 ********************************************************************************
@@ -448,7 +464,7 @@ save "${datadir}\wtp_e_working4loop_v2", replace
 
 	forvalues prov = 1/9 {
 		// takes like 5 min to run
-			use "${datadir}\wtp_e_working4loop_v2", clear
+			use "${datadir}/wtp_e_working4loop_v2", clear
 			global prov = `prov'-1
 			keep if prov == `prov'-1
 			
@@ -627,8 +643,10 @@ save "${datadir}\wtp_e_working4loop_v2", replace
 
 	set scheme s1mono // black and white
 
+	
+***** Bounded
 	twoway ///
-	(rcap SOCIAL_LB SOCIAL_UB row if !((provider_id==1 | provider_id==7) & with_beliefs ==1), horizontal) /// code for 95% CI
+	(rcap SOCIAL_LB SOCIAL_UB row if !(provider_id==7 & with_beliefs ==1), horizontal) /// code for 95% CI
 	(scatter row SOCIAL_WTP if with_beliefs ==0, mcolor(red)) /// dot for group 1
 	(scatter row SOCIAL_WTP if with_beliefs ==1, mcolor(blue)) /// dot for group 2
 	if experiment=="bounded", ///
@@ -642,7 +660,8 @@ save "${datadir}\wtp_e_working4loop_v2", replace
 	xline(56.37, lpattern(solid) lcolor(gs8)) ///
 	xline(75, lpattern(dash) lcolor(gs8)) ///
 	xline(35, lpattern(dash) lcolor(gs8)) ///
-	xlabel(-750(150)0 56 150 300)
+	xline(0, lcolor(gs12) lwidth(thin)) ///
+	xlabel(-750(150)-150 56.37 300)
 
 	graph export "${figdir}\dot_and_95CI_bounded_ForestWTP_NoOutliers.png", replace width(2000)
 
@@ -655,7 +674,7 @@ save "${datadir}\wtp_e_working4loop_v2", replace
 */
 	
 	twoway ///
-	(rcap SOCIAL_LB SOCIAL_UB row if !(provider_id==3 & with_beliefs==1) & !(provider_id==4 & with_beliefs==1) & !(provider_id==5 & with_beliefs==1) & !(provider_id==7 & with_beliefs ==1) & !(provider_id==9 & with_beliefs ==1), horizontal) /// code for 95% CI
+	(rcap SOCIAL_LB SOCIAL_UB row if !(provider_id==3 & with_beliefs==1) & !(provider_id==5 & with_beliefs==1), horizontal) /// code for 95% CI
 	(scatter row SOCIAL_WTP if with_beliefs ==0, mcolor(red)) /// dot for group 1
 	(scatter row SOCIAL_WTP if with_beliefs ==1, mcolor(blue)) /// dot for group 2
 	if experiment=="repeated", ///
@@ -666,11 +685,17 @@ save "${datadir}\wtp_e_working4loop_v2", replace
 	xtitle("WTP ($) of Synthetic Respondents") /// 
 	ytitle("LLM Provider") /// 
 	yscale(reverse) /// y axis is flipped
+	xline(9.95, lpattern(solid) lcolor(gs8)) ///
+	xline(5, lpattern(dash) lcolor(gs8)) ///
+	xline(14, lpattern(dash) lcolor(gs8)) ///
+	xline(0, lcolor(gs12) lwidth(thin)) ///
+	xlabel(-150 9.95 150(150)450)
+/*		
 	xline(56.37, lpattern(solid) lcolor(gs8)) ///
 	xline(75, lpattern(dash) lcolor(gs8)) ///
 	xline(35, lpattern(dash) lcolor(gs8)) ///
-	xlabel(-150 0 56 150(150)450)
 
+*/
 	graph export "${figdir}\dot_and_95CI_repeated_ForestWTP_NoOutliers.png", replace width(2000)
 		
 		
@@ -712,53 +737,75 @@ local prov_labs ///
 * unadjusted spec since we chose "Unadjusted" as the headline.
 ********************************************************************************
 
-	use "${datadir}\wtp_e_working4loop_v2", clear
+import delimited "${datadir}/original_data.csv", clear
 
-	* Keep human-respondent data only. Per the do-file comments:
-	*   dataset_version == 9 is "v6.3-do-real-multi" (the real responses)
-	* If your empirical-only data live under a different version code, change here.
-	keep if dataset_version == 9
+//add new rows representing the second round choices
+gen expand_n = 1
+replace expand_n = 2 if experiment==1
+expand expand_n
+drop expand_n
+bys id experiment: gen numround = _n
 
-	* Build the alt-specific attributes (mirrors the main loop)
-	expand 2
-	bysort sit_id: gen alt = _n
-	gen COST_x   = num_cost * (alt == 1)
-	gen ECOL_x   = ecolog   * (alt == 1)
-	gen SOCIAL_x = social   * (alt == 1)
-	gen BIOL_x   = biol     * (alt == 1)
-	gen CHEM_x   = chem     * (alt == 1)
-	gen chosen   = (syn_vote == 1 & alt == 1) | (vote == 0 & alt == 2)
+replace cost=250 if numround==2 & vote==1
+replace cost=25 if numround==2 & vote==0
+replace vote=0 if cost==250 & numvotes==2
+replace vote=1 if cost==25 & numvotes==2
 
-	label var COST_x   "Cost (\$)"
-	label var ECOL_x   "Ecologically important acres"
-	label var SOCIAL_x "Socially important acres"
-	label var BIOL_x   "Biological treatment"
-	label var CHEM_x   "Chemical treatment"
+* ── Create a unique situation identifier ──────────────────────────────────────
+egen sit_id = group(id numround)   // unique per person-situation
 
-	eststo clear
+* ── Expand each observation to 2 rows (For=1, Against=0) ─────────────────────
+expand 2
+bysort sit_id: gen alt = _n   // alt=1 (For), alt=2 (Against)
 
-	* Column (1): Bounded design
-	eststo repl_bnd: clogit chosen COST_x ECOL_x SOCIAL_x BIOL_x CHEM_x ///
-		if attempt <= 3 & experiment == 0, group(sit_id)
-	estadd local design "Bounded"
+* ── For the "Against" alternative, all attributes = 0 (status quo) ────────────
+gen COST_x   = cost   * (alt == 1)
+gen ECOL_x   = ecolog   * (alt == 1)
+gen SOCIAL_x = social * (alt == 1)
+gen BIOL_x   = biol   * (alt == 1)
+gen CHEM_x   = chem   * (alt == 1)
 
-	* Column (2): Repeated (random-cost) design
-	eststo repl_rep: clogit chosen COST_x ECOL_x SOCIAL_x BIOL_x CHEM_x ///
-		if attempt <= 3 & experiment == 1, group(sit_id)
-	estadd local design "Random-cost"
+label var COST_x   "Cost (\$)"
+label var ECOL_x   "Ecologically important acres"
+label var SOCIAL_x "Socially important acres"
+label var BIOL_x   "Biological treatment"
+label var CHEM_x   "Chemical treatment"
 
-	esttab repl_bnd repl_rep ///
-		using "${tabdir}/tab_repl_clogit_Study2.tex", replace ///
+* ── Define the chosen indicator ───────────────────────────────────────────────
+gen chosen = (vote == 1 & alt == 1) | (vote == 0 & alt == 2)
+
+eststo clear
+
+* ── Table 2: Conditional logit, bounded sample, 1st situation only ───────────
+eststo repl_bnd1: clogit chosen COST_x ECOL_x SOCIAL_x BIOL_x CHEM_x ///
+    if experiment == 1 & numround == 1, ///
+    group(sit_id) vce(cluster id)
+estadd local design "Bounded1"	
+	
+* ── Repeated sample, 1st situation only ───────────
+eststo repl_rep1: clogit chosen COST_x ECOL_x SOCIAL_x BIOL_x CHEM_x ///
+    if experiment == 6 & numround == 1, ///
+    group(sit_id) vce(cluster id)
+estadd local design "Repeated1"
+	
+* ── 1st and 2nd situations, bounded sample ────────────────────────────────────
+eststo repl_bnd2: clogit chosen COST_x ECOL_x SOCIAL_x BIOL_x CHEM_x ///
+    if experiment == 1 & numround <= 2, ///
+    group(sit_id) vce (cluster id)
+estadd local design "Bounded2"
+
+esttab repl_bnd1 repl_rep1 repl_bnd2 ///
+ 		using "${tabdir}/tab_repl_clogit_Study2_UPDATED.tex", replace ///
 		booktabs label se star(* 0.10 ** 0.05 *** 0.01) ///
 		b(%9.4f) se(%9.4f) ///
-		mtitles("Bounded" "Random-cost") ///
+		mtitles("Bounded (1st)" "Random-cost (1st)" "Bounded (1st and 2nd)") ///
 		scalars("ll Log-likelihood" "N Observations") ///
 		nonotes ///
 		addnotes("Conditional logit estimates on \textcite{Giguere2020} human-respondent data." ///
-				 "Unadjusted specification (no attribute-nonattendance correction).")
-		
-	* Save the empirical bid coefficients for later use (Table 4 slope ratios)
-	preserve
+				 "ANA-adjusted specification.")
+				 
+				 
+ 	preserve
 		clear
 		set obs 2
 		gen experiment = "bounded" in 1
@@ -773,6 +820,71 @@ local prov_labs ///
 		
 		save "${datadir}/empirical_bid_coefs_Study2.dta", replace
 	restore
+
+
+
+// ******* OLD CODE ********
+// 	use "${datadir}/wtp_e_working4loop_v2", clear
+//
+// 	* Keep human-respondent data only. Per the do-file comments:
+// 	*   dataset_version == 9 is "v6.3-do-real-multi" (the real responses)
+// 	* If your empirical-only data live under a different version code, change here.
+// 	keep if dataset_version == 9
+//
+// 	* Build the alt-specific attributes (mirrors the main loop)
+// 	expand 2
+// 	bysort sit_id: gen alt = _n
+// 	gen COST_x   = num_cost * (alt == 1)
+// 	gen ECOL_x   = ecolog   * (alt == 1)
+// 	gen SOCIAL_x = social   * (alt == 1)
+// 	gen BIOL_x   = biol     * (alt == 1)
+// 	gen CHEM_x   = chem     * (alt == 1)
+// 	gen chosen   = (syn_vote == 1 & alt == 1) | (vote == 0 & alt == 2)
+//
+// 	label var COST_x   "Cost (\$)"
+// 	label var ECOL_x   "Ecologically important acres"
+// 	label var SOCIAL_x "Socially important acres"
+// 	label var BIOL_x   "Biological treatment"
+// 	label var CHEM_x   "Chemical treatment"
+
+// 	eststo clear
+//
+// 	* Column (1): Bounded design
+// 	eststo repl_bnd: clogit chosen COST_x ECOL_x SOCIAL_x BIOL_x CHEM_x ///
+// 		if attempt <= 3 & experiment == 0, group(sit_id)
+// 	estadd local design "Bounded"
+//
+// 	* Column (2): Repeated (random-cost) design
+// 	eststo repl_rep: clogit chosen COST_x ECOL_x SOCIAL_x BIOL_x CHEM_x ///
+// 		if attempt <= 3 & experiment == 1, group(sit_id)
+// 	estadd local design "Random-cost"
+//
+// 	esttab repl_bnd repl_rep ///
+// 		using "${tabdir}/tab_repl_clogit_Study2.tex", replace ///
+// 		booktabs label se star(* 0.10 ** 0.05 *** 0.01) ///
+// 		b(%9.4f) se(%9.4f) ///
+// 		mtitles("Bounded" "Random-cost") ///
+// 		scalars("ll Log-likelihood" "N Observations") ///
+// 		nonotes ///
+// 		addnotes("Conditional logit estimates on \textcite{Giguere2020} human-respondent data." ///
+// 				 "Unadjusted specification (no attribute-nonattendance correction).")
+//		
+// 	* Save the empirical bid coefficients for later use (Table 4 slope ratios)
+// 	preserve
+// 		clear
+// 		set obs 2
+// 		gen experiment = "bounded" in 1
+// 		replace experiment = "repeated" in 2
+// 		gen emp_beta_cost = .
+//		
+// 		estimates restore repl_bnd
+// 		replace emp_beta_cost = _b[COST_x] in 1
+//		
+// 		estimates restore repl_rep
+// 		replace emp_beta_cost = _b[COST_x] in 2
+//		
+// 		save "${datadir}/empirical_bid_coefs_Study2.dta", replace
+// 	restore
 
 ********************************************************************************
 * TABLE 2 — Synthetic clogit, long-format (rows = LLMs)
@@ -1149,10 +1261,10 @@ local prov_labs ///
 		* Aggregated row gets a midrule above it (already-displayed; we want it
 		* formatted distinctively). Put it at the top with a rule below.
 		file write fh "`pn'"
-		file write fh " & " %6.1f (`wtp_rw0') " [" %6.1f (`lb_rw0') ", " %6.1f (`ub_rw0') "]"
-		file write fh " & " %6.1f (`wtp_rw1') " [" %6.1f (`lb_rw1') ", " %6.1f (`ub_rw1') "]"
-		file write fh " & " %6.1f (`wtp_bw0') " [" %6.1f (`lb_bw0') ", " %6.1f (`ub_bw0') "]"
-		file write fh " & " %6.1f (`wtp_bw1') " [" %6.1f (`lb_bw1') ", " %6.1f (`ub_bw1') "]"
+		file write fh " & " %6.1f (`wtp_rw0') " [" %6.1f (`ub_rw0') ", " %6.1f (`lb_rw0') "]"
+		file write fh " & " %6.1f (`wtp_rw1') " [" %6.1f (`ub_rw1') ", " %6.1f (`lb_rw1') "]"
+		file write fh " & " %6.1f (`wtp_bw0') " [" %6.1f (`ub_bw0') ", " %6.1f (`lb_bw0') "]"
+		file write fh " & " %6.1f (`wtp_bw1') " [" %6.1f (`ub_bw1') ", " %6.1f (`lb_bw1') "]"
 		file write fh " \\" _n
 		
 		if `p' == 0 {
