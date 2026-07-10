@@ -1,5 +1,4 @@
 # Can LLMs Estimate Willingness to Pay?
-
 **Evidence from Two Contingent Valuation Replications**
 
 Trevor Woolley<sup>†</sup> (UC Berkeley) · Sankalpa Ghose (NUS, Alethic Research) · Alina Khindanova (UT San Antonio) · Kasra Rasaee (Bloomberg, Alethic Research) · Bob Fischer<sup>†</sup> (Texas State)
@@ -15,7 +14,7 @@ in referendum-style contingent valuation (CV). Using individual-level data from 
 published CV studies, we construct synthetic personas one-to-one from each respondent's
 demographic and belief responses, prompt ten frontier and mid-tier LLMs to act as those
 respondents, and compare synthetic willingness to pay (WTP) to human-survey benchmarks:
-$164/household/year for Study 1 (NCES) and $56.37 (bounded design) / $9.95 per acre
+$162/household/year for Study 1 (NCES) and $56.37 (bounded design) / $9.95 per acre
 (random-cost design) for Study 2 (hemlock forest protection).
 
 **Key findings:**
@@ -29,11 +28,12 @@ $164/household/year for Study 1 (NCES) and $56.37 (bounded design) / $9.95 per a
 
 | Study | Policy | Benchmark WTP | N | Elicitation |
 |-------|--------|--------------|---|-------------|
-| Aldy, Kotchen & Leiserowitz (2012) | US 80% Clean Energy Standard by 2035 | $164/hh/yr [128, 292] | 1,010 | Single-bounded referendum |
+| Aldy, Kotchen & Leiserowitz (2012) | US 80% Clean Energy Standard by 2035 | $162/hh/yr [126, 285] | 1,010 | Single-bounded referendum |
 | Giguere, Moore & Whitehead (2020) | NC hemlock forest protection (HWA control) | Bounded: $56.37 [24, 75] · Random-cost: $9.95 [5, 14] | 907 | Bounded + random-cost choice |
 
 Benchmarks are our replication estimates from the original microdata (95% CI in
-brackets); Study 1's $164 replicates the $162 published in Aldy et al. (2012).
+brackets); Study 1's replication recovers the same $162 point estimate published in
+Aldy et al. (2012), with a modestly wider confidence interval.
 
 ## LLMs Evaluated
 
@@ -48,6 +48,9 @@ due to its higher inference cost and is excluded from the nine-model ensemble.
 All simulations were run on [Alethic-ISM](https://github.com/alethicresearch/alethic-ism),
 an open-source AI research workbench for composing and executing computational graphs
 with versioned, immutable states. Developed by Rasaee & Ghose (2025).
+<!-- FLAG: confirm author order/year here against the paper's GhoseRasaee2026
+     bib entry (Ghose & Rasaee, 2026) before finalizing -- may be intentional
+     if platform credit differs from paper authorship, but worth a quick check. -->
 
 ## Repository Structure
 
@@ -110,11 +113,11 @@ Requirements: Stata 15+, with `mixlogit`, `wtpcikr`, and `esttab` installed via 
 
 ## License
 
-Code: MIT License  
-Data (synthetic responses): CC BY 4.0  
+Code: MIT License
+Data (synthetic responses): CC BY 4.0
 Paper: © Authors (all rights reserved until published; preprint freely available)
 
 ## Contact
 
-Corresponding authors: Trevor Woolley — trevor_woolley@berkeley.edu · Bob Fischer — fischer@txstate.edu  
+Corresponding authors: Trevor Woolley — trevor_woolley@berkeley.edu · Bob Fischer — fischer@txstate.edu
 Platform questions: Kasra Rasaee / Sankalpa Ghose — research@alethic.ai
