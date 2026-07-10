@@ -46,7 +46,7 @@ maxbibnames=13,
 \author[2, 5]{Sankalpa Ghose}
 \author[3]{Alina Khindanova}
 \author[4, 5]{Kasra Rasaee}
-\author[6]{Bob Fischer\thanks{Corresponding author: \texttt{trevor\_woolley@berkeley.edu, fischer@txstate.edu}.}}
+\author[6]{Bob Fischer\thanks{Corresponding authors: \texttt{trevor\_woolley@berkeley.edu, fischer@txstate.edu}.}}
 
 \affil[1]{\textit{University of California, Berkeley}}
 \affil[2]{\textit{National University of Singapore}}
@@ -75,7 +75,7 @@ synthetic personas one-to-one from each respondent's demographic and
 belief responses, prompt ten frontier and mid-tier LLMs to act as those
 respondents under the original studies' randomization and bid
 assignments, and compare synthetic willingness to pay (WTP) to the
-published benchmarks of \$164 and \$56.37 per household per year. Naive
+published benchmarks of \$162 and \$56.37 per household per year. Naive
 synthetic CV does not recover these benchmarks: most models produce WTP
 estimates that are negative, near zero, or off by an order of magnitude.
 The deviations are structured rather than random. Synthetic approval-bid
@@ -149,7 +149,7 @@ original respondents' demographic and belief responses, prompt ten frontier
 and mid-tier LLMs to act as those respondents under the original studies'
 exact randomization and bid assignments, and analyze the resulting synthetic
 responses using the original studies' econometric specifications. We then
-compare synthetic WTP estimates to the published benchmarks of \$164 per
+compare synthetic WTP estimates to the published benchmarks of \$162 per
 household per year (Aldy et al.) and \$56.37 per household per year (Giguere
 et al.).
 
@@ -230,12 +230,10 @@ study has been conducted, and existing methods include unit value transfer,
 function transfer, and meta-analytic transfer
 \parencite{Rosenberger2017, Loomis2015, Boyle2010}. Synthetic CV is, viewed
 this way, a form of meta-analytic benefit transfer in which the source
-corpus is the universe of text on which the LLM was trained, and the slope
-flatness we document parallels known attenuation biases in conventional
-meta-analytic transfer \parencite{Bergstrom2008}. This reframing places more
+corpus is the universe of text on which the LLM was trained, and the slope flatness we document parallels known attenuation biases in conventional meta-analytic transfer \parencite{Bergstrom2006}. This reframing places more
 reasonable expectations on synthetic CV: it should be evaluated against
 benefit-transfer benchmarks (median transfer errors of 36--45\% are
-typical \parencite{Rosenberger2017}) rather than against the standards of an original study, and the
+typical \parencite{Rosenberger2017}) rather than2 against the standards of an original study, and the
 validity criteria of the benefit transfer literature---generalizability
 tests, convergent validity checks, transfer error metrics---should be
 brought to bear on synthetic studies.
@@ -441,9 +439,8 @@ factors are independently randomized: the bid amount (eight levels from
 only, renewables plus natural gas, or renewables plus nuclear). The
 original authors test for and fail to reject pooling across technology
 arms, and report a pooled binary logit specification as their preferred
-estimate. \textcite{Aldy2012} report a mean WTP of \$162 (95\% CI:
-\$128--\$260); our replication of their pooled specification yields \$164
-per household per year (95\% CI: \$128--\$292), which we adopt as the
+estimate. \textcite{Aldy2012} report a mean WTP of \$162 per household per year (95\% CI:
+\$128--\$260); our replication of their pooled specification recovers an identical point estimate, though with a wider confidence interval (\$126--\$285), which we adopt as the
 benchmark throughout.
 
 For our synthetic replication, we use the 24 demographic items
@@ -605,13 +602,7 @@ The CV prompt instructs the LLM to return a structured response containing
 (i)~a binary support/oppose vote, (ii)~a confidence rating, and (iii)~a
 free-text rationale. We use only the binary vote in our main analysis.
 
-\paragraph{Question framing variation.} As a robustness check, we run a
-parallel set of simulations in which the order of the response options is
-reversed (``oppose / support'' versus ``support / oppose''). This tests
-for ordering bias in LLM responses---a known concern in survey methodology
-that may operate differently in LLMs than in humans. We find no meaningful
-effect from this variation (Appendix~\ref{app:order-bias}) and pool across
-orderings in our main results.
+\paragraph{Question framing variation.} As a robustness check, we run a parallel set of simulations in which the order of the response options is reversed (``oppose / support'' versus ``support / oppose''). This tests for ordering bias in LLM responses---a known concern in survey methodology that may operate differently in LLMs than in humans. We find a statistically significant ordering effect for most models, varying in direction and magnitude across models (Appendix~\ref{app:order-bias}); we discuss our decision to pool across orderings, and its limitations, below.
 
 \subsection{Model Selection}\label{sec:methods-models}
 
@@ -657,7 +648,7 @@ rather than maintained as a separate audit log, so the data record is the
 audit trail. Nothing is overwritten. This property matters for a study of
 this scale: with over one million validated synthetic responses
 (1{,}017{,}936 across the nine repeatedly-evaluated models and both studies),
-twostudies, and multiple repetitions per cell, any ambiguity about which model
+two studies, and multiple repetitions per cell, any ambiguity about which model
 version, prompt template, or parameter setting produced a given response
 would undermine replication. The platform resolves this by making every
 output state a permanent, queryable artifact linked to its full provenance
@@ -793,16 +784,18 @@ belief variables in the synthetic respondent profile.
 
 \subsection{Study 1: U.S. National Clean Energy Standard}\label{sec:results-nces}
 
-\textcite{Aldy2012} estimate a mean WTP of \$164 per household per year
-(95\% CI: \$128--\$292) for an 80\% clean electricity standard by 2035,
-based on a pooled logit over the 983 of 1{,}010 respondents who answered the
-referendum question (27 refusals excluded, following \textcite{Aldy2012})
-at bids ranging from \$5 to \$155. The empirical share-approving curve
-declines from approximately 0.72 at the \$5 bid to 0.54 at the \$155 bid,
-with a marked drop between the \$35 and \$45 bid points. We compare
-synthetic responses to this benchmark in three information conditions:
-demographics-only, demographics + all beliefs, and demographics + one
-belief at a time.
+% \textcite{Aldy2012} estimate a mean WTP of \$162 per household per year
+% (95\% CI: \$126--\$285) for an 80\% clean electricity standard by 2035,
+% based on a pooled logit over the 983 of 1{,}010 respondents who answered the
+% referendum question (27 refusals excluded, following \textcite{Aldy2012})
+% at bids ranging from \$5 to \$155. The empirical share-approving curve
+% declines from approximately 0.72 at the \$5 bid to 0.54 at the \$155 bid,
+% with a marked drop between the \$35 and \$45 bid points. We compare
+% synthetic responses to this benchmark in three information conditions:
+% demographics-only, demographics + all beliefs, and demographics + one
+% belief at a time.
+
+\textcite{Aldy2012} report a mean WTP of \$162 per household per year (95\% CI: \$128–\$260) for an 80\% clean electricity standard by 2035, based on a pooled logit over the 983 of 1,010 respondents who answered the referendum question (27 refusals excluded, following \textcite{Aldy2012}) at bids ranging from \$5 to \$155. Our replication of their pooled specification recovers the same point estimate, with a modestly wider interval (95\% CI: \$126–\$285), which we adopt as the benchmark throughout. The empirical share-approving curve declines from approximately 0.72 at the \$5 bid to 0.54 at the \$155 bid, with a marked drop between the \$35 and \$45 bid points. We compare synthetic responses to this benchmark in three information conditions: demographics-only, demographics + all beliefs, and demographics + one belief at a time.
 
 When synthetic respondents are constructed using only sociodemographic
 attributes from the original survey, most LLMs substantially underestimate
@@ -856,7 +849,7 @@ approval rather than on the slope.
 
 
 Figure~\ref{fig:nces-wtp} summarizes the implied mean WTP from logit
-estimates fit to synthetic responses, with the \$164 benchmark marked as
+estimates fit to synthetic responses, with the \$162 benchmark marked as
 a vertical reference line. The pattern of WTP estimates across LLMs and
 information conditions is best understood through the lens of how each
 model fares jointly on the level and slope of its approval-bid curve, in
@@ -866,8 +859,8 @@ level-and-slope view emerge.
 
 First, in the demographics-only condition, WTP estimates are negative or
 near zero for six of the nine models, with DeepSeek-Chat-V3.1 producing
-an extreme negative estimate of approximately $-\$843$. These
-seven models are mis-calibrated on both dimensions: their approval levels
+an extreme negative estimate of approximately $-\$829$. These
+six models are mis-calibrated on both dimensions: their approval levels
 sit well below the empirical curve, and their slopes are flatter than
 empirical, with the level error dominating to push WTP negative.
 Demographics alone, for these models, provide neither a useful prior on
@@ -875,7 +868,7 @@ the level of policy support nor on its sensitivity to cost. The two
 exceptions are Kimi-K2 and GPT-5-mini, whose demographics-only WTP
 estimates fall within a plausible range of the benchmark. These are the
 models for which level fit is reasonable and slope flatness is mild
-enough that the WTP ratio remains in a sensible range. Kimi-K2 in the
+enough that the WTP ratio remains in a sensible range. GPT-5-mini in the
 demographics-only condition is the closest the experiment gets to an
 existence proof that current synthetic CV can recover a published
 human-survey benchmark from sociodemographic inputs alone, and we treat
@@ -883,14 +876,14 @@ it as such.
 
 Second, adding beliefs shifts most models' WTP estimates from negative
 to positive territory, but the magnitude of this update varies
-dramatically across LLMs---from modest revisions of under \$100
-(e.g., DeepSeek-R1) to revisions exceeding \$18,000
+dramatically across LLMs---from modest revisions around \$100
+(DeepSeek-R1) to revisions exceeding \$18,000
 (Llama-4-Scout). Because beliefs in this study shift levels
 without straightening slopes, the resulting WTP estimates are arithmetic
 products of a (now plausible) numerator and a (still flat) denominator,
 which tends to push the ratio above the empirical benchmark. Several
 models that produce sensible-looking approval-bid curves with beliefs
-nonetheless overshoot the \$164 benchmark by a wide margin for this
+nonetheless overshoot the \$162 benchmark by a wide margin for this
 reason. Llama-4 Scout, the most extreme case, was also the least reliable
 generator in Study~1, failing schema validation on roughly one in five
 attempts (19.5\%, versus under 0.5\% for every other model; see
@@ -899,10 +892,10 @@ coincides with the highest non-response rate in the sample.
 
 Third, the simple equally-weighted aggregate across all nine LLMs does
 not outperform the best individual model in either condition: the
-aggregated WTP without beliefs is -\$9 (95\% CI:
-[-\$17, -\$2]) and with beliefs is \$289 (95\% CI:
-[\$268, \$314]), neither of which dominates Mistral-Medium-3.1's
-demographics+belief estimate of \$183. Aggregation reduces
+aggregated WTP without beliefs is \$5 (95\% CI:
+[-\$1, \$12]) and with beliefs is \$295 (95\% CI:
+[\$274, \$321]), neither of which dominates Mistral-Medium-3.1's
+demographics+belief estimate of \$189. Aggregation reduces
 the variance contributed by individual models' idiosyncratic level
 errors but cannot offset the slope flatness that the underlying training
 distributions appear to share.
@@ -910,11 +903,11 @@ distributions appear to share.
 \begin{figure}[htbp]
     \centering
     \caption{Mean WTP estimates for the NCES policy by LLM}
-    \includegraphics[width=0.95\textwidth]{figures/experiment_1/Image 09-12-2025 at 15.47.jpg}
+    \includegraphics[width=0.95\textwidth]{figures/experiment_1/WTP_fig_Study1_update1.pdf}
     \caption*{\footnotesize \textit{Note: Red diamonds: demographics-only condition.
     Blue squares: demographics + all beliefs condition. Vertical solid
-    line marks the \textcite{Aldy2012} benchmark of \$164; dashed
-    vertical lines mark the original 95\% CI bounds.}}
+    line marks the \textcite{Aldy2012} benchmark of \$162; dashed
+    vertical lines mark the original 95\% CI bounds. Light gray vertical line indicates the zero point.}}
     \label{fig:nces-wtp}
 \end{figure}
 
@@ -957,7 +950,7 @@ levels but flatten slopes (Llama-4 Scout, the prototypical
 ``WTP-inflating'' archetype), models that fail on both dimensions (most
 demographics-only configurations), and a small set of models for which
 levels and slopes happen to land close enough to empirical that
-synthetic WTP recovers the benchmark (Kimi-K2 in the demographics-only
+synthetic WTP recovers the benchmark (GPT-5-mini in the demographics-only
 condition). The implied WTP from a logit fit to synthetic data depends
 jointly on the level and the slope of the synthetic approval-bid curve,
 and accuracy on the response margin does not imply accuracy on the
@@ -1068,7 +1061,7 @@ WTP estimates in this design.
     diamonds: demographics-only. Blue squares: demographics + all
     beliefs. Vertical solid line marks the \textcite{Giguere2020}
     benchmark of \$56.37; dashed vertical lines mark the original 95\%
-    CI bounds. Light grey vertical line indicates the zero point. Estimates with confidence intervals exceeding
+    CI bounds. Light gray vertical line indicates the zero point. Estimates with confidence intervals exceeding
     $\pm$\$500 are omitted for visual clarity; all estimates
     are reported in Table~\ref{tab:full-results}.}}
     \label{fig:hwa-wtp}
@@ -1215,8 +1208,8 @@ DeepSeek-R1 has among the best-calibrated bid-response slopes in our
 Study 1 sample (synthetic-to-empirical slope ratios of 1.15 and 0.78 in
 the demographics-only and demographics-plus-beliefs conditions,
 respectively, both close to the ideal value of one), yet its WTP point
-estimates remain \$13 (wrong sign) and \$91, both well short of the
-\$164 benchmark---an illustration of the paper's broader finding that
+estimates remain -\$10 (wrong sign) and \$91, both well short of the
+\$162 benchmark---an illustration of the paper's broader finding that
 accurate slope recovery does not guarantee accurate WTP, since WTP is a
 ratio of level and slope. Paying a premium for a reasoning model does not
 straightforwardly buy a better point estimate, even where it buys a
@@ -1381,7 +1374,7 @@ formats in Study 2, but the level of bid sensitivity and the marginal
 value of belief inputs may differ across contexts in ways that our two
 studies cannot fully adjudicate.
 
-\paragraph{Capability evolution.} as of October 2025 (Study 1) through March 2026 (Study 2). LLM development in recent years has been one of rapid capability gains on a broad range of tasks, and there is no obvious reason to expect synthetic CV to be exempt. Whether the slope-flatness pattern we document will abate as
+\paragraph{Capability evolution.} Our results reflect LLM capabilities as of October 2025 (Study 1) through March 2026 (Study 2). LLM development in recent years has been one of rapid capability gains on a broad range of tasks, and there is no obvious reason to expect synthetic CV to be exempt. Whether the slope-flatness pattern we document will abate as
 models improve is genuinely unclear, and depends in part on which kind
 of improvement is meant. General capability gains from continued
 pre-training and post-training of frontier models may reduce slope
@@ -1436,8 +1429,8 @@ and only for the Aldy estimate; no model reliably reproduces the Giguere
 estimate or the bid amounts used in either study. The one model with
 genuine recall does not produce a more accurate synthetic WTP estimate
 than models with no recall at all: DeepSeek-R1's demographics-plus-beliefs
-WTP (\$91) is farther from the \$164 benchmark than Mistral-Medium-3.1's
-(\$183), despite Mistral-Medium-3.1 showing no recall of the figure in
+WTP (\$91) is farther from the \$162 benchmark than Mistral-Medium-3.1's
+(\$189), despite Mistral-Medium-3.1 showing no recall of the figure in
 any of 20 attempts. Recall is therefore not systematically associated
 with more accurate synthetic WTP estimates, and recovery is not more
 accurate for the more publicly visible Aldy study than for the Giguere
@@ -1603,7 +1596,7 @@ This appendix reports the design details of the two replicated studies that are 
 
 \paragraph{Original specification.} Pooled binary logit. Likelihood-ratio tests reported by the original authors fail to reject pooling across technology arms; we follow the authors' preferred pooled specification in our synthetic replication.
 
-\paragraph{Original WTP estimate.} Mean WTP of \$164 per household per year (95\% CI: \$128--\$292).
+\paragraph{Original WTP estimate.} Mean WTP of \$162 per household per year (95\% CI: \$126--\$260).
 
 \subsection{Study 2: Giguere, Moore, and Whitehead (2020)}
 
@@ -1949,7 +1942,9 @@ A known concern in survey methodology is that response options' order may shift 
 
 \input{tables/tab_order_bias.tex}\label{tab:order-bias}
 
-We find no meaningful effect from ordering: the maximum across-model difference is [\textbf{X.X}] percentage points in absolute value, smaller than the within-model run-to-run variation reported in Section~\ref{sec:methods-repetition}. We pool across orderings in our main results.
+Seven of nine models show a higher Support share when Support is listed first, while two models (Mistral Medium 3.1 and Llama-4 Scout) show the reverse pattern. Effect sizes range from 2.6 to 14.5 percentage points in absolute value, and all are statistically distinguishable from zero.
+
+We pool across orderings in our main results because our primary object of interest is each model's approval-bid curve and the resulting WTP estimate, and pooling both orderings doubles the effective sample per cell without changing the qualitative pattern of results reported in Section~\ref{sec:results}: the same models over- and under-perform, and the slope-flatness regularity holds, under either ordering considered separately (not tabulated). We note, however, that because the direction and magnitude of the ordering effect vary across models, this pooling may attenuate model-specific response patterns that a study focused specifically on question-ordering effects would want to isolate; we flag this as a limitation of our design rather than evidence that the effect is unimportant.
 
 % =============================================================================
 \section{Replication and Estimation Tables}\label{app:tables}
@@ -1968,6 +1963,8 @@ estimates by LLM and condition.
 \input{tables/experiment_2/tab_repl_clogit_Study2.tex}\label{tab:repl-clogit-Study2}
 
 \newpage
+\newpage
+
 \subsection{Synthetic Estimates: Study 1 (NCES)}\label{app:tables-nces}
 
 \input{tables/experiment_1/tab_syn_logit_demonly.tex}
@@ -2015,7 +2012,7 @@ Table~\ref{tab:leakage} reports model responses. The full probe execution graph,
 
 If training-data leakage were the dominant force generating our synthetic responses, we would expect at least one of two patterns. First, models with stronger direct recall of the published WTP figures should produce synthetic WTP estimates closer to those figures than models with weaker recall do. Second, synthetic recovery should be systematically tighter for \textcite{Aldy2012} than for \textcite{Giguere2020}, because the Aldy result has been cited 186 times and appears in many secondary sources while the Giguere result has appeared in 23 publications and is plausibly less represented in any LLM's training distribution.
 
-Neither pattern holds in our data. Comparing Table~\ref{tab:leakage} to the WTP estimates in Section~\ref{sec:results}, only one model (DeepSeek-R1) shows genuine recall of either headline figure, and it does not systematically produce more accurate synthetic WTP estimates than models with no recall: its demographics-plus-beliefs WTP (\$91) is farther from the \$164 Aldy benchmark than several models that never reproduce the figure, including Mistral-Medium-3.1 (\$183). The slope-flatness regularity reported in Section~\ref{sec:results-cross} appears to a roughly comparable degree in both studies despite their different citation profiles, and despite recall being effectively absent for the less-cited Giguere study specifically. If LLM responses were primarily reproductions of memorized study results, we would not expect a structurally similar deviation pattern in a heavily cited study and a less-cited one, nor would we expect the one model with accurate recall to underperform several models with none; we interpret this as evidence against direct training-data leakage being a dominant driver of our synthetic responses, while acknowledging that this argument is circumstantial rather than conclusive.
+Neither pattern holds in our data. Comparing Table~\ref{tab:leakage} to the WTP estimates in Section~\ref{sec:results}, only one model (DeepSeek-R1) shows genuine recall of either headline figure, and it does not systematically produce more accurate synthetic WTP estimates than models with no recall: its demographics-plus-beliefs WTP (\$91) is farther from the \$162 Aldy benchmark than several models that never reproduce the figure, including Mistral-Medium-3.1 (\$183). The slope-flatness regularity reported in Section~\ref{sec:results-cross} appears to a roughly comparable degree in both studies despite their different citation profiles, and despite recall being effectively absent for the less-cited Giguere study specifically. If LLM responses were primarily reproductions of memorized study results, we would not expect a structurally similar deviation pattern in a heavily cited study and a less-cited one, nor would we expect the one model with accurate recall to underperform several models with none; we interpret this as evidence against direct training-data leakage being a dominant driver of our synthetic responses, while acknowledging that this argument is circumstantial rather than conclusive.
 
 \subsection{Kimi-K2: a specific case}
 
