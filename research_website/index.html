@@ -681,18 +681,18 @@
           <div class="metric-cards">
             <div class="metric-card">
               <div class="metric-card-label">Human benchmark</div>
-              <div class="metric-card-value">$164</div>
+              <div class="metric-card-value">$162</div>
               <div class="metric-card-sub">per household / year</div>
             </div>
             <div class="metric-card">
               <div class="metric-card-label">Aggregate w/o beliefs</div>
-              <div class="metric-card-value">−$9</div>
-              <div class="metric-card-sub">95% CI: −$17 to −$2</div>
+              <div class="metric-card-value">$5</div>
+              <div class="metric-card-sub">95% CI: −$1 to $12</div>
             </div>
             <div class="metric-card">
               <div class="metric-card-label">Aggregate w/ beliefs</div>
-              <div class="metric-card-value">$289</div>
-              <div class="metric-card-sub">95% CI: $268 to $314</div>
+              <div class="metric-card-value">$295</div>
+              <div class="metric-card-sub">95% CI: $274 to $321</div>
             </div>
           </div>
 
@@ -714,7 +714,7 @@
             </div>
             <div class="legend-item">
               <div class="legend-line" style="background:var(--accent-green);border-top:2px dashed var(--accent-green);"></div>
-              <span>Human benchmark ($164)</span>
+              <span>Human benchmark ($162)</span>
             </div>
           </div>
 
@@ -977,12 +977,12 @@
   ];
 
   const WTP1 = {
-    no:   [-9, -843, -13, -102, -104, 1529, -288, -535, 268, 185],
-    yes:  [289, 37, 91, 335, 491, 18899, 183, 258, 618, 522],
-    ciNo: [[-17,-2],[-1887,-509],[-25,-1],[-134,-77],[-129,-83],
-           [908,4788],[-473,-192],[-1328,-303],[232,320],[172,202]],
-    ciYes:[[268,314],[27,46],[85,98],[276,440],[366,798],
-           [-36826,38172],[163,211],[184,564],[440,1120],[405,764]]
+    no:   [5, -829, -10, -96, -83, 1567, -271, -481, 291, 194],
+    yes:  [295, 38, 91, 338, 498, 19646, 189, 276, 635, 532],
+    ciNo: [[-1,12],[-1857,-500],[-22,2],[-127,-71],[-104,-64],
+           [930,4897],[-449,-179],[-1210,-268],[252,350],[180,213]],
+    ciYes:[[274,321],[29,47],[85,98],[278,444],[371,809],
+           [-38175,39805],[168,219],[197,611],[451,1145],[413,778]]
   };
 
   const WTP2R = {
@@ -1345,9 +1345,9 @@
       xLabel: 'WTP ($/household/year)',
       annotations: [
         { value: 0, color: '#cccccc', dash: null, width: 1 },
-        { value: 164, color: '#0F6E56', dash: [5, 4], width: 1.5 },
-        { value: 128, color: 'rgba(15,110,86,0.25)', dash: [4, 3], width: 1 },
-        { value: 292, color: 'rgba(15,110,86,0.25)', dash: [4, 3], width: 1 }
+        { value: 162, color: '#0F6E56', dash: [5, 4], width: 1.5 },
+        { value: 126, color: 'rgba(15,110,86,0.25)', dash: [4, 3], width: 1 },
+        { value: 285, color: 'rgba(15,110,86,0.25)', dash: [4, 3], width: 1 }
       ]
     });
 
