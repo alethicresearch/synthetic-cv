@@ -1,4 +1,40 @@
-\begin{table}[h]
+% \begin{table}[h]
+% \centering
+% \caption{Synthetic mean willingness to pay for the NCES policy (Study 1).}
+% \label{tab:syn-wtp-Study1}
+% \begin{threeparttable}
+% \footnotesize
+% \begin{tabular}{lcc}
+% \toprule
+% Model & Demographics only & + Beliefs \\
+% \midrule
+% AGGREGATED &    -9 [  -17,    -2] &   289 [268,   314] \\
+% \midrule
+% deepseek-chat-v3.1 &  -843 [-1887,  -509] &    37 [27,    46] \\
+% deepseek-r1 &   -13 [  -25,    -1] &    91 [85,    98] \\
+% gemini-2.5-flash &  -102 [ -134,   -77] &   335 [276,   440] \\
+% gemini-2.5-flash-lite &  -104 [ -129,   -83] &   491 [366,   798] \\
+% llama-4-scout &  1529 [  908,  4788] & 18899 [-36826, 38172] \\
+% mistral-medium-3.1 &  -288 [ -473,  -192] &   183 [163,   211] \\
+% mistral-small-3.2-24b &  -535 [-1328,  -303] &   258 [184,   564] \\
+% kimi-k2 &   268 [  232,   320] &   618 [440,  1120] \\
+% gpt-5-mini &   185 [  172,   202] &   522 [405,   764] \\
+% \midrule
+% Empirical (Aldy et al.) & \multicolumn{2}{c}{  164 [128,   292]} \\
+% \bottomrule
+% \end{tabular}
+% \begin{tablenotes}\footnotesize
+% \item \textit{Notes:} Mean WTP (\$/household/year) for the NCES policy. 
+% Bracketed values are 95\% confidence intervals from a Krinsky-Robb parametric bootstrap with 1{,}000 replications evaluated at the empirical mean covariate vector. 
+%  The aggregate estimate pools synthetic responses across all nine LLMs. 
+% Synthetic samples are collapsed to one observation per persona prior to estimation, matching the empirical respondent-level sample structure. 
+% Empirical benchmark from \textcite{Aldy2012}.
+% \end{tablenotes}
+% \end{threeparttable}
+% \end{table}
+
+
+\begin{table}[H]
 \centering
 \caption{Synthetic mean willingness to pay for the NCES policy (Study 1).}
 \label{tab:syn-wtp-Study1}
@@ -8,25 +44,25 @@
 \toprule
 Model & Demographics only & + Beliefs \\
 \midrule
-AGGREGATED &    -9 [  -17,    -2] &   289 [268,   314] \\
+AGGREGATED &     5 [   -1,    12] &   295 [  274,   321] \\
 \midrule
-deepseek-chat-v3.1 &  -843 [-1887,  -509] &    37 [27,    46] \\
-deepseek-r1 &   -13 [  -25,    -1] &    91 [85,    98] \\
-gemini-2.5-flash &  -102 [ -134,   -77] &   335 [276,   440] \\
-gemini-2.5-flash-lite &  -104 [ -129,   -83] &   491 [366,   798] \\
-llama-4-scout &  1529 [  908,  4788] & 18899 [-36826, 38172] \\
-mistral-medium-3.1 &  -288 [ -473,  -192] &   183 [163,   211] \\
-mistral-small-3.2-24b &  -535 [-1328,  -303] &   258 [184,   564] \\
-kimi-k2 &   268 [  232,   320] &   618 [440,  1120] \\
-gpt-5-mini &   185 [  172,   202] &   522 [405,   764] \\
+deepseek-chat-v3.1 &  -829 [-1857,  -500] &    38 [   29,    47] \\
+deepseek-r1 &   -10 [  -22,     2] &    91 [   85,    98] \\
+gemini-2.5-flash &   -96 [ -127,   -71] &   338 [  278,   444] \\
+gemini-2.5-flash-lite &   -83 [ -104,   -64] &   498 [  371,   809] \\
+llama-4-scout &  1567 [  930,  4897] & 19646 [-38175, 39805] \\
+mistral-medium-3.1 &  -271 [ -449,  -179] &   189 [  168,   219] \\
+mistral-small-3.2-24b-instruct &  -481 [-1210,  -268] &   276 [  197,   611] \\
+kimi-k2 &   291 [  252,   350] &   635 [  451,  1145] \\
+gpt-5-mini &   194 [  180,   213] &   532 [  413,   778] \\
 \midrule
-Empirical (Aldy et al.) & \multicolumn{2}{c}{  164 [128,   292]} \\
+Empirical (Aldy et al.) & \multicolumn{2}{c}{  162 [  126,   285]} \\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}\footnotesize
 \item \textit{Notes:} Mean WTP (\$/household/year) for the NCES policy. 
 Bracketed values are 95\% confidence intervals from a Krinsky-Robb parametric bootstrap with 1{,}000 replications evaluated at the empirical mean covariate vector. 
- The aggregate estimate pools synthetic responses across all nine LLMs. 
+The aggregate estimate pools synthetic responses across all nine LLMs. 
 Synthetic samples are collapsed to one observation per persona prior to estimation, matching the empirical respondent-level sample structure. 
 Empirical benchmark from \textcite{Aldy2012}.
 \end{tablenotes}

@@ -3,33 +3,68 @@
 % The tabular body is wrapped in \resizebox{\textwidth}{!}{...} to prevent margin overflow.
 % Requires graphicx, which LandEcon_Draft0.tex already loads.
 
+% \begin{table}[h]
+%     \centering
+%     \caption{Cross-study summary of synthetic CV performance.}
+%     \label{tab:cross-study}
+%     \resizebox{\textwidth}{!}{%
+%     \begin{threeparttable}
+%     \begin{tabular}{lcccc}
+%         \toprule
+%          & \multicolumn{2}{c}{Study 1 (NCES)} & \multicolumn{2}{c}{Study 2 (HWA)} \\
+%         \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+%         Metric & Demo only & + Beliefs & Demo only & + Beliefs \\
+%         \midrule
+%         Smallest mean abs.\ deviation (pp)              & 5.6 & 5.54 & 3.97 \& 7.07 & 12.16 \& 8.07 \\
+%         Aggregate WTP error (\$)                        & 157  & 133  & 55.35 \& 155.33   & 47.95 \& 151.27 \\
+%         Smallest WTP error (\$)                         & 32  & 27  & 2.15 \& 4.27  & 30.15 \& 21.53  \\
+%         Mean synthetic-to-empirical bid coefficient ratio   & 0.72 & 0.41 & 1.06 \& 2.34 & 0.33 \& 0.54\\
+%         Share of LLMs with WTP in original 95\% CI      & 2/9 & 2/9 & 2/9 \& 6/9 & 0/9 \& 0/9 \\
+%         \bottomrule
+%     \end{tabular}
+%     \begin{tablenotes}\footnotesize
+%     \item \textit{Notes:} Mean absolute deviation computed across bid
+%     levels. Aggregate WTP refers to the
+%     equally-weighted ensemble across all nine models. The
+%     synthetic-to-empirical bid coefficient ratio is the cross-LLM mean of
+%     each model's bid coefficient divided by the corresponding empirical
+%     bid coefficient; values below one indicate flatter synthetic curves
+%     than empirical curves. In Study 2, the first number in each cell represents the value for the random-cost design and the second for the bounded-cost design.
+%     \end{tablenotes}
+%     \end{threeparttable}
+%     }
+% \end{table}
+
+
 \begin{table}[h]
     \centering
     \caption{Cross-study summary of synthetic CV performance.}
     \label{tab:cross-study}
     \resizebox{\textwidth}{!}{%
     \begin{threeparttable}
-    \begin{tabular}{lcccc}
+    \begin{tabular}{lcccccc}
         \toprule
-         & \multicolumn{2}{c}{Study 1 (NCES)} & \multicolumn{2}{c}{Study 2 (HWA)} \\
-        \cmidrule(lr){2-3} \cmidrule(lr){4-5}
-        Metric & Demo only & + Beliefs & Demo only & + Beliefs \\
+         & \multicolumn{2}{c}{Study 1 (NCES)} & \multicolumn{4}{c}{Study 2 (HWA)} \\
+        \cmidrule(lr){2-3} \cmidrule(lr){4-7}
+         & \multirow{Demo only} & \multirow{+ Beliefs} & \multicolumn{2}{c}{Demo only} & \multicolumn{2}{c}{+ Beliefs} \\
+        \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+        Metric & & & Random & Bounded & Random & Bounded \\
         \midrule
-        Best-LLM mean abs.\ deviation (pp)              & 5.6 & 5.54 & 3.97 \& 7.07 & 12.16 \& 8.07 \\
-        Aggregate WTP error (\$)                        & 173  & 125  & 55.35 \& 155.33   & 47.95 \& 151.27 \\
-        Best-LLM WTP error (\$)                         & 21  & 19  & 2.15 \& 4.27  & 30.15 \& 21.53  \\
-        Mean synthetic-to-empirical bid coefficient ratio   & 0.72 & 0.41 & 1.06 \& 2.34 & 0.33 \& 0.54\\
-        Share of LLMs with WTP in original 95\% CI      & 2/9 & 2/9 & 2/9 \& 6/9 & 0/9 \& 0/9 \\
+        Smallest mean abs.\ deviation (pp)                & 5.6  & 5.54 & 3.97  & 7.07  & 12.16 & 8.07  \\
+        Aggregate WTP error (\$)                          & 157  & 133  & 55.35 & 155.33 & 47.95 & 151.27 \\
+        Smallest WTP error (\$)                           & 32   & 27   & 2.15  & 4.27  & 30.15 & 21.53 \\
+        Mean synthetic-to-empirical bid coefficient ratio & 0.72 & 0.41 & 1.06  & 2.34  & 0.33  & 0.54  \\
+        Share of LLMs with WTP in original 95\% CI        & 1/9  & 2/9  & 2/9   & 6/9   & 0/9   & 0/9   \\
         \bottomrule
     \end{tabular}
     \begin{tablenotes}\footnotesize
     \item \textit{Notes:} Mean absolute deviation computed across bid
-    levels and averaged across LLMs. Aggregate WTP refers to the
+    levels. Aggregate WTP refers to the
     equally-weighted ensemble across all nine models. The
     synthetic-to-empirical bid coefficient ratio is the cross-LLM mean of
     each model's bid coefficient divided by the corresponding empirical
     bid coefficient; values below one indicate flatter synthetic curves
-    than empirical curves. In Study 2, the first number in each cell represents the value for the random-cost design and the second for the bounded-cost design.
+    than empirical curves.
     \end{tablenotes}
     \end{threeparttable}
     }
